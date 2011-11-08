@@ -1,30 +1,66 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://www.urbancode.com/schema/cs/project-dependencies/1.0"
- name="SQLCmd" workflow="build workflow [master]">
+<project xmlns="http://www.urbancode.com/schema/cs/project-dependencies/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        name="#AHP_PROJECT_NAME#" workflow="build workflow [trunk]">
+
   <dependencies conflictStrategy="FAIL">
-    <!-- Dependencies Here -->
-    <!-- Example Anthill Project Dependency
+
+    <!-- ############################################################ -->
+    <!-- RUNTIME                                                      -->
+    <!-- ############################################################ -->
+
+    <!-- gives us the CommandHelper and XTrust groovies -->
     <dependency>
-      <ah-project name="Anthill Project" workflow="build workflow [master]"/>
+      <ah-project name="plugins" workflow="build workflow [master]"/>
+      <criteria status="success"/>
+      <delivery artifact-set="Source">
+        <directory>lib/build/classes</directory>
+      </delivery>
+      <delivery artifact-set="Dist">
+        <directory>lib/test</directory>
+      </delivery>
+    </dependency>
+
+    <!-- ############################################################ -->
+    <!-- BUILD                                                        -->
+    <!-- ############################################################ -->
+
+    <dependency>
+      <cs-project name="Groovy"/>
+      <criteria status="success"/>
+      <delivery artifact-set="lib">
+        <directory>lib/build</directory>
+      </delivery>
+    </dependency>
+
+    <!-- ############################################################ -->
+    <!-- TEST                                                         -->
+    <!-- ############################################################ -->
+
+    <dependency>
+      <ah-project name="air-plugin-command" workflow="build workflow [master]"/>
       <criteria status="success"/>
       <delivery artifact-set="Library">
-        <directory>lib</directory>
+        <directory>lib/test</directory>
       </delivery>
     </dependency>
-    -->
-    <!-- Example Codestation Project Dependency
+
     <dependency>
-      <cs-project name="Codestation Project"/>
-      <criteria stamp="1.*" />
-      <delivery artifact-set="Library">
-        <directory>lib</directory>
+      <ah-project name="Commons-Xml" workflow="build workflow [trunk]" />
+      <criteria status="success" />
+      <delivery artifact-set="Default">
+        <directory>lib/test</directory>
       </delivery>
     </dependency>
-    -->
-
-    <!-- MAIN -->
-
-    <!-- TEST -->
+    
+   <dependency>
+      <cs-project name="Jakarta Commons IO" />
+      <criteria stamp="1.4" />
+      <delivery artifact-set="Default">
+        <directory>lib/test</directory>
+        <directory>lib/validate</directory>
+      </delivery>
+    </dependency>
+    
     <dependency>
       <cs-project name="JUnit"/>
       <criteria status="success"/>
@@ -32,5 +68,96 @@
         <directory>lib/test</directory>
       </delivery>
     </dependency>
+    
+    <dependency>
+      <cs-project name="Rhino"/>
+      <criteria stamp="*" />
+      <delivery artifact-set="Default">
+        <directory>lib/test</directory>
+      </delivery>
+    </dependency>
+
+    <dependency>
+      <cs-project name="Apache-log4j"/>
+      <criteria status="success"/>
+      <delivery artifact-set="Default">
+        <directory>lib/test</directory>
+      </delivery>
+    </dependency>
+
+    <dependency>
+      <ah-project name="Shell" workflow="build workflow [trunk]"/>
+      <criteria status="success"/>
+      <delivery artifact-set="Default">
+        <directory>lib/test</directory>
+      </delivery>
+    </dependency>
+
+    <dependency>
+      <ah-project name="Commons-FileUtils" workflow="build workflow [trunk]"/>
+      <criteria status="success"/>
+      <delivery artifact-set="Default">
+        <directory>lib/test</directory>
+      </delivery>
+    </dependency>
+
+    <dependency>
+      <ah-project name="Commons-Util" workflow="build workflow [trunk]"/>
+      <criteria status="success"/>
+      <delivery artifact-set="Library">
+        <directory>lib/test</directory>
+      </delivery>
+    </dependency>
+
+    <dependency>
+      <ah-project name="NativeProcess" workflow="build workflow [trunk]"/>
+      <criteria status="success"/>
+      <delivery artifact-set="Jars">
+        <directory>lib/test</directory>
+      </delivery>
+    </dependency>
+
+    <dependency>
+      <cs-project name="Jakarta Commons Lang"/>
+      <criteria status="success"/>
+      <delivery artifact-set="Default">
+        <directory>lib/test</directory>
+      </delivery>
+    </dependency>
+
+    <dependency>
+      <cs-project name="Jakarta Commons Codec"/>
+      <criteria status="success"/>
+      <delivery artifact-set="Default">
+        <directory>lib/test</directory>
+      </delivery>
+    </dependency>
+    
+    <!-- ############################################################ -->
+    <!-- USED WITH AXIS FOR SOAP                                      -->
+    <!-- ############################################################ -->
+<!--
+    <dependency>
+      <cs-project name="Apache Axis"/>
+      <criteria stamp="1.4"/>
+      <delivery artifact-set="Default">
+        <directory>lib</directory>
+      </delivery>
+    </dependency>
+    <dependency>
+      <cs-project name="Jakarta Commons Logging"/>
+      <criteria stamp="1.1"/>
+      <delivery artifact-set="Default">
+        <directory>lib</directory>
+      </delivery>
+    </dependency>
+    <dependency>
+      <cs-project name="Jakarta Commons Discovery"/>
+      <criteria stamp="0.2"/>
+      <delivery artifact-set="Default">
+        <directory>lib</directory>
+      </delivery>
+    </dependency>
+-->
   </dependencies>
 </project>

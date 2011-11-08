@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin xmlns="http://www.urbancode.com/PluginXMLSchema_v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <header>
+    <identifier id="com.urbancode.plugin.pluginName" name="PLugin Name" version="3"/>
+    <description>
+      Description
+	  </description>
+    <tag>step/location</tag>
+  </header>
+  <step-type name="StepTypeName">
+    <description>Description</description>
+    <properties>
+      <property name="dirOffset">
+        <property-ui type="textBox"
+                     label="Directory Offset"
+                     description="The directory offset relative to the current working directory where the step should run."/>
+      </property>
+    </properties>
+    <post-processing><![CDATA[
+        if (properties.get("exitCode") != 0) {
+            properties.put(new java.lang.String("Status"), new java.lang.String("Failure"));
+        }
+        else {
+            properties.put("Status", "Success");
+        }
+     ]]></post-processing>
+    <command program="${GROOVY_HOME}/bin/groovy">
+      <arg file="cmd.groovy"/>
+      <arg file="${PLUGIN_INPUT_PROPS}"/>
+      <arg file="${PLUGIN_OUTPUT_PROPS}"/>
+    </command>
+  </step-type>
+</plugin>
