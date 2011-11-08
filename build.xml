@@ -214,7 +214,7 @@
     <!-- TARGETS                                             -->
     <!-- =================================================== -->
 
-    <target name="taskdef" unless="taskdef.no">
+    <target name="taskdef" unless="taskdef.no" depends="resolve">
       <path id="taskdefpath">
         <fileset dir="${lib.dir}" includes="*.jar"/>
         <fileset dir="${lib.dir}/build" includes="*.jar"/>
