@@ -256,12 +256,16 @@
         <delete dir="${build.dir}/tmp"/> 
 
         <!-- package the plugin -->
-        <echo message="${build.plugin.file}"/>
         <zip destfile="${build.plugin.file}" update="false" whenempty="fail">
           <zipfileset prefix=""         dir="${plugin.zip.dir}"/>
           <zipfileset prefix=""         dir="${build.plugin.dir}"/>
           <zipfileset prefix="classes/" dir="${plugin.groovy.dir}"/>
-          <zipfileset prefix="lib/"     dir="${lib.dir}" includes="*"/>
+          <zipfileset prefix="lib/"     dir="${lib.dir}">
+            <include name="*"/>
+            <exclude name="test"/>
+            <exclude name="validate"/>
+            <exclude name="build"/>
+          </zipfileset>
           <zipfileset prefix="classes/" dir="${lib.build.classes.dir}" includes="**/*"/>
         </zip>
 
