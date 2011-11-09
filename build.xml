@@ -246,13 +246,16 @@
 
         <!-- validate that the groovy scripts compile -->
         <mkdir dir="${build.dir}/tmp"/>
+<!--
         <groovyc destdir="${build.dir}/tmp" srcdir="${plugin.groovy.dir}">
             <classpath>
               <path><fileset dir="${lib.dir}" includes="plugin/*.jar"/></path>
+              <path><fileset dir="${lib.dir}" includes="build/plugin/*.jar"/></path>
               <pathelement location="${lib.build.classes.dir}"/>
               <pathelement location="${lib.dir}/pluginutilscripts.jar"/>
             </classpath>
         </groovyc>
+-->
         <delete dir="${build.dir}/tmp"/> 
 
         <!-- package the plugin -->
