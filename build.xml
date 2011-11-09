@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<project name="#AHP_PROJECT_NAME#" default="all" basedir="."
+<project name="WebSphereMessageBroker-CMP" default="all" basedir="."
     xmlns:codestation="antlib:com.urbancode.codestation2.client">
     
     <property environment="env"/>

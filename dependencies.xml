@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://www.urbancode.com/schema/cs/project-dependencies/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        name="#AHP_PROJECT_NAME#" workflow="build workflow [air]">
+        name="WebSphereMessageBroker-CMP" workflow="build workflow [air]">
 
   <dependencies conflictStrategy="FAIL">
 
