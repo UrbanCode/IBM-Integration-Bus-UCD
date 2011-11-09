@@ -5,6 +5,7 @@
     <description>Integration for WebSphere Message Broker to deploy Broker Archives and start and stop Message Flows unsing the CMP API.</description>
     <tag>Deploy/WebSphere Message Broker</tag>
   </header>
+<!--
   <step-type name='WMB Override Properties'>
     <description>Overrides configuration properties inside a Broker Archive file.</description>
     <properties>
@@ -24,7 +25,7 @@
         <property-ui type='textBox' label='Queue Manager' description='The WebSphere MQ Queue Manager which the broker is using.' default-value='${p:resource/WebSphere Message Broker/port}'/>
       </property>
       <property name='jarPath'>
-        <property-ui type='textBox' label='Jar Path' description='The full path of the jar containing the CMP library.' default-value='${p:resource/WebSphere Message Broker/jarPath}' />
+        <property-ui type='textBox' label='Jar Path' description='The full path containing both ConfigManagerProxy.jar and com.ibm.mq.jar. e.g. C:\Program Files\IBM\MQSI\7.0\classes\ConfigManagerProxy.jar:C:\Program Files\IBM\WebSphere MQ\java\lib\com.ibm.mq.jar.' default-value='${p:resource/WebSphere Message Broker/jarPath}' />
       </property>
     </properties>
     <post-processing><![CDATA[ 
@@ -59,7 +60,7 @@
         <property-ui type='textBox' label='Queue Manager' description='The WebSphere MQ Queue Manager which the broker is using.' default-value='${p:resource/WebSphere Message Broker/port}'/>
       </property>
       <property name='jarPath'>
-        <property-ui type='textBox' label='Jar Path' description='The full path of the jar containing the CMP library.' default-value='${p:resource/WebSphere Message Broker/jarPath}' />
+        <property-ui type='textBox' label='Jar Path' description='The full path containing both ConfigManagerProxy.jar and com.ibm.mq.jar. e.g. C:\Program Files\IBM\MQSI\7.0\classes\ConfigManagerProxy.jar:C:\Program Files\IBM\WebSphere MQ\java\lib\com.ibm.mq.jar.' default-value='${p:resource/WebSphere Message Broker/jarPath}' />
       </property>
     </properties>
     <post-processing><![CDATA[ 
@@ -97,7 +98,7 @@
         <property-ui type='textBox' label='Queue Manager' description='The WebSphere MQ Queue Manager which the broker is using.' default-value='${p:resource/WebSphere Message Broker/port}'/>
       </property>
       <property name='jarPath'>
-        <property-ui type='textBox' label='Jar Path' description='The full path of the jar containing the CMP library.' default-value='${p:resource/WebSphere Message Broker/jarPath}' />
+        <property-ui type='textBox' label='Jar Path' description='The full path containing both ConfigManagerProxy.jar and com.ibm.mq.jar. e.g. C:\Program Files\IBM\MQSI\7.0\classes\ConfigManagerProxy.jar:C:\Program Files\IBM\WebSphere MQ\java\lib\com.ibm.mq.jar.' default-value='${p:resource/WebSphere Message Broker/jarPath}' />
       </property>
     </properties>
     <post-processing><![CDATA[ 
@@ -116,6 +117,7 @@
       <arg file='${PLUGIN_OUTPUT_PROPS}' />
     </command>
   </step-type>
+-->
   <step-type name='WMB Deploy'>
     <description>Deploy a Broker Archive.</description>
     <properties>
@@ -141,7 +143,7 @@
         <property-ui type='textBox' label='Queue Manager' description='The WebSphere MQ Queue Manager which the broker is using.' default-value='${p:resource/WebSphere Message Broker/port}'/>
       </property>
       <property name='jarPath'>
-        <property-ui type='textBox' label='Jar Path' description='The full path of the jar containing the CMP library.' default-value='${p:resource/WebSphere Message Broker/jarPath}' />
+        <property-ui type='textBox' label='Jar Path' description='The full path containing both ConfigManagerProxy.jar and com.ibm.mq.jar. e.g. C:\Program Files\IBM\MQSI\7.0\classes\ConfigManagerProxy.jar:C:\Program Files\IBM\WebSphere MQ\java\lib\com.ibm.mq.jar.' default-value='${p:resource/WebSphere Message Broker/jarPath}' />
       </property>
     </properties>
     <post-processing><![CDATA[ 
@@ -179,7 +181,7 @@
         <property-ui type='textBox' label='Queue Manager' description='The WebSphere MQ Queue Manager which the broker is using.' default-value='${p:resource/WebSphere Message Broker/port}'/>
       </property>
       <property name='jarPath'>
-        <property-ui type='textBox' label='Jar Path' description='The full path of the jar containing the CMP library.' default-value='${p:resource/WebSphere Message Broker/jarPath}' />
+        <property-ui type='textBox' label='Jar Path' description='The full path containing both ConfigManagerProxy.jar and com.ibm.mq.jar. e.g. C:\Program Files\IBM\MQSI\7.0\classes\ConfigManagerProxy.jar:C:\Program Files\IBM\WebSphere MQ\java\lib\com.ibm.mq.jar.' default-value='${p:resource/WebSphere Message Broker/jarPath}' />
       </property>
     </properties>
     <post-processing><![CDATA[ 
@@ -217,7 +219,7 @@
         <property-ui type='textBox' label='Queue Manager' description='The WebSphere MQ Queue Manager which the broker is using.' default-value='${p:resource/WebSphere Message Broker/port}'/>
       </property>
       <property name='jarPath'>
-        <property-ui type='textBox' label='Jar Path' description='The full path of the jar containing the CMP library.' default-value='${p:resource/WebSphere Message Broker/jarPath}' />
+        <property-ui type='textBox' label='Jar Path' description='The full path containing both ConfigManagerProxy.jar and com.ibm.mq.jar. e.g. C:\Program Files\IBM\MQSI\7.0\classes\ConfigManagerProxy.jar:C:\Program Files\IBM\WebSphere MQ\java\lib\com.ibm.mq.jar.' default-value='${p:resource/WebSphere Message Broker/jarPath}' />
       </property>
     </properties>
     <post-processing><![CDATA[ 
