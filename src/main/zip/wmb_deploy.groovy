@@ -7,7 +7,7 @@ Properties props = PropertiesHelper.getProperties(new File(args[0]));
 WMBHelper helper = new WMBHelper(props);
 
 try { 
-    if (props['startStopMsgFlows']) {
+    if (Boolean.valueOf(props['startStopMsgFlows'])) {
         println "Stopping all Msg Flows"
         helper.stopAllMsgFlows();
     }
@@ -17,7 +17,7 @@ try {
         helper.deployBrokerArchive(barFileName);
     }
 
-    if (props['startStopMsgFlows']) {
+    if (Boolean.valueOf(props['startStopMsgFlows'])) {
         println "Starting all Msg Flows"
         helper.startAllMsgFlows();
     }

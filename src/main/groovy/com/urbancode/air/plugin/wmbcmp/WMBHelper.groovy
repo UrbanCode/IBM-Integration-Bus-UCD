@@ -9,7 +9,6 @@ public class WMBHelper {
     int port;
     String queueManager;
     String executionGroup;
-    String brokerName;//??
     BrokerConnectionParameters bcp;
     BrokerProxy brokerProxy;
     ExecutionGroupProxy executionGroupProxy;
@@ -20,7 +19,6 @@ public class WMBHelper {
         port = Integer.valueOf(props['port']);
         queueManager = props['queueManager'];
         executionGroup = props['executionGroup'];
-        brokerName = props['brokerName'];//??
 
         bcp = new MQBrokerConnectionParameters(host, port, queueManager);
         brokerProxy = BrokerProxy.getInstance(bcp);
@@ -69,6 +67,22 @@ public class WMBHelper {
         DeployResult dr = executionGroupProxy.deploy(fileName, isIncremental, 30000);
         
         if (dr.getCompletionCode() != CompletionCodeType.success) {
+            throw new Exception("Failed deploying bar File ${fileName}!");
+        }
+
+        def logEntries = dr.getLogEntries();
+        def errors = [];
+
+        logEntries.each { logEntry ->
+            if (logEntry.isErrorMessage()) {
+                errors << logEntry.getMessage();
+            }
+        }
+        if (!errors.isEmpty()) {
+            println "Errors deploying barFile ${fileName}";
+            errors.each { error ->
+                println error;
+            }
             throw new Exception("Failed deploying bar File ${fileName}!");
         }
     }
