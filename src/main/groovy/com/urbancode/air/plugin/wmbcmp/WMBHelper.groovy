@@ -2,6 +2,7 @@ package com.urbancode.air.plugin.wmbcmp;
 
 import com.ibm.broker.config.proxy.*;
 import java.util.Properties;
+import java.util.Enumeration;
 
 public class WMBHelper {
 
@@ -13,6 +14,9 @@ public class WMBHelper {
     BrokerProxy brokerProxy;
     ExecutionGroupProxy executionGroupProxy;
     boolean isIncremental = true;
+    def configManProxy;
+    def logProxy;
+    Date startTime;
 
     public WMBHelper(Properties props) {
         host = props['brokerHost'];
@@ -29,6 +33,11 @@ public class WMBHelper {
         if (Boolean.valueOf(props['fullDeploy'])) {
             isIncremental = false;
         }
+        
+        startTime = new Date(System.currentTimeMillis());
+        MQConfigManagerConnectionParameters connectionParams =  new MQConfigManagerConnectionParameters(host, port, queueManager);
+        configManProxy = ConfigManagerProxy.getInstance(connectionParams);
+        logProxy = configManProxy.getLog();
     }
    
     public void stopAllMsgFlows() {
@@ -64,27 +73,13 @@ public class WMBHelper {
             throw new IllegalStateException("Execution group proxy is null! Make sure it is configured correctly!");
         }
         
-        DeployResult dr = executionGroupProxy.deploy(fileName, isIncremental, 30000);
+        DeployResult dr = executionGroupProxy.deploy(fileName, isIncremental, 60000);
         
         if (dr.getCompletionCode() != CompletionCodeType.success) {
             throw new Exception("Failed deploying bar File ${fileName}!");
         }
 
-        def logEntries = dr.getLogEntries();
-        def errors = [];
-
-        logEntries.each { logEntry ->
-            if (logEntry.isErrorMessage()) {
-                errors << logEntry.getMessage();
-            }
-        }
-        if (!errors.isEmpty()) {
-            println "Errors deploying barFile ${fileName}";
-            errors.each { error ->
-                println error;
-            }
-            throw new Exception("Failed deploying bar File ${fileName}!");
-        }
+        checkDeployResult();
     }
     
     public String[] getMessageFlowsFromProperties(props) {
@@ -130,8 +125,105 @@ public class WMBHelper {
         
     }
     
-    public void overrideBarProperties(String barFileName, Properties props) {
-        //todo
+    public void setBrokerProperty(String name, String value) {
+        if (brokerProxy == null || bcp == null) {
+            throw new IllegalStateException("Broker Proxy is uninitilized!");
+        }
         
+        String oldVal = brokerProxy.getRuntimeProperty(name);
+        println "Setting property ${name} to ${value} from ${oldVal} on broker!";
+        brokerProxy.setRuntimeProperty(name, value);
+    }
+    
+    public void setExecutionGroupProperty(String name, String value) {
+        if (brokerProxy == null || bcp == null) {
+            throw new IllegalStateException("Broker Proxy is uninitilized!");
+        }
+        
+        if (executionGroupProxy == null) {
+            throw new IllegalStateException("Execution group proxy is null! Make sure it is configured correctly!");
+        }
+        
+        String oldVal = executionGroupProxy.getRuntimeProperty(name);
+        println "Setting property ${name} to ${value} from ${oldVal} on Execution Group ${executionGroup}!";
+        executionGroupProxy.setRuntimeProperty(name, value);
+    }
+    
+    public void setMsgFlowProperty(String msgFlowName, String name, String value) {
+        if (brokerProxy == null || bcp == null) {
+            throw new IllegalStateException("Broker Proxy is uninitilized!");
+        }
+        
+        if (executionGroupProxy == null) {
+            throw new IllegalStateException("Execution group proxy is null! Make sure it is configured correctly!");
+        }
+        
+        MessageFlowProxy msgFlowProxy = executionGroupProxy.getMessageFlowByName(msgFlowName);
+        if ( msgFlowProxy == null ) {
+            throw new Exception("could not get message flow to set property on!");
+        }
+        
+        String oldVal = msgFlowProxy.getRuntimeProperty(name);
+        println "Setting property ${name} to ${value} from ${oldVal} on Message Flow ${msgFlowName} in Execution Group ${executionGroup}!";
+        msgFlowProxy.setRuntimeProperty(name, value);
+    }
+    
+    public void deployBrokerConfig() {
+        if (brokerProxy == null || bcp == null) {
+            throw new IllegalStateException("Broker Proxy is uninitilized!");
+        }
+        brokerProxy.deploy(60000);
+        checkDeployResult();
+    }
+    
+    public void deployExecutionGroupConfig() {
+        if (brokerProxy == null || bcp == null) {
+            throw new IllegalStateException("Broker Proxy is uninitilized!");
+        }
+        
+        if (executionGroupProxy == null) {
+            throw new IllegalStateException("Execution group proxy is null! Make sure it is configured correctly!");
+        }
+        
+        brokerProxy.deploy(60000);
+        checkDeployResult();
+    }
+    
+    public void deployMsgFlowConfig(String msgFlowName) {
+        if (brokerProxy == null || bcp == null) {
+            throw new IllegalStateException("Broker Proxy is uninitilized!");
+        }
+        
+        if (executionGroupProxy == null) {
+            throw new IllegalStateException("Execution group proxy is null! Make sure it is configured correctly!");
+        }
+        
+        MessageFlowProxy msgFlowProxy = executionGroupProxy.getMessageFlowByName(msgFlowName);
+        if ( msgFlowProxy == null ) {
+            throw new Exception("could not get message flow to set property on!");
+        }
+        
+        brokerProxy.deploy(60000);
+        checkDeployResult();
+    }
+    
+    public void checkDeployResult() {
+        Enumeration logEntries = logProxy.elements();
+        def errors = [];
+
+        while (logEntries.hasMoreElements()) {
+            LogEntry logEntry = logEntries.nextElement();
+            if (logEntry.isErrorMessage() && logEntry.getTimestamp() > startTime) {
+                errors << logEntry.getTimestamp().toString() + " - " + logEntry.getMessage() + 
+                        " : " + logEntry.getDetail();
+            }
+        }
+        if (!errors.isEmpty()) {
+            println "Errors during deployment";
+            errors.each { error ->
+                println error;
+            }
+            throw new Exception("Error during deployment");
+        }
     }
 }

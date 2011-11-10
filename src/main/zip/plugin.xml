@@ -5,15 +5,11 @@
     <description>Integration for WebSphere Message Broker to deploy Broker Archives and start and stop Message Flows unsing the CMP API.</description>
     <tag>Deploy/WebSphere Message Broker CMP</tag>
   </header>
-<!--
-  <step-type name='WMB Override Properties'>
-    <description>Overrides configuration properties inside a Broker Archive file.</description>
+  <step-type name='WMB Set Broker Properties'>
+    <description>Set Runtime Properties for the broker.</description>
     <properties>
-      <property name='barFileNames' required='true'>
-        <property-ui type='textBox' label='Bar File Names' description='Comma separated list of Broker Archives to override properties in.' />
-      </property>
       <property name='properties' required='true'>
-        <property-ui type='textAreaBox' label='Properties' description='The configuration properties to override.' />
+        <property-ui type='textAreaBox' label='Properties' description='A new line separated list of properties to set in the format name=value' />
       </property>
       <property name='brokerHost' required='true'>
         <property-ui type='textBox' label="IP" description="The ip address of the target server." default-value='${p:resource/WebSphere Message Broker/ip}'/>
@@ -39,16 +35,60 @@
     <command program='${GROOVY_HOME}/bin/groovy'>
       <arg value='-cp' />
       <arg path='classes:${jarPath}' />
-      <arg file='wmb_apply_props.groovy' />
+      <arg file='wmb_set_broker_props.groovy' />
+      <arg file='${PLUGIN_INPUT_PROPS}' />
+      <arg file='${PLUGIN_OUTPUT_PROPS}' />
+    </command>
+  </step-type>
+  <step-type name='WMB Set Execution Group Properties'>
+    <description>Set runtime properties for an execution group.</description>
+    <properties>
+      <property name='executionGroup' required='true'>
+        <property-ui type='textBox' label='Execution Group' description='Name of the Execution Group to Deploy to.' />
+      </property>
+      <property name='properties' required='true'>
+        <property-ui type='textAreaBox' label='Properties' description='A new line separated list of properties to set in the format name=value' />
+      </property>
+      <property name='brokerHost' required='true'>
+        <property-ui type='textBox' label="IP" description="The ip address of the target server." default-value='${p:resource/WebSphere Message Broker/ip}'/>
+      </property>
+      <property name='port' required='true'>
+        <property-ui type='textBox' label='Port' description='The port of the target server.' default-value='${p:resource/WebSphere Message Broker/port}'/>
+      </property>
+      <property name='queueManager' required='true'>
+        <property-ui type='textBox' label='Queue Manager' description='The WebSphere MQ Queue Manager which the broker is using.' default-value='${p:resource/WebSphere Message Broker/port}'/>
+      </property>
+      <property name='jarPath'>
+        <property-ui type='textBox' label='Jar Path' description='The full path containing both ConfigManagerProxy.jar and com.ibm.mq.jar. e.g. C:\Program Files\IBM\MQSI\7.0\classes\ConfigManagerProxy.jar:C:\Program Files\IBM\WebSphere MQ\java\lib\com.ibm.mq.jar.' default-value='${p:resource/WebSphere Message Broker/jarPath}' />
+      </property>
+    </properties>
+    <post-processing><![CDATA[ 
+ if (properties.get("exitCode") != 0) {
+ properties.put(new java.lang.String("Status"), new java.lang.String("Failure"));
+ }
+ else { 
+ properties.put("Status", "Success"); 
+ }
+ ]]></post-processing>
+    <command program='${GROOVY_HOME}/bin/groovy'>
+      <arg value='-cp' />
+      <arg path='classes:${jarPath}' />
+      <arg file='wmb_set_execution_group_props.groovy' />
       <arg file='${PLUGIN_INPUT_PROPS}' />
       <arg file='${PLUGIN_OUTPUT_PROPS}' />
     </command>
   </step-type>
   <step-type name='WMB Set Message Flows Property'>
-    <description>Sets a property named 'message-flows-${barFileName}' on the executing job with a list of all the Message Flows in the give Broker Archive files.</description>
+    <description>Sets runtime properties on a list of message flows.</description>
     <properties>
-      <property name='barFileNames' required='true'>
-        <property-ui type='textBox' label='Bar File Names' description='Comma-separated list of Broker Archives to get Message Flows from.' />
+      <property name='executionGroup' required='true'>
+        <property-ui type='textBox' label='Execution Group' description='Name of the Execution Group to Deploy to.' />
+      </property>
+      <property name='msgFlows' required='true'>
+        <property-ui type='textAreaBox' label='Message Flows' description='A new line separated list of message flows.' />
+      </property>
+      <property name='properties' required='true'>
+        <property-ui type='textAreaBox' label='Properties' description='A new line separated list of properties to set in the format name=value' />
       </property>
       <property name='brokerHost' required='true'>
         <property-ui type='textBox' label="IP" description="The ip address of the target server." default-value='${p:resource/WebSphere Message Broker/ip}'/>
@@ -74,50 +114,12 @@
     <command program='${GROOVY_HOME}/bin/groovy'>
       <arg value='-cp' />
       <arg path='classes:${jarPath}' />
-      <arg file='wmb_list_msg_flows.groovy' />
+      <arg file='wmb_set_flow_props.groovy' />
       <arg file='${PLUGIN_INPUT_PROPS}' />
       <arg file='${PLUGIN_OUTPUT_PROPS}' />
     </command>
   </step-type>
-  <step-type name='WMB Reload Broker'>
-    <description>Reloads a Broker or a set of Execution Groups in a Broker.  Can only be perfomed locally.</description>
-    <properties>
-      <property name='brokerName' required='true'>
-        <property-ui type='textBox' label='Broker Name' description='Name of the Broker.' />
-      </property>
-      <property name='executionGroups'>
-        <property-ui type='textBox' label='Execution Group' description='Comma-separated list of Execution Groups to reload.' />
-      </property>
-      <property name='brokerHost' required='true'>
-        <property-ui type='textBox' label="IP" description="The ip address of the target server." default-value='${p:resource/WebSphere Message Broker/ip}'/>
-      </property>
-      <property name='port' required='true'>
-        <property-ui type='textBox' label='Port' description='The port of the target server.' default-value='${p:resource/WebSphere Message Broker/port}'/>
-      </property>
-      <property name='queueManager' required='true'>
-        <property-ui type='textBox' label='Queue Manager' description='The WebSphere MQ Queue Manager which the broker is using.' default-value='${p:resource/WebSphere Message Broker/port}'/>
-      </property>
-      <property name='jarPath'>
-        <property-ui type='textBox' label='Jar Path' description='The full path containing both ConfigManagerProxy.jar and com.ibm.mq.jar. e.g. C:\Program Files\IBM\MQSI\7.0\classes\ConfigManagerProxy.jar:C:\Program Files\IBM\WebSphere MQ\java\lib\com.ibm.mq.jar.' default-value='${p:resource/WebSphere Message Broker/jarPath}' />
-      </property>
-    </properties>
-    <post-processing><![CDATA[ 
- if (properties.get("exitCode") != 0) {
- properties.put(new java.lang.String("Status"), new java.lang.String("Failure"));
- }
- else { 
- properties.put("Status", "Success"); 
- }
- ]]></post-processing>
-    <command program='${GROOVY_HOME}/bin/groovy'>
-      <arg value='-cp' />
-      <arg path='classes:${jarPath}' />
-      <arg file='wmb_reload_broker.groovy' />
-      <arg file='${PLUGIN_INPUT_PROPS}' />
-      <arg file='${PLUGIN_OUTPUT_PROPS}' />
-    </command>
-  </step-type>
--->
+
   <step-type name='WMB Deploy'>
     <description>Deploy a Broker Archive.</description>
     <properties>
