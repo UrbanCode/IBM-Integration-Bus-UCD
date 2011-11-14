@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <plugin xmlns='http://www.urbancode.com/PluginXMLSchema_v1' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>
   <header>
-    <identifier id='com.urbancode.air.plugin.WMBCMP' version='1' name='WebSphere Message Broker - CMP' />
+    <identifier id='com.urbancode.air.plugin.WMBCMP' version='2' name='WebSphere Message Broker - CMP' />
     <description>Integration for WebSphere Message Broker to deploy Broker Archives and start and stop Message Flows unsing the CMP API.</description>
     <tag>Deploy/WebSphere Message Broker CMP</tag>
   </header>
@@ -81,14 +81,28 @@
   <step-type name='WMB Set Message Flows Property'>
     <description>Sets runtime properties on a list of message flows.</description>
     <properties>
+      <property name='dirOffset'>
+        <property-ui type='textBox'
+                     label='Directory Offset'
+                     description='Path under the current working directory where you want the step to execute.
+                                  Absolute paths are not allowed.' />
+      </property>
       <property name='executionGroup' required='true'>
         <property-ui type='textBox' label='Execution Group' description='Name of the Execution Group to Deploy to.' />
       </property>
-      <property name='msgFlows' required='true'>
+      <property name='msgFlows'>
         <property-ui type='textAreaBox' label='Message Flows' description='A new line separated list of message flows.' />
       </property>
-      <property name='properties' required='true'>
+      <property name='properties'>
         <property-ui type='textAreaBox' label='Properties' description='A new line separated list of properties to set in the format name=value' />
+      </property>
+      <property name='propertyFile'>
+        <property-ui type='textBox'
+                     label="Property File"
+                     description="Specify the name and path to a property file to use as a source of the properties
+                                  instead of explicitly listing the properties in the Properties field and the flows in
+                                  the Message Flows field. The property file would be the same format as the one used by the
+                                  mqsiapplybaroverride command."/>
       </property>
       <property name='brokerHost' required='true'>
         <property-ui type='textBox' label="IP" description="The ip address of the target server." default-value='${p:resource/WebSphere Message Broker/ip}'/>
