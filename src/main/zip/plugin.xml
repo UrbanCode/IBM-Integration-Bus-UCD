@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <plugin xmlns='http://www.urbancode.com/PluginXMLSchema_v1' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>
   <header>
-    <identifier id='com.urbancode.air.plugin.WMBCMP' version='1' name='WebSphere Message Broker - CMP' />
+    <identifier id='com.urbancode.air.plugin.WMBCMP' version='2' name='WebSphere Message Broker - CMP' />
     <description>Integration for WebSphere Message Broker to deploy Broker Archives and start and stop Message Flows unsing the CMP API.</description>
     <tag>Deploy/WebSphere Message Broker CMP</tag>
   </header>
@@ -131,6 +131,9 @@
       </property>
       <property name='fullDeploy'>
         <property-ui type='checkBox' label='Full Deploy' description='If true empties Execution Group before Deploy.' />
+      </property>
+      <property name='timeout'>
+        <property-ui type='textBox' label='Timeout' description='The timeout to wait for each bar file deploy result to come back in Milliseconds. Defaults to 60000'/>
       </property>
       <property name='startStopMsgFlows'>
         <property-ui type='checkBox' label='Start/Stop Message Flows' description='Check to stop all Message Flows in the Execution Group before deployment and start all Message Flows after deployment.' />

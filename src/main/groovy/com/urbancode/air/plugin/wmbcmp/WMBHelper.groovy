@@ -17,12 +17,14 @@ public class WMBHelper {
     def configManProxy;
     def logProxy;
     Date startTime;
+    def timeout;
 
     public WMBHelper(Properties props) {
         host = props['brokerHost'];
         port = Integer.valueOf(props['port']);
         queueManager = props['queueManager'];
         executionGroup = props['executionGroup'];
+        timeout = Long.valueOf(props['timeout']?.trim()?:60000);
 
         bcp = new MQBrokerConnectionParameters(host, port, queueManager);
         brokerProxy = BrokerProxy.getInstance(bcp);
@@ -73,7 +75,8 @@ public class WMBHelper {
             throw new IllegalStateException("Execution group proxy is null! Make sure it is configured correctly!");
         }
         
-        DeployResult dr = executionGroupProxy.deploy(fileName, isIncremental, 60000);
+        println "Using timeout ${timeout}";
+        DeployResult dr = executionGroupProxy.deploy(fileName, isIncremental, timeout);
         
         if (dr.getCompletionCode() != CompletionCodeType.success) {
             throw new Exception("Failed deploying bar File ${fileName}!");
