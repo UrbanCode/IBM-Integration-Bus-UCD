@@ -2,5 +2,46 @@
 <plugin-upgrade
         xmlns="http://www.urbancode.com/UpgradeXMLSchema_v1"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <migrate to-version="4">
+
+    <migrate-command name="WMB Set Broker Properties">
+       <migrate-properties>
+         <migrate-property name="username" default=""/>
+       </migrate-properties>
+    </migrate-command>
+
+    <migrate-command name="WMB Set Execution Group Properties">
+       <migrate-properties>
+         <migrate-property name="username" default=""/>
+       </migrate-properties>
+    </migrate-command>
+
+    <migrate-command name="WMB Set Message Flows Property">
+       <migrate-properties>
+         <migrate-property name="username" default=""/>
+       </migrate-properties>
+    </migrate-command>
+
+    <migrate-command name="WMB Deploy">
+       <migrate-properties>
+         <migrate-property name="username" default=""/>
+       </migrate-properties>
+    </migrate-command>
+
+    <migrate-command name="WMB Start Message Flows">
+       <migrate-properties>
+         <migrate-property name="username" default=""/>
+       </migrate-properties>
+    </migrate-command>
+
+    <migrate-command name="WMB Stop Message Flows">
+       <migrate-properties>
+         <migrate-property name="username" default=""/>
+       </migrate-properties>
+    </migrate-command>
+
+  </migrate>
+            
+
   
 </plugin-upgrade>

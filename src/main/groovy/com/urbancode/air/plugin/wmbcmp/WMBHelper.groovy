@@ -20,6 +20,10 @@ public class WMBHelper {
     def timeout;
 
     public WMBHelper(Properties props) {
+        if (props['username']?.trim()) {
+            System.out.println("Setting user.name to " + props['username']);
+            System.setProperty("user.name", props['username']);
+        }
         host = props['brokerHost'];
         port = Integer.valueOf(props['port']);
         queueManager = props['queueManager'];
