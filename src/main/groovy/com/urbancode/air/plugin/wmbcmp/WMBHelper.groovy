@@ -83,10 +83,24 @@ public class WMBHelper {
         DeployResult dr = executionGroupProxy.deploy(fileName, isIncremental, timeout);
         
         if (dr.getCompletionCode() != CompletionCodeType.success) {
-            throw new Exception("Failed deploying bar File ${fileName}!");
+            checkDeployResult(dr);
+            String code = "unknown";
+            if (dr.getCompletionCode() == CompletionCodeType.failure) {
+                code = "failure";
+            }
+            else if (dr.getCompletionCode() == CompletionCodeType.cancelled) {
+                code = "cancelled";
+            }
+            else if (dr.getCompletionCode() == CompletionCodeType.pending) {
+                code = "pending";
+            }
+            else if (dr.getCompletionCode() == CompletionCodeType.submitted) {
+                code = "submitted";
+            }
+            throw new Exception("Failed deploying bar File ${fileName} with completion code : " + code);
         }
 
-        checkDeployResult();
+        checkDeployResult(dr);
     }
     
     public String[] getMessageFlowsFromProperties(props) {
@@ -215,7 +229,18 @@ public class WMBHelper {
     }
     
     public void checkDeployResult() {
-        Enumeration logEntries = logProxy.elements();
+        checkDeployResult(null);
+    }
+    public void checkDeployResult(def deployResult) {
+        Enumeration logEntries = null;
+
+        if (deployResult) {
+            logEntries = deployResult.getDeployResponses();
+        }
+        else {
+            logEntries = logProxy.elements();
+        }
+
         def errors = [];
 
         while (logEntries.hasMoreElements()) {
@@ -224,6 +249,10 @@ public class WMBHelper {
                 errors << logEntry.getTimestamp().toString() + " - " + logEntry.getMessage() + 
                         " : " + logEntry.getDetail();
             }
+/*
+            errors << logEntry.getTimestamp().toString() + " - " + logEntry.getMessage() + 
+                    " : " + logEntry.getDetail();
+*/
         }
         if (!errors.isEmpty()) {
             println "Errors during deployment";
