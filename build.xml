@@ -179,15 +179,9 @@
           import com.urbancode.air.plugin_command.validation.*
           import java.util.zip.*
           final def pluginFile = new File(args[0])
-          def validator = new PluginCommandValidator()
+          def validator = new PluginZipValidator()
           def zip = new ZipFile(pluginFile)
-          def configFile = zip.getInputStream(zip.getEntry("plugin.xml"))
-          try {
-              validator.validateAndTransform(configFile)
-          }
-          finally {
-              zip.close()
-          }
+          validator.validateAndTransform(zip)
         </groovy>
         <echo>Plugin @{pluginFile} Validated Successfully</echo>
       </sequential>
