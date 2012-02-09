@@ -18,6 +18,7 @@ public class WMBHelper {
     def logProxy;
     Date startTime;
     def timeout;
+    boolean isDebugEnabled = false;
 
     public WMBHelper(Properties props) {
         if (props['username']?.trim()) {
@@ -31,6 +32,12 @@ public class WMBHelper {
         timeout = Long.valueOf(props['timeout']?.trim()?:60000);
 
         bcp = new MQBrokerConnectionParameters(host, port, queueManager);
+
+        if (props['debugFile']) {
+            isDebugEnabled = true;
+            BrokerProxy.enableAdministrationAPITracing(props['debugFile']);
+        }
+
         brokerProxy = BrokerProxy.getInstance(bcp);
         if (executionGroup != null && executionGroup.trim() != "") {
             executionGroupProxy = brokerProxy.getExecutionGroupByName(executionGroup);
@@ -260,6 +267,12 @@ public class WMBHelper {
                 println error;
             }
             throw new Exception("Error during deployment");
+        }
+    }
+
+    public void cleanUp() {
+        if (isDebugEnabled) {
+            BrokerProxy.disableAdministrationAPITracing();
         }
     }
 }

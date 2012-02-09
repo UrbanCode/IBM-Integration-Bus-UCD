@@ -18,6 +18,7 @@ try {
         println "Starting all message flows!"
         helper.startAllMsgFlows();
     }
+    helper.cleanUp();
 }
 catch (Exception e) {
     e.printStackTrace();

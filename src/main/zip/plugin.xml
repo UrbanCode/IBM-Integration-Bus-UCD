@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <plugin xmlns='http://www.urbancode.com/PluginXMLSchema_v1' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>
   <header>
-    <identifier id='com.urbancode.air.plugin.WMBCMP' version='4' name='WebSphere Message Broker - CMP' />
+    <identifier id='com.urbancode.air.plugin.WMBCMP' version='5' name='WebSphere Message Broker - CMP' />
     <description>Integration for WebSphere Message Broker to deploy Broker Archives and start and stop Message Flows unsing the CMP API.</description>
     <tag>Deploy/WebSphere Message Broker CMP</tag>
   </header>
@@ -22,6 +22,9 @@
       </property>
       <property name='queueManager' required='true'>
         <property-ui type='textBox' label='Queue Manager' description='The WebSphere MQ Queue Manager which the broker is using.' default-value='${p:resource/WebSphere Message Broker/port}'/>
+      </property>
+      <property name="debugFile">
+        <property-ui type='textBox' label='Trace File' description='The file to use for trace logging. If not set trace logging will be disabled.'/>
       </property>
       <property name='jarPath'>
         <property-ui type='textBox' label='Jar Path' description='The full path containing both ConfigManagerProxy.jar and com.ibm.mq.jar. e.g. C:\Program Files\IBM\MQSI\7.0\classes\ConfigManagerProxy.jar:C:\Program Files\IBM\WebSphere MQ\java\lib\com.ibm.mq.jar.' default-value='${p:resource/WebSphere Message Broker/jarPath}' />
@@ -63,6 +66,9 @@
       </property>
       <property name='queueManager' required='true'>
         <property-ui type='textBox' label='Queue Manager' description='The WebSphere MQ Queue Manager which the broker is using.' default-value='${p:resource/WebSphere Message Broker/port}'/>
+      </property>
+      <property name="debugFile">
+        <property-ui type='textBox' label='Trace File' description='The file to use for trace logging. If not set trace logging will be disabled.'/>
       </property>
       <property name='jarPath'>
         <property-ui type='textBox' label='Jar Path' description='The full path containing both ConfigManagerProxy.jar and com.ibm.mq.jar. e.g. C:\Program Files\IBM\MQSI\7.0\classes\ConfigManagerProxy.jar:C:\Program Files\IBM\WebSphere MQ\java\lib\com.ibm.mq.jar.' default-value='${p:resource/WebSphere Message Broker/jarPath}' />
@@ -122,6 +128,9 @@
       <property name='queueManager' required='true'>
         <property-ui type='textBox' label='Queue Manager' description='The WebSphere MQ Queue Manager which the broker is using.' default-value='${p:resource/WebSphere Message Broker/port}'/>
       </property>
+      <property name="debugFile">
+        <property-ui type='textBox' label='Trace File' description='The file to use for trace logging. If not set trace logging will be disabled.'/>
+      </property>
       <property name='jarPath'>
         <property-ui type='textBox' label='Jar Path' description='The full path containing both ConfigManagerProxy.jar and com.ibm.mq.jar. e.g. C:\Program Files\IBM\MQSI\7.0\classes\ConfigManagerProxy.jar:C:\Program Files\IBM\WebSphere MQ\java\lib\com.ibm.mq.jar.' default-value='${p:resource/WebSphere Message Broker/jarPath}' />
       </property>
@@ -173,6 +182,9 @@
       <property name='queueManager' required='true'>
         <property-ui type='textBox' label='Queue Manager' description='The WebSphere MQ Queue Manager which the broker is using.' default-value='${p:resource/WebSphere Message Broker/port}'/>
       </property>
+      <property name="debugFile">
+        <property-ui type='textBox' label='Trace File' description='The file to use for trace logging. If not set trace logging will be disabled.'/>
+      </property>
       <property name='jarPath'>
         <property-ui type='textBox' label='Jar Path' description='The full path containing both ConfigManagerProxy.jar and com.ibm.mq.jar. e.g. C:\Program Files\IBM\MQSI\7.0\classes\ConfigManagerProxy.jar:C:\Program Files\IBM\WebSphere MQ\java\lib\com.ibm.mq.jar.' default-value='${p:resource/WebSphere Message Broker/jarPath}' />
       </property>
@@ -214,6 +226,9 @@
       <property name='queueManager' required='true'>
         <property-ui type='textBox' label='Queue Manager' description='The WebSphere MQ Queue Manager which the broker is using.' default-value='${p:resource/WebSphere Message Broker/port}'/>
       </property>
+      <property name="debugFile">
+        <property-ui type='textBox' label='Trace File' description='The file to use for trace logging. If not set trace logging will be disabled.'/>
+      </property>
       <property name='jarPath'>
         <property-ui type='textBox' label='Jar Path' description='The full path containing both ConfigManagerProxy.jar and com.ibm.mq.jar. e.g. C:\Program Files\IBM\MQSI\7.0\classes\ConfigManagerProxy.jar:C:\Program Files\IBM\WebSphere MQ\java\lib\com.ibm.mq.jar.' default-value='${p:resource/WebSphere Message Broker/jarPath}' />
       </property>
@@ -254,6 +269,9 @@
       </property>
       <property name='queueManager' required='true'>
         <property-ui type='textBox' label='Queue Manager' description='The WebSphere MQ Queue Manager which the broker is using.' default-value='${p:resource/WebSphere Message Broker/port}'/>
+      </property>
+      <property name="debugFile">
+        <property-ui type='textBox' label='Trace File' description='The file to use for trace logging. If not set trace logging will be disabled.'/>
       </property>
       <property name='jarPath'>
         <property-ui type='textBox' label='Jar Path' description='The full path containing both ConfigManagerProxy.jar and com.ibm.mq.jar. e.g. C:\Program Files\IBM\MQSI\7.0\classes\ConfigManagerProxy.jar:C:\Program Files\IBM\WebSphere MQ\java\lib\com.ibm.mq.jar.' default-value='${p:resource/WebSphere Message Broker/jarPath}' />

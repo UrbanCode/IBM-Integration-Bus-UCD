@@ -13,6 +13,7 @@ try {
         helper.setBrokerProperty(name, value);
     }
     helper.deployBrokerConfig();
+    helper.cleanUp();
 }
 catch (Exception e) {
     e.printStackTrace();

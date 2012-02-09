@@ -13,6 +13,7 @@ try {
         helper.setExecutionGroupProperty(name, value);
     }
     helper.deployExecutionGroupConfig();
+    helper.cleanUp();
 }
 catch (Exception e) {
     e.printStackTrace();

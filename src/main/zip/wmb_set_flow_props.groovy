@@ -64,6 +64,7 @@ try {
             helper.deployMsgFlowConfig(msgFlow);
         }
     }
+    helper.cleanUp();
 }
 catch (Exception e) {
     e.printStackTrace();

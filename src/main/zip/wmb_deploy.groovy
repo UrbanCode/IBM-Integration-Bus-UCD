@@ -21,6 +21,8 @@ try {
         println "Starting all Msg Flows"
         helper.startAllMsgFlows();
     }
+
+    helper.cleanUp();
 }
 catch (Exception e) {
     e.printStackTrace();
