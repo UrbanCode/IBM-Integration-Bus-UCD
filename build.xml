@@ -14,63 +14,12 @@
     <property name="ahp.workflow.name" value="build workflow [${ahp.branch}]" />
     <property name="version" value="${ahp.project.name}_dev"/>
     <property name="plugin.file.name" value="${ahp.project.name}.zip" />
-
-    <!-- java compilation settings -->
-    <property name="debug" value="true"/>
-    <property name="debuglevel" value="lines,vars,source"/>
-    <property name="deprecation" value="false"/>
-    <property name="optimize" value="false"/>
-    <property name="source" value="1.5"/>
-    <property name="target" value="1.5"/>
-    <presetdef name="javac" description="Preset javac to use our custom attribs (memory only applies if fork='true' is supplied)">
-        <javac
-            encoding="utf-8"
-            debug="${debug}"
-            debuglevel="${debuglevel}"
-            deprecation="${deprecation}"
-            nowarn="true"
-            optimize="${optimize}"
-            source="${source}"
-            target="${target}"
-
-            includeantruntime="false"
-            memoryinitialsize="256m"
-            memorymaximumsize="512m"
-            />
-    </presetdef>
     
     <!-- =================================================== -->
-    <!-- PROJECT STRUCUTRE                                   -->
+    <!-- PROJECT STRUCTURE                                   -->
     <!-- =================================================== -->
     
-    <property name="dist.dir"          location="dist" />
-    <property name="dist.test.dir"          location="${dist.dir}/test" />
-    <property name="build.dir"         location="build" />
-    <property name="build.plugin.dir"  location="${build.dir}/plugin" />
-    <property name="build.plugin.file" location="${build.dir}/${plugin.file.name}" />
-    <property name="build.jar.dir"     location="${build.dir}/jar" />
     <property name="lib.dir"           location="lib" />
-    <property name="keys.dir"          location="${lib.dir}/keys"/>
-    <property name="src.dir"           location="src" />
-    <property name="src.wsdl.dir"      location="${src.dir}/main/wsdl" />
-    <property name="plugin.zip.dir"    location="${src.dir}/main/zip"/>
-    <property name="plugin.groovy.dir" location="${src.dir}/main/groovy"/>
-
-    <property name="lib.validate.dir" location="${lib.dir}/validate"/>
-    <property name="build.test.dir" location="${build.dir}/test"/>
-    <property name="build.test.data.dir" location="${build.test.dir}/data"/>
-    <property name="build.test.classes.dir" location="${build.test.dir}/classes"/>
-    <property name="src.test.java.dir" location="${src.dir}/test/java"/>
-    <property name="lib.test.dir" location="${lib.dir}/test"/>
-    <property name="lib.build.dir" location="${lib.dir}/build"/>
-    <property name="lib.build.classes.dir" location="${lib.build.dir}/classes"/>
-    <property name="reports.junit.data.dir" location="dist/test"/>
-    <property name="reports.junit.html.dir" location="dist/test"/>
-    <property name="build.checksum.dir" location="${build.dir}/checksum"/>
-
-    <mkdir dir="${dist.dir}"/>
-    <mkdir dir="${build.dir}"/>
-    <mkdir dir="${lib.dir}"/>
     
     <!-- =================================================== -->
     <!-- MACROS                                              -->
@@ -84,215 +33,29 @@
             <delete dir="@{dir}" includes="*/**" excludes="@{excludes}" includeemptydirs="true" defaultexcludes="false"/>
         </sequential>
     </macrodef>
-    
-    <macrodef name="wsdl2jar" description="Generate a jar file for the given wsdl file">
-        <attribute name="wsdl"/>
-        <attribute name="jarfile"/>
-        <sequential>
-            <mkdir dir="@{wsdl}-tmp"/>
-            
-            <axis-wsdl2java output="@{wsdl}-tmp"
-                    url="@{wsdl}"
-                    verbose="true"
-                    serverside="false"
-                    helpergen="true">
-            </axis-wsdl2java>
-            <javac srcdir="@{wsdl}-tmp">
-                <classpath><fileset dir="${lib.dir}" includes="axis*.jar"/></classpath>
-            </javac>
-            <jar basedir="@{wsdl}-tmp" jarfile="@{jarfile}" includes="**/*.class"/>
-            
-            <delete dir="@{wsdl}-tmp"/>
-        </sequential>
-    </macrodef>
-
-    <macrodef name="signPlugin">
-      <attribute name="pluginFile"/>
-      <!--<attribute name="checksumDir"/>-->
-      <sequential>
-        <echo>Signing Plugin @{pluginFile}...</echo>
-        <!--<local name="checksumDir"/>-->
-        <delete dir="${checksumDir}"/>
-        <tempfile property="checksumDir" prefix="checksum-" destdir="${build.checksum.dir}"/>
-        <mkdir dir="${checksumDir}"/>
-        <!-- SIGN PLUGIN -->
-        <groovy outputproperty="dev/null" description="Generate a file of the plugin resource digests"><arg file="@{pluginFile}"/><arg file="${checksumDir}"/><![CDATA[
-
-            import java.util.zip.*
-            import java.security.*
   
-            final def pluginFile = new File(args[0])
-            final def buildChecksumDir = new File(args[1])
-  
-            /**
-             * Read completely (and closes) the given input stream.  The data is used to compute a digest which is returned.
-             * @param stream the inpust stream to digest
-             * @return the digest
-             * @throws IOException if an exception occurs while reading the stream
-             */
-            String calculateDigest(InputStream stream) {
-                stream.withStream{ data ->
-                    final def digester = MessageDigest.getInstance("SHA-256")
-  
-                    byte[] buff = new byte[4*1027*1024]
-                    int len = 0
-                    while ((len = data.read(buff)) != -1) {
-                        digester.update(buff, 0, len)
-                    }
-                    return digester.digest().encodeBase64()
-                }
-            }
-  
-            def sigFile = new File(buildChecksumDir, "plugin.props")
-            def pluginZip = new ZipFile(pluginFile)
-            try {
-                def digests = [:]
-                def zipEntryList = Collections.list(pluginZip.entries())
-                for (zipEntry in zipEntryList) {
-                    if (zipEntry.name != 'plugin.sig') {
-                        digests[zipEntry.name] = calculateDigest(pluginZip.getInputStream(zipEntry))
-                    }
-                    println zipEntry.name
-                }
-                sigFile.text = digests.collect{k,v->"$k=$v"}.join('\n') // LicenseMaker does NOT use the official Properties file format
-            }
-            finally {
-                pluginZip.close()
-            }
-          ]]></groovy>
-        <java classname="com.urbancode.license.LicenseMaker" classpathref="classpath" outputproperty="dev/null" fork="true">
-          <arg value="-key"/>
-          <arg file="${src.licensing.dir}/private.key"/>
-          <arg value="-public"/>
-          <arg file="${src.licensing.dir}/public.key"/>
-          <arg value="-license"/>
-          <arg file="${checksumDir}/plugin.sig"/>
-          <arg value="-props"/>
-          <arg file="${checksumDir}/plugin.props"/>
-        </java>
-        <zip destfile="@{pluginFile}" update="true">
-          <zipfileset file="${checksumDir}/plugin.sig"/>
-        </zip>
-        <delete dir="${checksumDir}"/>
-        <!-- Validate the result (includes signature validation) -->
-        <groovy><classpath><path refid="classpath"/><path><fileset dir="${lib.validate.dir}" includes="*.jar"/></path></classpath><arg file="@{pluginFile}"/>
-          import com.urbancode.air.plugin_command.validation.*
-          import java.util.zip.*
-          final def pluginFile = new File(args[0])
-          def validator = new PluginZipValidator()
-          def zip = new ZipFile(pluginFile)
-          validator.validateAndTransform(zip)
-        </groovy>
-        <echo>Plugin @{pluginFile} Validated Successfully</echo>
-      </sequential>
-    </macrodef>
-
-  <!-- ==================================================================
-         PATHS 
-         ================================================================== -->
-    <path id="classpath">
-      <fileset dir="${lib.dir}">
-        <include name="**/*.jar"/>
-        <include name="**/*.zip"/>
-      </fileset>
-    </path>
-      
-    <path id="classpath.test">
-      <fileset dir="${lib.test.dir}">
-        <include name="*.jar"/>
-      </fileset>
-      <pathelement location="${build.main.classes.dir}"/>
-      <pathelement location="${build.test.classes.dir}"/>
-    </path>
     <!-- =================================================== -->
     <!-- TARGETS                                             -->
     <!-- =================================================== -->
 
-    <target name="taskdef" unless="taskdef.no" depends="resolve">
-      <path id="taskdefpath">
-        <fileset dir="${lib.dir}" includes="*.jar"/>
-        <fileset dir="${lib.dir}/build" includes="*.jar"/>
-      </path>
-        
-      <taskdef name="groovy"  classname="org.codehaus.groovy.ant.Groovy" classpathref="taskdefpath" />
-      <taskdef name="groovyc" classname="org.codehaus.groovy.ant.Groovyc" classpathref="taskdefpath" />
-
-      <taskdef resource="axis-tasks.properties" classpathref="taskdefpath"/>
-
-    </target>
-    
-<!--  this target can be used for soap plugins
-    <target name="gen-soap-libs">
-        <mkdir dir="${build.plugin.dir}"/>
-        <wsdl2jar wsdl="${src.wsdl.dir}/jira-3.6.5.wsdl"   jarfile="${build.plugin.dir}/jira-3.6.5.wsdl.jar"/>
-        <wsdl2jar wsdl="${src.wsdl.dir}/jira-3.11.wsdl"    jarfile="${build.plugin.dir}/jira-3.11.wsdl.jar"/>
-        <wsdl2jar wsdl="${src.wsdl.dir}/jira-4.3-rc1.wsdl" jarfile="${build.plugin.dir}/jira-4.3-rc1.wsdl.jar"/>
-    </target>
--->
-    
-    <!-- compile and jar java classes for plugin -->
-
-    <target name="dist-plugin" depends="taskdef"
-        description="Package the plugin">
-
-        <!-- create build.plugin.dir if not already done -->
-        <mkdir dir="${build.plugin.dir}"/>
-
-        <!-- validate that the groovy scripts compile -->
-        <mkdir dir="${build.dir}/tmp"/>
-<!--
-        <groovyc destdir="${build.dir}/tmp" srcdir="${plugin.groovy.dir}">
-            <classpath>
-              <path><fileset dir="${lib.dir}" includes="plugin/*.jar"/></path>
-              <path><fileset dir="${lib.dir}" includes="build/plugin/*.jar"/></path>
-              <pathelement location="${lib.build.classes.dir}"/>
-              <pathelement location="${lib.dir}/pluginutilscripts.jar"/>
-            </classpath>
-        </groovyc>
--->
-        <delete dir="${build.dir}/tmp"/> 
-
-        <!-- package the plugin -->
-        <zip destfile="${build.plugin.file}" update="false" whenempty="fail">
-          <zipfileset prefix=""         dir="${plugin.zip.dir}"/>
-          <zipfileset prefix=""         dir="${build.plugin.dir}"/>
-          <zipfileset prefix="classes/" dir="${plugin.groovy.dir}"/>
-          <zipfileset prefix="lib/"     dir="${lib.dir}">
-            <include name="*"/>
-            <exclude name="test"/>
-            <exclude name="validate"/>
-            <exclude name="build"/>
-          </zipfileset>
-          <zipfileset prefix="classes/" dir="${lib.build.classes.dir}" includes="**/*"/>
-        </zip>
-
-        <!-- sign and validate the plugin -->
-        <signPlugin pluginfile="${build.plugin.file}"/>
-        
-        <move file="${build.plugin.file}" todir="${dist.dir}"/>
+    <target name="dist" depends="resolve" description="Create distribution">
+        <ant antfile="plugin-build.xml" target="dist" inheritall="true"/>
     </target>
 
-    <target name="dist" depends="dist-plugin" description="Create distribution">
-    </target>
-
-    <target name="all" depends="dist,run-tests">
+    <target name="all" depends="resolve">
+      <ant antfile="plugin-build.xml" target="all" inheritall="true"/>
     </target>
 
     <target name="clean" description="Cleans build output">
-        <emptyDir dir="${build.dir}"/>
-        <emptyDir dir="${dist.dir}"/>
+      <emptyDir dir="${lib.dir}" excludes="ext/**"/>
+      <ant antfile="plugin-build.xml" target="clean" inheritall="true"/>
     </target>
 
     <target name="resolve" unless="resolve.no" description="Resolve all dependencies">
-        <emptyDir dir="${lib.dir}" excludes="ext/**"/>
+        <mkdir dir="${lib.dir}"/>
         <codestation:resolve server="anthill3.urbancode.com"
                 buildLife="${env.AH_BUILD_LIFE_ID}"
                 xmlFile="dependencies.xml"/>
-        <!--
-        <fail message="Files are present in ${lib.dir}/ext directory">
-            <condition><resourcecount refid="lib.ext.elements" count="0" when="gt"/></condition>
-        </fail>
-        -->
     </target>
 
     <target name="publish" unless="publish.no"
@@ -302,62 +65,16 @@
                            publishall="true"/>
     </target>
 
-  <!-- ###################################################### -->
-  <!-- Testing tagets                                         -->
-  <!-- ###################################################### -->
+    <!-- =================================================== -->
+    <!-- TEST TARGETS                                        -->
+    <!-- =================================================== -->
 
-    <target name="run-tests" depends="compile-tests,dist" unless="tests.no">
-      <mkdir dir="${build.test.data.dir}"/>
-      <mkdir dir="${dist.test.dir}"/>
-      <junit printsummary="on" haltonfailure="no" haltonerror="no" fork="yes" showoutput="false" failureproperty="tests.failed">
-        <classpath refid="classpath.test"/>
-        <formatter type="brief" usefile="false"/>
-        <formatter type="xml"/>
-        <batchtest todir="${build.test.data.dir}">
-          <fileset dir="${build.test.classes.dir}">
-            <include name="**/*Test*"/>
-          </fileset>
-        </batchtest>
-      </junit>
-      <junitreport todir="${dist.test.dir}">
-        <fileset dir="${build.test.data.dir}">
-          <include name="TEST-*.xml"/>
-        </fileset>
-        <report format="frames" todir="${dist.test.dir}"/>
-      </junitreport>
-  
-      <fail message="JUnit Tests Failed" if="tests.failed" />
+    <target name="run-tests" depends="resolve" unless="tests.no">
+      <ant antfile="plugin-build.xml" target="run-tests" inheritall="true"/>
     </target>
 
-    <target name="run-single-test" depends="compile-tests" unless="tests.no">
-      <delete dir="${build.test.data.dir}"/>
-      <delete dir="${dist.test.dir}"/>
-      <mkdir dir="${build.test.data.dir}"/>
-      <mkdir dir="${dist.test.dir}"/>
+    <target name="run-single-test" depends="resolve" unless="tests.no">
+      <ant antfile="plugin-build.xml" target="run-single-test" inheritall="true"/>
+    </target>
 
-      <junit printsummary="withOutAndErr" haltonfailure="false" fork="yes" showoutput="yes" failureproperty="tests.failed">
-        <classpath refid="classpath.test"/>
-        <formatter type="brief" usefile="false"/>
-        <formatter type="xml"/>
-        <batchtest todir="${build.test.data.dir}">
-          <fileset dir="${build.test.classes.dir}">
-            <include name="**/${run.test}.class"/>
-          </fileset>
-        </batchtest>
-      </junit>
-  
-      <junitreport todir="${dist.test.dir}">
-        <fileset dir="${build.test.data.dir}">
-          <include name="TEST-*.xml"/>
-        </fileset>
-      <report format="frames" todir="${dist.test.dir}"/>
-      </junitreport>
-    </target>
-  
-    <target name="compile-tests" depends="dist">
-    <mkdir dir="${build.test.classes.dir}"/>
-      <javac srcdir="${src.test.java.dir}" destdir="${build.test.classes.dir}">
-        <classpath refid="classpath.test"/>
-      </javac>
-    </target>
 </project>
