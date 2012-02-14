@@ -8,6 +8,23 @@
     <!-- RUNTIME                                                      -->
     <!-- ############################################################ -->
 
+    <!-- the plugin-build.xml -->
+    <dependency>
+      <ah-project name="air-plugin-build-script" workflow="build workflow [master]"/>
+      <criteria status="success"/>
+      <delivery artifact-set="Dist">
+        <directory>.</directory>
+      </delivery>
+    </dependency>
+
+    <dependency>
+      <ah-project name="air-plugin-ant-tasks" workflow="build workflow [master]"/>
+      <criteria status="success"/>
+      <delivery artifact-set="Dist">
+        <directory>lib/build</directory>
+      </delivery>
+    </dependency>
+
     <!-- gives us the CommandHelper and XTrust groovies -->
     <dependency>
       <ah-project name="plugins" workflow="build workflow [master]"/>
