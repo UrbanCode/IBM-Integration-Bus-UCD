@@ -49,6 +49,15 @@
       </delivery>
     </dependency>
 
+    <!-- This is required for us to build but licensing does not allow us to bundle it in the plugin -->
+    <dependency>
+      <cs-project name="WMQ CMP API "/>
+      <criteria stamp="7.0"/>
+      <delivery artifact-set="Default">
+        <directory>lib/build</directory>
+      </delivery>
+    </dependency>
+
     <!-- ############################################################ -->
     <!-- TEST                                                         -->
     <!-- ############################################################ -->
