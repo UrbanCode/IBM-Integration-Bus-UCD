@@ -11,9 +11,6 @@
     <!-- AHP settings -->
     <property name="ahp.branch" value="air" />
     <property name="ahp.project.name" value="${ant.project.name}" />
-    <property name="ahp.workflow.name" value="build workflow [${ahp.branch}]" />
-    <property name="version" value="${ahp.project.name}_dev"/>
-    <property name="plugin.file.name" value="${ahp.project.name}.zip" />
     
     <!-- =================================================== -->
     <!-- PROJECT STRUCTURE                                   -->
