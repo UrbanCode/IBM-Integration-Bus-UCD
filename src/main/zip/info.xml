@@ -104,6 +104,9 @@
     <meta name="keywords" content="" />  
   </meta-html>
     
+  <!-- Do not change the release-version, the build process injects it. -->
+  <release-version></release-version>
+    
     
   <release-notes>
     <!--
@@ -120,9 +123,17 @@
       Support for was added for version 10.0 for software X
       or 
       releaseNotes/release1.html (where release1.html contains html formatted version information)
+      
+      To add a new release note add this with a description in it of the changes:
+      <release-note plugin-version="LATEST">....</release-note>
+      
+      Our automated release process will replace 'LATEST' with the released version.
+      
+      If this already exists in the file, then the described changes have not been released yet and
+      you should just append to the existing 'LATEST' tag.
       -->
       
-	  <release-note plugin-version="4">
+	  <release-note plugin-version="LATEST">
 Installing this plugin will give you access to the steps listed below. These steps can be used when designing a component process.
 	  </release-note>
     
