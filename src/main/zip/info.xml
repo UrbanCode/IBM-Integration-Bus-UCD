@@ -125,7 +125,7 @@
       releaseNotes/release1.html (where release1.html contains html formatted version information)
       
       To add a new release note add this with a description in it of the changes:
-      <release-note plugin-version="LATEST">....</release-note>
+      <release-note plugin-version="[5]">....</release-note>
       
       Our automated release process will replace 'LATEST' with the released version.
       
@@ -133,7 +133,7 @@
       you should just append to the existing 'LATEST' tag.
       -->
       
-	  <release-note plugin-version="LATEST">
+	  <release-note plugin-version="[5]">
 Installing this plugin will give you access to the steps listed below. These steps can be used when designing a component process.
 	  </release-note>
     
