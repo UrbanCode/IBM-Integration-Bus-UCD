@@ -14,7 +14,6 @@ public class WMBHelper {
     BrokerProxy brokerProxy;
     ExecutionGroupProxy executionGroupProxy;
     boolean isIncremental = true;
-    def configManProxy;
     def logProxy;
     Date startTime;
     def timeout;
@@ -48,9 +47,7 @@ public class WMBHelper {
         }
         
         startTime = new Date(System.currentTimeMillis());
-        MQConfigManagerConnectionParameters connectionParams =  new MQConfigManagerConnectionParameters(host, port, queueManager);
-        configManProxy = ConfigManagerProxy.getInstance(connectionParams);
-        logProxy = configManProxy.getLog();
+        logProxy = brokerProxy.getLog();
     }
    
     public void stopAllMsgFlows() {
