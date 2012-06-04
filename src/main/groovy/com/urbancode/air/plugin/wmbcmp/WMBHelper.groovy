@@ -3,6 +3,10 @@ package com.urbancode.air.plugin.wmbcmp;
 import com.ibm.broker.config.proxy.*;
 import java.util.Properties;
 import java.util.Enumeration;
+import java.util.Set;
+import java.util.HashSet;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
 
 public class WMBHelper {
 
@@ -214,6 +218,54 @@ public class WMBHelper {
         checkDeployResult();
     }
     
+	public void deleteMessageFlowsMatchingRegex(String regex) {
+		if (brokerProxy == null || bcp == null) {
+            throw new IllegalStateException("Broker Proxy is uninitilized!");
+        }
+        
+        if (executionGroupProxy == null) {
+            throw new IllegalStateException("Execution group proxy is null! Make sure it is configured correctly!");
+        }
+		
+		// Compile the regex 
+		Pattern p = Pattern.compile(regex);
+		
+		// List the flow names from the current BAR file
+		Set<DeployedObject> flowsToDelete = new HashSet<DeployedObject>();
+		
+        // Get an unfiltered enumeration of all message flows in this execution group
+		Enumeration<MessageFlowProxy> allFlowsInThisEG = executionGroupProxy.getMessageFlows(null);
+		while (allFlowsInThisEG.hasMoreElements()) {
+			MessageFlowProxy thisFlow = allFlowsInThisEG.nextElement();
+			String barFileUsed = thisFlow.getBARFileName();
+			if ( p.matcher(barFileUsed).matches()) {
+				System.out.println("Adding flow for deletion: "+thisFlow.getFullName());
+				flowsToDelete.add((Object)thisFlow);
+			}
+		}
+		
+		if ( flowsToDelete.size() > 0) {
+			println "Deleting "+flowsToDelete.size()+" orphaned message flows";
+			println "Using timeout ${timeout}";
+			
+			// convert to DeployedObject [] to match deleteDeployedObjects method spec
+			DeployedObject [] flowsToDeleteArray = new DeployedObject[flowsToDelete.size()];
+			Enumeration<DeployedObject> flowsEnum = flowsToDelete.enumeration();
+
+			int count = 0;
+			while (flowsEnum.hasMoreElements()) {
+				flowsToDeleteArray[count++] = flowsEnum.next();
+			}			
+
+			executionGroupProxy.deleteDeployedObjects (flowsToDeleteArray , timeout);
+			checkDeployResult();
+		} 
+        else {
+			System.out.println("No orphaned flows to delete");
+		}
+
+	}
+	
     public void deployMsgFlowConfig(String msgFlowName) {
         if (brokerProxy == null || bcp == null) {
             throw new IllegalStateException("Broker Proxy is uninitilized!");
@@ -272,4 +324,6 @@ public class WMBHelper {
             BrokerProxy.disableAdministrationAPITracing();
         }
     }
+	
+	
 }

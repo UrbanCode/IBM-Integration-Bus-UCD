@@ -136,6 +136,9 @@
 	  <release-note plugin-version="5">
 Installing this plugin will give you access to the steps listed below. These steps can be used when designing a component process.
 	  </release-note>
+	  <release-note plugin-version="5">
+Add a new step for deleting Message Flows that match a regular expression. Useful for deploying to shared Execution Groups.
+	  </release-note>
     
   </release-notes>
 </pluginInfo>
