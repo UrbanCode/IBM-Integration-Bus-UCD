@@ -250,11 +250,11 @@ public class WMBHelper {
 			
 			// convert to DeployedObject [] to match deleteDeployedObjects method spec
 			DeployedObject [] flowsToDeleteArray = new DeployedObject[flowsToDelete.size()];
-			Enumeration<DeployedObject> flowsEnum = flowsToDelete.enumeration();
+            Iterator<DeployedObject> flowsIterator = flowsToDelete.iterator();
 
 			int count = 0;
-			while (flowsEnum.hasMoreElements()) {
-				flowsToDeleteArray[count++] = flowsEnum.next();
+            while (flowsIterator.hasNext()) {
+                flowsToDeleteArray[count++] = flowsIterator.next(); 
 			}			
 
 			executionGroupProxy.deleteDeployedObjects (flowsToDeleteArray , timeout);
