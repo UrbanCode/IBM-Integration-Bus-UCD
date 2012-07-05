@@ -234,18 +234,22 @@ public class WMBHelper {
 		Set<DeployedObject> flowsToDelete = new HashSet<DeployedObject>();
 		
         // Get an unfiltered enumeration of all message flows in this execution group
-		Enumeration<MessageFlowProxy> allFlowsInThisEG = executionGroupProxy.getMessageFlows(null);
-		while (allFlowsInThisEG.hasMoreElements()) {
-			MessageFlowProxy thisFlow = allFlowsInThisEG.nextElement();
-			String barFileUsed = thisFlow.getBARFileName();
-			if ( p.matcher(barFileUsed).matches()) {
-				System.out.println("Adding flow for deletion: "+thisFlow.getFullName());
-				flowsToDelete.add((Object)thisFlow);
+        Enumeration<DeployedObject> allDeployedObjectsInThisEG = executionGroupProxy.getDeployedObjects();
+        while (allDeployedObjectsInThisEG.hasMoreElements()) {
+            DeployedObject thisDeployedObject = allDeployedObjectsInThisEG.nextElement();
+            String barFileUsed = thisDeployedObject.getBARFileName();
+            System.out.print(thisDeployedObject.getFullName() +" was deployed with BAR file ");
+            System.out.print(barFileUsed);
+            if ( (barFileUsed != null) && (p.matcher(barFileUsed).matches()) ){
+                System.out.println(". Regex matched, adding flow for deletion...");
+                flowsToDelete.add((Object)thisDeployedObject);
+            } else {
+                System.out.println(". Regex not matched, skipping...");
 			}
 		}
 		
 		if ( flowsToDelete.size() > 0) {
-			println "Deleting "+flowsToDelete.size()+" orphaned message flows";
+            println "Deleting "+flowsToDelete.size()+" deployed objects that are orphaned";
 			println "Using timeout ${timeout}";
 			
 			// convert to DeployedObject [] to match deleteDeployedObjects method spec
