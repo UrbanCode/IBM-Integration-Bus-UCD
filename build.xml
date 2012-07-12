@@ -50,8 +50,7 @@
 
     <target name="resolve" unless="resolve.no" description="Resolve all dependencies">
         <mkdir dir="${lib.dir}"/>
-        <codestation:resolve server="anthill3.urbancode.com"
-                buildLife="${env.AH_BUILD_LIFE_ID}"
+        <codestation:resolve buildLife="${env.AH_BUILD_LIFE_ID}"
                 xmlFile="dependencies.xml"/>
     </target>
 
