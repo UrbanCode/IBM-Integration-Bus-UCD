@@ -2,7 +2,7 @@
 <plugin xmlns='http://www.urbancode.com/PluginXMLSchema_v1' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>
   <header>
     <identifier id='com.urbancode.air.plugin.WMBCMP' version='6' name='WebSphere Message Broker - CMP' />
-    <description>Integration for WebSphere Message Broker to deploy Broker Archives and start and stop Message Flows unsing the CMP API.</description>
+    <description>Integration for WebSphere Message Broker to deploy Broker Archives and start and stop Message Flows using the CMP API.</description>
     <tag>Middleware/Enterprise Service Bus/WebSphere Message Broker</tag>
   </header>
   <step-type name='WMB Set Broker Properties'>
