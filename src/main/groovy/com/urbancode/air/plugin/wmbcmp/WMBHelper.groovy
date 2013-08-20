@@ -12,6 +12,7 @@ public class WMBHelper {
 
     String host;
     int port;
+    String channel;
     String queueManager;
     String executionGroup;
     BrokerConnectionParameters bcp;
@@ -30,11 +31,16 @@ public class WMBHelper {
         }
         host = props['brokerHost'];
         port = Integer.valueOf(props['port']);
+        channel = props['channel']?.trim();
         queueManager = props['queueManager'];
         executionGroup = props['executionGroup'];
         timeout = Long.valueOf(props['timeout']?.trim()?:60000);
 
         bcp = new MQBrokerConnectionParameters(host, port, queueManager);
+
+        if (channel) {
+           bcp.setAdvancedConnectionParameters(channel, null,null, -1, -1, null);
+        }
 
         if (props['debugFile']) {
             isDebugEnabled = true;

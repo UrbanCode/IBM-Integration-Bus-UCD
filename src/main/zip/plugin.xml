@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <plugin xmlns='http://www.urbancode.com/PluginXMLSchema_v1' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>
   <header>
-    <identifier id='com.urbancode.air.plugin.WMBCMP' version='6' name='WebSphere Message Broker - CMP' />
+    <identifier id='com.urbancode.air.plugin.WMBCMP' version='7' name='WebSphere Message Broker - CMP' />
     <description>Integration for WebSphere Message Broker to deploy Broker Archives and start and stop Message Flows using the CMP API.</description>
     <tag>Middleware/Enterprise Service Bus/WebSphere Message Broker</tag>
   </header>
@@ -16,6 +16,9 @@
       </property>
       <property name='port' required='true'>
         <property-ui type='textBox' label='Port' description='The port of the target server.' default-value='${p:resource/WebSphere Message Broker/port}'/>
+      </property>
+      <property name='channel'>
+        <property-ui type='textBox' label='Channel' description='The name of the channel to use.' default-value='${p:resource/WebSphere Message Broker/channel}'/>
       </property>
       <property name="username">
         <property-ui type='textBox' label='Username' description='The username to use for authenticating against WMQ in the case that the user the step runs as is not correct'/>
@@ -60,6 +63,9 @@
       </property>
       <property name='port' required='true'>
         <property-ui type='textBox' label='Port' description='The port of the target server.' default-value='${p:resource/WebSphere Message Broker/port}'/>
+      </property>
+      <property name='channel'>
+        <property-ui type='textBox' label='Channel' description='The name of the channel to use.' default-value='${p:resource/WebSphere Message Broker/channel}'/>
       </property>
       <property name="username">
         <property-ui type='textBox' label='Username' description='The username to use for authenticating against WMQ in the case that the user the step runs as is not correct'/>
@@ -122,6 +128,9 @@
       <property name='port' required='true'>
         <property-ui type='textBox' label='Port' description='The port of the target server.' default-value='${p:resource/WebSphere Message Broker/port}'/>
       </property>
+      <property name='channel'>
+        <property-ui type='textBox' label='Channel' description='The name of the channel to use.' default-value='${p:resource/WebSphere Message Broker/channel}'/>
+      </property>
       <property name="username">
         <property-ui type='textBox' label='Username' description='The username to use for authenticating against WMQ in the case that the user the step runs as is not correct'/>
       </property>
@@ -170,6 +179,9 @@
       </property>
       <property name='port' required='true'>
         <property-ui type='textBox' label='Port' description='The port of the target server.' default-value='${p:resource/WebSphere Message Broker/port}'/>
+      </property>
+      <property name='channel'>
+        <property-ui type='textBox' label='Channel' description='The name of the channel to use.' default-value='${p:resource/WebSphere Message Broker/channel}'/>
       </property>
       <property name="username">
         <property-ui type='textBox' label='Username' description='The username to use for authenticating against WMQ in the case that the user the step runs as is not correct'/>
@@ -227,6 +239,9 @@
       <property name='port' required='true'>
         <property-ui type='textBox' label='Port' description='The port of the target server.' default-value='${p:resource/WebSphere Message Broker/port}'/>
       </property>
+      <property name='channel'>
+        <property-ui type='textBox' label='Channel' description='The name of the channel to use.' default-value='${p:resource/WebSphere Message Broker/channel}'/>
+      </property>
       <property name="username">
         <property-ui type='textBox' label='Username' description='The username to use for authenticating against WMQ in the case that the user the step runs as is not correct'/>
       </property>
@@ -271,6 +286,9 @@
       <property name='port' required='true'>
         <property-ui type='textBox' label='Port' description='The port of the target server.' default-value='${p:resource/WebSphere Message Broker/port}'/>
       </property>
+      <property name='channel'>
+        <property-ui type='textBox' label='Channel' description='The name of the channel to use.' default-value='${p:resource/WebSphere Message Broker/channel}'/>
+      </property>
       <property name="username">
         <property-ui type='textBox' label='Username' description='The username to use for authenticating against WMQ in the case that the user the step runs as is not correct'/>
       </property>
@@ -314,6 +332,9 @@
       </property>
       <property name='port' required='true'>
         <property-ui type='textBox' label='Port' description='The port of the target server.' default-value='${p:resource/WebSphere Message Broker/port}'/>
+      </property>
+      <property name='channel'>
+        <property-ui type='textBox' label='Channel' description='The name of the channel to use.' default-value='${p:resource/WebSphere Message Broker/channel}'/>
       </property>
       <property name="username">
         <property-ui type='textBox' label='Username' description='The username to use for authenticating against WMQ in the case that the user the step runs as is not correct'/>

@@ -82,24 +82,48 @@
 
   </migrate>
             
-<migrate to-version="6">
+<migrate to-version="7">
 
     <migrate-command name="WMB Set Broker Properties">
+      <migrate-properties>
+        <migrate-property name="channel" default=""/>
+      </migrate-properties>
     </migrate-command>
 
     <migrate-command name="WMB Set Execution Group Properties">
+      <migrate-properties>
+        <migrate-property name="channel" default=""/>
+      </migrate-properties>
     </migrate-command>
 
     <migrate-command name="WMB Set Message Flows Property">
+      <migrate-properties>
+        <migrate-property name="channel" default=""/>
+      </migrate-properties>
     </migrate-command>
 
     <migrate-command name="WMB Deploy">
+      <migrate-properties>
+        <migrate-property name="channel" default=""/>
+      </migrate-properties>
     </migrate-command>
 
     <migrate-command name="WMB Start Message Flows">
+      <migrate-properties>
+        <migrate-property name="channel" default=""/>
+      </migrate-properties>
     </migrate-command>
 
     <migrate-command name="WMB Stop Message Flows">
+      <migrate-properties>
+        <migrate-property name="channel" default=""/>
+      </migrate-properties>
+    </migrate-command>
+
+    <migrate-command name="WMB Delete Flows Using RegEx">
+      <migrate-properties>
+        <migrate-property name="channel" default=""/>
+      </migrate-properties>
     </migrate-command>
 	
   </migrate>
