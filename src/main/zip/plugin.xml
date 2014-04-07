@@ -12,7 +12,7 @@
 -->
 <plugin xmlns='http://www.urbancode.com/PluginXMLSchema_v1' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>
   <header>
-    <identifier id='com.urbancode.air.plugin.WMBCMP' version='7' name='WebSphere Message Broker - CMP' />
+    <identifier id='com.urbancode.air.plugin.WMBCMP' version='8' name='WebSphere Message Broker - CMP' />
     <description>Integration for WebSphere Message Broker to deploy Broker Archives and start and stop Message Flows using the CMP API.</description>
     <tag>Middleware/Enterprise Service Bus/WebSphere Message Broker</tag>
   </header>
@@ -60,6 +60,52 @@
       <arg file='${PLUGIN_OUTPUT_PROPS}' />
     </command>
   </step-type>
+
+  <step-type name='Create Execution Group'>
+    <description>Create an execution group only if it doesn't exist.</description>
+    <properties>
+      <property name='executionGroup' required='true'>
+        <property-ui type='textBox' label='Execution Group' description='Name of the Execution Group to create if it does not exist.' />
+      </property>
+      <property name='brokerHost' required='true'>
+        <property-ui type='textBox' label="IP" description="The ip address of the target server." default-value='${p:resource/WebSphere Message Broker/ip}'/>
+      </property>
+      <property name='port' required='true'>
+        <property-ui type='textBox' label='Port' description='The port of the target server.' default-value='${p:resource/WebSphere Message Broker/port}'/>
+      </property>
+      <property name='channel'>
+        <property-ui type='textBox' label='Channel' description='The name of the channel to use.' default-value='${p:resource/WebSphere Message Broker/channel}'/>
+      </property>
+      <property name="username">
+        <property-ui type='textBox' label='Username' description='The username to use for authenticating against WMQ in the case that the user the step runs as is not correct'/>
+      </property>
+      <property name='queueManager' required='true'>
+        <property-ui type='textBox' label='Queue Manager' description='The WebSphere MQ Queue Manager which the broker is using.' default-value='${p:resource/WebSphere Message Broker/port}'/>
+      </property>
+      <property name="debugFile">
+        <property-ui type='textBox' label='Trace File' description='The file to use for trace logging. If not set trace logging will be disabled.'/>
+      </property>
+      <property name='jarPath'>
+        <property-ui type='textBox' label='Jar Path' description='The full path containing both ConfigManagerProxy.jar and com.ibm.mq.jar. e.g. C:\Program Files\IBM\MQSI\7.0\classes\ConfigManagerProxy.jar:C:\Program Files\IBM\WebSphere MQ\java\lib\com.ibm.mq.jar.' default-value='${p:resource/WebSphere Message Broker/jarPath}' />
+      </property>
+    </properties>
+    <post-processing><![CDATA[ 
+ if (properties.get("exitCode") != 0) {
+ properties.put(new java.lang.String("Status"), new java.lang.String("Failure"));
+ }
+ else { 
+ properties.put("Status", "Success"); 
+ }
+ ]]></post-processing>
+    <command program='${GROOVY_HOME}/bin/groovy'>
+      <arg value='-cp' />
+      <arg path='classes:${jarPath}' />
+      <arg file='wmb_create_exe_group_if_needed.groovy' />
+      <arg file='${PLUGIN_INPUT_PROPS}' />
+      <arg file='${PLUGIN_OUTPUT_PROPS}' />
+    </command>
+  </step-type>
+
   <step-type name='WMB Set Execution Group Properties'>
     <description>Set runtime properties for an execution group.</description>
     <properties>

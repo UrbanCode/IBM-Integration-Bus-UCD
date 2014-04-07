@@ -138,6 +138,30 @@
     </migrate-command>
 	
   </migrate>
+<migrate to-version="8">
+
+    <migrate-command name="WMB Set Broker Properties">
+    </migrate-command>
+
+    <migrate-command name="WMB Set Execution Group Properties">
+    </migrate-command>
+
+    <migrate-command name="WMB Set Message Flows Property">
+    </migrate-command>
+
+    <migrate-command name="WMB Deploy">
+    </migrate-command>
+
+    <migrate-command name="WMB Start Message Flows">
+    </migrate-command>
+
+    <migrate-command name="WMB Stop Message Flows">
+    </migrate-command>
+
+    <migrate-command name="WMB Delete Flows Using RegEx">
+    </migrate-command>
+	
+  </migrate>
   
   
 </plugin-upgrade>

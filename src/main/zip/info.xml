@@ -150,6 +150,12 @@ Installing this plugin will give you access to the steps listed below. These ste
 	  <release-note plugin-version="6">
 Add a new step for deleting Message Flows that match a regular expression. Useful for deploying to shared Execution Groups.
 	  </release-note>
+	  <release-note plugin-version="7">
+Add channel property for all steps.
+	  </release-note>
+	  <release-note plugin-version="8">
+Add step for creating execution group if it doesn't exist.
+	  </release-note>
     
   </release-notes>
 </pluginInfo>

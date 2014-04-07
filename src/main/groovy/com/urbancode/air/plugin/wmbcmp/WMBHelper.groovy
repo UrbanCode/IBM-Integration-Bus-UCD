@@ -83,6 +83,29 @@ public class WMBHelper {
         executionGroupProxy.stopMessageFlows();
     }
 
+    public void createExecutionGroupIfNeccessary() {
+        if (brokerProxy == null || bcp == null) {
+            throw new IllegalStateException("Broker Proxy is uninitilized!");
+        }
+
+        String name = executionGroup;
+        if (executionGroup == null || executionGroup.trim() == "") {
+            throw new IllegalStateException("Tryed creating execution group with blank or null name.");
+        }
+
+        if (executionGroupProxy == null) {
+            System.out.println("Execution group ${executionGroup} does not exist. Attempting to create...");
+            executionGroupProxy = brokerProxy.createExecutionGroup(executionGroup);
+            if (executionGroupProxy == null) {
+                throw new RuntimeException("Could not create execution group with name ${name}");
+            }
+            System.out.println("Execution group ${executionGroup} created.");
+        }
+        else {
+            System.out.println("Execution group ${executionGroup} exists. Skipping create...");
+        }
+    }
+
     public void startAllMsgFlows() {
         if (brokerProxy == null || bcp == null) {
             throw new IllegalStateException("Broker Proxy is uninitilized!");
