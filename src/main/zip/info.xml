@@ -156,6 +156,9 @@ Add channel property for all steps.
 	  <release-note plugin-version="8">
 Add step for creating execution group if it doesn't exist.
 	  </release-note>
+	  <release-note plugin-version="9">
+Add step for creating and deleting configurable services.
+	  </release-note>
     
   </release-notes>
 </pluginInfo>

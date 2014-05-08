@@ -106,6 +106,64 @@ public class WMBHelper {
         }
     }
 
+    public void deleteConfigurableService(String servType, String servName) {
+        if (brokerProxy == null || bcp == null) {
+            throw new IllegalStateException("Broker Proxy is uninitilized!");
+        }
+        System.out.println("Deleting Configurable Service '${servName}' of type '${servType}'");
+        brokerProxy.deleteConfigurableService(servType, servName);
+    }
+
+    public void createOrUpdateConfigurableService(String servType, String servName, Map<String,String> propsMap) {
+        if (brokerProxy == null || bcp == null) {
+            throw new IllegalStateException("Broker Proxy is uninitilized!");
+        }
+
+        ConfigurableService service = brokerProxy.getConfigurableService(null, servName);
+        if (service == null) {
+            createConfigurableService(servType, servName, propsMap);
+        }
+        else {
+            if (servType !=  service.getType()) {
+                StringBuilder errMsg = new StringBuilder();
+                errMsg.append("Cannot change the type of a configuable service.");
+                errMsg.append("\n\tService Name : ").append(servName);
+                errMsg.append("\n\tRequested Type : ").append(servType);
+                errMsg.append("\n\tCurrent Type : ").append(service.getType());
+                throw new IllegalStateException(errMsg)
+            }
+            updateConfigurableService(service, propsMap, servName, servType);
+        }
+    }
+
+    private void createConfigurableService(String servType, String servName, Map<String,String>propsMap) {
+        println "Creating configurable service '${servName}' of type '${servType}'"
+        brokerProxy.createConfigurableService(servType, servName);
+        deployBrokerConfig();
+        ConfigurableService service = brokerProxy.getConfigurableService(null, servName);
+        propsMap.each { key, value ->
+            println "Setting property '${key}' = '${value}'";
+            service.setProperty(key, value);
+        }
+    }
+
+    private void updateConfigurableService(ConfigurableService service, Map<String,String>propsMap, String servName, String servType) {
+        println "Updating configurable service '${servName}' of type '${servType}'"
+        def keysToDelete = [];
+        service.getProperties().each { key,value ->
+            if (!propsMap.containsKey(key)) {
+                println "Deleting property no longer in property map : '${key}' : '${value}'"
+                keysToDelete << key;
+            }
+        }
+
+        service.deleteProperties(keysToDelete as String[]);
+        propsMap.each { key, value ->
+            println "Setting property '${key}' = '${value}'";
+            service.setProperty(key, value);
+        }
+    }
+
     public void startAllMsgFlows() {
         if (brokerProxy == null || bcp == null) {
             throw new IllegalStateException("Broker Proxy is uninitilized!");
