@@ -162,5 +162,8 @@ Add step for creating and deleting configurable services.
       <release-note plugin-version="10">
 Fixes APAR PI35342 - compatibility defect with IBM Urbancode Deploy version 6.1.0.4 and later.
       </release-note>
+      <release-note plugin-version="11">
+Update plugin to allow for IIB v10 Support.
+      </release-note>
   </release-notes>
 </pluginInfo>

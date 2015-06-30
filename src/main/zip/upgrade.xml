@@ -187,7 +187,82 @@
 
     <migrate-command name="Create Execution Group">
     </migrate-command>
-	
+
+  </migrate>
+  <migrate to-version="10">
+  </migrate>
+
+  <migrate to-version="11">
+    <migrate-command name="WMB Set Broker Properties">
+       <migrate-properties>
+         <migrate-property name="useSSL" default="false" />
+         <migrate-property name="integrationNodeName" default="${p:resource/WebSphere Message Broker/integrationNodeName}" />
+         <migrate-property name="password" />
+       </migrate-properties>
+    </migrate-command>
+    <migrate-command name="Create Execution Group">
+       <migrate-properties>
+         <migrate-property name="useSSL" default="false" />
+         <migrate-property name="integrationNodeName" default="${p:resource/WebSphere Message Broker/integrationNodeName}" />
+         <migrate-property name="password" />
+       </migrate-properties>
+    </migrate-command>
+    <migrate-command name="WMB Set Execution Group Properties">
+       <migrate-properties>
+         <migrate-property name="useSSL" default="false" />
+         <migrate-property name="integrationNodeName" default="${p:resource/WebSphere Message Broker/integrationNodeName}" />
+         <migrate-property name="password" />
+       </migrate-properties>
+    </migrate-command>
+    <migrate-command name="WMB Set Message Flows Property">
+       <migrate-properties>
+         <migrate-property name="useSSL" default="false" />
+         <migrate-property name="integrationNodeName" default="${p:resource/WebSphere Message Broker/integrationNodeName}" />
+         <migrate-property name="password" />
+       </migrate-properties>
+    </migrate-command>
+    <migrate-command name="WMB Delete Flows Using RegEx">
+       <migrate-properties>
+         <migrate-property name="useSSL" default="false" />
+         <migrate-property name="integrationNodeName" default="${p:resource/WebSphere Message Broker/integrationNodeName}" />
+         <migrate-property name="password" />
+       </migrate-properties>
+    </migrate-command>
+    <migrate-command name="Create Or Update Configurable Service">
+       <migrate-properties>
+         <migrate-property name="useSSL" default="false" />
+         <migrate-property name="integrationNodeName" default="${p:resource/WebSphere Message Broker/integrationNodeName}" />
+         <migrate-property name="password" />
+       </migrate-properties>
+    </migrate-command>
+    <migrate-command name="Delete Configurable Service">
+       <migrate-properties>
+         <migrate-property name="useSSL" default="false" />
+         <migrate-property name="integrationNodeName" default="${p:resource/WebSphere Message Broker/integrationNodeName}" />
+         <migrate-property name="password" />
+       </migrate-properties>
+    </migrate-command>
+    <migrate-command name="WMB Deploy">
+       <migrate-properties>
+         <migrate-property name="useSSL" default="false" />
+         <migrate-property name="integrationNodeName" default="${p:resource/WebSphere Message Broker/integrationNodeName}" />
+         <migrate-property name="password" />
+       </migrate-properties>
+    </migrate-command>
+    <migrate-command name="WMB Start Message Flows">
+       <migrate-properties>
+         <migrate-property name="useSSL" default="false" />
+         <migrate-property name="integrationNodeName" default="${p:resource/WebSphere Message Broker/integrationNodeName}" />
+         <migrate-property name="password" />
+       </migrate-properties>
+    </migrate-command>
+    <migrate-command name="WMB Stop Message Flows">
+       <migrate-properties>
+         <migrate-property name="useSSL" default="false" />
+         <migrate-property name="integrationNodeName" default="${p:resource/WebSphere Message Broker/integrationNodeName}" />
+         <migrate-property name="password" />
+       </migrate-properties>
+    </migrate-command>
   </migrate>
   
   
