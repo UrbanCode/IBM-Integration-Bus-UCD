@@ -15,7 +15,7 @@ import com.urbancode.air.plugin.*;
 File workDir = new File('.').canonicalFile
 
 Properties props = PropertiesHelper.getProperties(new File(args[0]))
-WMBHelper helper = new WMBHelper(props)
+def helper = new IIBHelper(props)
 
 def dirOffset = props['dirOffset']
 def propertyFile = props['propertyFile']
@@ -75,9 +75,11 @@ try {
             helper.deployMsgFlowConfig(msgFlow);
         }
     }
-    helper.cleanUp();
 }
 catch (Exception e) {
     e.printStackTrace();
     throw e;
+}
+finally {
+    helper.cleanUp();
 }

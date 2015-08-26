@@ -19,7 +19,7 @@ def servName = props['servName'];
 def servType = props['servType'];
 def propsString = props['props'];
 def properties = new HashMap<String,String>();
-propsString.split('\n').each { 
+propsString.split('\n').each {
     def parts = it.split('->', 2);
     if (parts.length != 2) {
         System.out.println("Found a property definition that doesn't match the expected syntax. Skipping.");
@@ -30,13 +30,16 @@ propsString.split('\n').each {
     }
 }
 
-WMBHelper helper = new WMBHelper(props);
-try { 
+def helper = new IIBHelper(props)
+
+try {
     helper.createOrUpdateConfigurableService(servType,servName,  properties);
     helper.deployBrokerConfig();
-    helper.cleanUp();
 }
 catch (Exception e) {
     e.printStackTrace();
     throw e;
+}
+finally {
+    helper.cleanUp();
 }

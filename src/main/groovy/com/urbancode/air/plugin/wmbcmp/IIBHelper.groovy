@@ -1,59 +1,71 @@
 /*
-* Licensed Materials - Property of IBM Corp.
-* IBM UrbanCode Build
-* IBM UrbanCode Deploy
-* IBM UrbanCode Release
-* IBM AnthillPro
-* (c) Copyright IBM Corporation 2002, 2013. All Rights Reserved.
-*
-* U.S. Government Users Restricted Rights - Use, duplication or disclosure restricted by
-* GSA ADP Schedule Contract with IBM Corp.
-*/
+ * Licensed Materials - Property of IBM Corp.
+ * IBM UrbanCode Build
+ * IBM UrbanCode Deploy
+ * IBM UrbanCode Release
+ * IBM AnthillPro
+ * (c) Copyright IBM Corporation 2015. All Rights Reserved.
+ *
+ * U.S. Government Users Restricted Rights - Use, duplication or disclosure restricted by
+ * GSA ADP Schedule Contract with IBM Corp.
+ */
 package com.urbancode.air.plugin.wmbcmp
 
 import com.ibm.broker.config.proxy.*
-import java.util.Properties
-import java.util.Enumeration
-import java.util.Set
-import java.util.HashSet
 import java.util.regex.Pattern
-import java.util.regex.Matcher
 
-public class WMBHelper {
-
-    String host
-    int port
-    String integrationNodeName
-    boolean useSSL
-    String user
-    String password
-    String executionGroup
+class IIBHelper {
+    def logProxy
+    def timeout
+    def executionGroup
+    def version
+    Date startTime
+    boolean isDebugEnabled
+    boolean isIncremental
     BrokerConnectionParameters bcp
     BrokerProxy brokerProxy
     ExecutionGroupProxy executionGroupProxy
-    boolean isIncremental = true
-    def logProxy
-    Date startTime
-    def timeout
-    boolean isDebugEnabled = false
 
-    public WMBHelper(Properties props) {
-        host = props['brokerHost']
-        port = Integer.valueOf(props['port'])
-        integrationNodeName = props['integrationNodeName']
-        useSSL = props['useSSL']
-        user = props['username']
-        password = props['password']
-        executionGroup = props['executionGroup']
+
+    public IIBHelper(Properties props) {
+        def host = props['brokerHost']
+        def port
+        def integrationNodeName = props['integrationNodeName']
+        version = props['version']
         timeout = Long.valueOf(props['timeout']?.trim()?:60000)
+        executionGroup = props['executionGroup']
 
-        //For local connections
-        if(integrationNodeName && integrationNodeName.length() > 0) {
+        if (props['port']) {
+            port = Integer.valueOf(props['port'])
+        }
+
+        //local broker connection, regardless of iib version
+        if (integrationNodeName) {
             bcp = new LocalBrokerConnectionParameters(integrationNodeName)
         }
-        //For remote connections
+        //remote broker connection, depends on iib version
         else {
-            bcp = new IntegrationNodeConnectionParameters(host, port, user, password, useSSL)
+            //wmb 7, 8, and iib9 remote connection settings
+            if (version.toInteger() < 10) {
+                //user determined by queue manager
+                def channel = props['channel']
+                def queueManager = props['queueManager']
+
+                bcp = new MQBrokerConnectionParameters(host, port, queueManager)
+
+                if (channel) {
+                    bcp.setAdvancedConnectionParameters(channel, null,null, -1, -1, null)
+                }
+            }
+            //iib10 remote connection settings
+            else {
+                //iib10 allows explicit identification of user for remote connection
+                def user = props['user']
+                def password = props['password']
+                def useSSL = props['useSSL']
+
+                bcp = new IntegrationNodeConnectionParameters(host, port, user, password, useSSL)
+            }
         }
 
         if (props['debugFile']) {
@@ -62,7 +74,8 @@ public class WMBHelper {
         }
 
         brokerProxy = BrokerProxy.getInstance(bcp)
-        if (executionGroup != null && executionGroup.trim() != "") {
+
+        if (executionGroup) {
             executionGroupProxy = brokerProxy.getExecutionGroupByName(executionGroup)
         }
 
@@ -410,10 +423,6 @@ public class WMBHelper {
                 errors << logEntry.getTimestamp().toString() + " - " + logEntry.getMessage() +
                         " : " + logEntry.getDetail()
             }
-/*
-            errors << logEntry.getTimestamp().toString() + " - " + logEntry.getMessage() +
-                    " : " + logEntry.getDetail()
-*/
         }
         if (!errors.isEmpty()) {
             println "Errors during deployment"
@@ -428,7 +437,9 @@ public class WMBHelper {
         if (isDebugEnabled) {
             BrokerProxy.disableAdministrationAPITracing()
         }
+
+        if (brokerProxy) {
+            brokerProxy.disconnect()
+        }
     }
-
-
 }

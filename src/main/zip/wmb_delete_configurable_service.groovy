@@ -18,13 +18,16 @@ Properties props = PropertiesHelper.getProperties(new File(args[0]));
 def servName = props['servName'];
 def servType = props['servType'];
 
-WMBHelper helper = new WMBHelper(props);
-try { 
+def helper = new IIBHelper(props)
+
+try {
     helper.deleteConfigurableService(servType,servName);
     helper.deployBrokerConfig();
-    helper.cleanUp();
 }
 catch (Exception e) {
     e.printStackTrace();
     throw e;
+}
+finally {
+    helper.cleanUp();
 }

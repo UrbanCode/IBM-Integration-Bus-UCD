@@ -15,8 +15,9 @@ import com.urbancode.air.plugin.*;
 File workDir = new File('.');
 
 Properties props = PropertiesHelper.getProperties(new File(args[0]));
-WMBHelper helper = new WMBHelper(props);
-def messageFlows = props['messageFlows']
+def messageFlows = props['messageFlows'];
+
+def helper = new IIBHelper(props)
 
 try {
     if (messageFlows) {
@@ -29,9 +30,11 @@ try {
         println "Stopping all message flows!"
         helper.stopAllMsgFlows();
     }
-    helper.cleanUp();
 }
 catch (Exception e) {
     e.printStackTrace();
     throw e;
+}
+finally {
+    helper.cleanUp();
 }

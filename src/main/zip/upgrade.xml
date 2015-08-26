@@ -92,7 +92,7 @@
     </migrate-command>
 
   </migrate>
-            
+
 <migrate to-version="7">
 
     <migrate-command name="WMB Set Broker Properties">
@@ -136,7 +136,7 @@
         <migrate-property name="channel" default=""/>
       </migrate-properties>
     </migrate-command>
-	
+
   </migrate>
 <migrate to-version="8">
 
@@ -160,7 +160,7 @@
 
     <migrate-command name="WMB Delete Flows Using RegEx">
     </migrate-command>
-	
+
   </migrate>
 <migrate to-version="9">
 
@@ -196,74 +196,112 @@
     <migrate-command name="WMB Set Broker Properties">
        <migrate-properties>
          <migrate-property name="useSSL" default="false" />
-         <migrate-property name="integrationNodeName" default="${p:resource/WebSphere Message Broker/integrationNodeName}" />
+         <migrate-property name="integrationNodeName" default="${p?:resource/WebSphere Message Broker/integrationNodeName}" />
          <migrate-property name="password" />
+         <migrate-property name="channel" default-value="${p?:resource/WebSphere Message Broker/channel}"/>
+         <migrate-property name="queueManager" default-value="${p?:resource/WebSphere Message Broker/port}"/>
+         <migrate-property name="version" default-value="${p?:resource/WebSphere Message Broker/version}"/>
        </migrate-properties>
     </migrate-command>
     <migrate-command name="Create Execution Group">
        <migrate-properties>
          <migrate-property name="useSSL" default="false" />
-         <migrate-property name="integrationNodeName" default="${p:resource/WebSphere Message Broker/integrationNodeName}" />
+         <migrate-property name="integrationNodeName" default="${p?:resource/WebSphere Message Broker/integrationNodeName}" />
          <migrate-property name="password" />
+         <migrate-property name="channel" default-value="${p?:resource/WebSphere Message Broker/channel}"/>
+         <migrate-property name="queueManager" default-value="${p?:resource/WebSphere Message Broker/port}"/>
+         <migrate-property name="version" default-value="${p?:resource/WebSphere Message Broker/version}"/>
        </migrate-properties>
     </migrate-command>
     <migrate-command name="WMB Set Execution Group Properties">
        <migrate-properties>
          <migrate-property name="useSSL" default="false" />
-         <migrate-property name="integrationNodeName" default="${p:resource/WebSphere Message Broker/integrationNodeName}" />
+         <migrate-property name="integrationNodeName" default="${p?:resource/WebSphere Message Broker/integrationNodeName}" />
          <migrate-property name="password" />
+         <migrate-property name="channel" default-value="${p?:resource/WebSphere Message Broker/channel}"/>
+         <migrate-property name="queueManager" default-value="${p?:resource/WebSphere Message Broker/port}"/>
+         <migrate-property name="version" default-value="${p?:resource/WebSphere Message Broker/version}"/>
        </migrate-properties>
     </migrate-command>
     <migrate-command name="WMB Set Message Flows Property">
        <migrate-properties>
          <migrate-property name="useSSL" default="false" />
-         <migrate-property name="integrationNodeName" default="${p:resource/WebSphere Message Broker/integrationNodeName}" />
+         <migrate-property name="integrationNodeName" default="${p?:resource/WebSphere Message Broker/integrationNodeName}" />
          <migrate-property name="password" />
+         <migrate-property name="channel" default-value="${p?:resource/WebSphere Message Broker/channel}"/>
+         <migrate-property name="queueManager" default-value="${p?:resource/WebSphere Message Broker/port}"/>
+         <migrate-property name="version" default-value="${p?:resource/WebSphere Message Broker/version}"/>
        </migrate-properties>
     </migrate-command>
     <migrate-command name="WMB Delete Flows Using RegEx">
        <migrate-properties>
          <migrate-property name="useSSL" default="false" />
-         <migrate-property name="integrationNodeName" default="${p:resource/WebSphere Message Broker/integrationNodeName}" />
+         <migrate-property name="integrationNodeName" default="${p?:resource/WebSphere Message Broker/integrationNodeName}" />
          <migrate-property name="password" />
+         <migrate-property name="channel" default-value="${p?:resource/WebSphere Message Broker/channel}"/>
+         <migrate-property name="queueManager" default-value="${p?:resource/WebSphere Message Broker/port}"/>
+         <migrate-property name="version" default-value="${p?:resource/WebSphere Message Broker/version}"/>
        </migrate-properties>
     </migrate-command>
     <migrate-command name="Create Or Update Configurable Service">
        <migrate-properties>
          <migrate-property name="useSSL" default="false" />
-         <migrate-property name="integrationNodeName" default="${p:resource/WebSphere Message Broker/integrationNodeName}" />
+         <migrate-property name="integrationNodeName" default="${p?:resource/WebSphere Message Broker/integrationNodeName}" />
          <migrate-property name="password" />
+         <migrate-property name="channel" default-value="${p?:resource/WebSphere Message Broker/channel}"/>
+         <migrate-property name="queueManager" default-value="${p?:resource/WebSphere Message Broker/port}"/>
+         <migrate-property name="version" default-value="${p?:resource/WebSphere Message Broker/version}"/>
        </migrate-properties>
     </migrate-command>
     <migrate-command name="Delete Configurable Service">
        <migrate-properties>
          <migrate-property name="useSSL" default="false" />
-         <migrate-property name="integrationNodeName" default="${p:resource/WebSphere Message Broker/integrationNodeName}" />
+         <migrate-property name="integrationNodeName" default="${p?:resource/WebSphere Message Broker/integrationNodeName}" />
          <migrate-property name="password" />
+         <migrate-property name="channel" default-value="${p?:resource/WebSphere Message Broker/channel}"/>
+         <migrate-property name="queueManager" default-value="${p?:resource/WebSphere Message Broker/port}"/>
+         <migrate-property name="version" default-value="${p?:resource/WebSphere Message Broker/version}"/>
        </migrate-properties>
     </migrate-command>
     <migrate-command name="WMB Deploy">
        <migrate-properties>
          <migrate-property name="useSSL" default="false" />
-         <migrate-property name="integrationNodeName" default="${p:resource/WebSphere Message Broker/integrationNodeName}" />
+         <migrate-property name="integrationNodeName" default="${p?:resource/WebSphere Message Broker/integrationNodeName}" />
          <migrate-property name="password" />
+         <migrate-property name="channel" default-value="${p?:resource/WebSphere Message Broker/channel}"/>
+         <migrate-property name="queueManager" default-value="${p?:resource/WebSphere Message Broker/port}"/>
+         <migrate-property name="version" default-value="${p?:resource/WebSphere Message Broker/version}"/>
        </migrate-properties>
     </migrate-command>
     <migrate-command name="WMB Start Message Flows">
        <migrate-properties>
          <migrate-property name="useSSL" default="false" />
-         <migrate-property name="integrationNodeName" default="${p:resource/WebSphere Message Broker/integrationNodeName}" />
+         <migrate-property name="integrationNodeName" default="${p?:resource/WebSphere Message Broker/integrationNodeName}" />
          <migrate-property name="password" />
+         <migrate-property name="channel" default-value="${p:resource/WebSphere Message Broker/channel}"/>
+         <migrate-property name="queueManager" default-value="${p?:resource/WebSphere Message Broker/port}"/>
+         <migrate-property name="version" default-value="${p?:resource/WebSphere Message Broker/version}"/>
        </migrate-properties>
     </migrate-command>
     <migrate-command name="WMB Stop Message Flows">
        <migrate-properties>
          <migrate-property name="useSSL" default="false" />
-         <migrate-property name="integrationNodeName" default="${p:resource/WebSphere Message Broker/integrationNodeName}" />
+         <migrate-property name="integrationNodeName" default="${p?:resource/WebSphere Message Broker/integrationNodeName}" />
          <migrate-property name="password" />
+         <migrate-property name="channel" default-value="${p?:resource/WebSphere Message Broker/channel}"/>
+         <migrate-property name="queueManager" default-value="${p?:resource/WebSphere Message Broker/port}"/>
+         <migrate-property name="version" default-value="${p?:resource/WebSphere Message Broker/version}"/>
+       </migrate-properties>
+    </migrate-command>
+        <migrate-command name="WMB Override Bar Properties">
+       <migrate-properties>
+         <migrate-property name="version" default-value="${p?:resource/WebSphere Message Broker/version}"/>
+         <migrate-property name="includes"/>
+         <migrate-property name="excludes"/>
+         <migrate-property name="properties"/>
+         <migrate-property name="jarPath"/>
+         <migrate-property name="onFail" default-value="fastFail"/>
        </migrate-properties>
     </migrate-command>
   </migrate>
-  
-  
 </plugin-upgrade>
