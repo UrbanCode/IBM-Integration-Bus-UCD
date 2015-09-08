@@ -12,6 +12,8 @@
 package com.urbancode.air.plugin.wmbcmp
 
 import com.ibm.broker.config.proxy.*
+import com.urbancode.air.plugin.wmbcmp.IIB9BrokerConnection
+import com.urbancode.air.plugin.wmbcmp.IIB10BrokerConnection
 import java.util.regex.Pattern
 
 class IIBHelper {
@@ -19,6 +21,7 @@ class IIBHelper {
     def timeout
     def executionGroup
     def version
+    def brokerConnection
     Date startTime
     boolean isDebugEnabled
     boolean isIncremental
@@ -43,29 +46,28 @@ class IIBHelper {
         if (integrationNodeName) {
             bcp = new LocalBrokerConnectionParameters(integrationNodeName)
         }
-        //remote broker connection, depends on iib version
-        else {
-            //wmb 7, 8, and iib9 remote connection settings
-            if (version.toInteger() < 10) {
+        //iib9 remote broker connection
+        else if (version.toInteger() < 10) {
                 //user determined by queue manager
                 def channel = props['channel']
                 def queueManager = props['queueManager']
+                brokerConnection = new IIB9BrokerConnection(host, port, queueManager)
 
-                bcp = new MQBrokerConnectionParameters(host, port, queueManager)
+                bcp = brokerConnection.connection
 
                 if (channel) {
                     bcp.setAdvancedConnectionParameters(channel, null,null, -1, -1, null)
                 }
-            }
-            //iib10 remote connection settings
-            else {
-                //iib10 allows explicit identification of user for remote connection
-                def user = props['user']
-                def password = props['password']
-                def useSSL = props['useSSL']
+        }
+        //iib10 remote connection settings
+        else {
+            //iib10 allows explicit identification of user for remote connection
+            def user = props['user']
+            def password = props['password']
+            def useSSL = Boolean.valueOf(props['useSSL'])
+            brokerConnection = new IIB10BrokerConnection(host, port, user, password, useSSL)
 
-                bcp = new IntegrationNodeConnectionParameters(host, port, user, password, useSSL)
-            }
+            bcp = brokerConnection.connection
         }
 
         if (props['debugFile']) {
@@ -73,7 +75,7 @@ class IIBHelper {
             BrokerProxy.enableAdministrationAPITracing(props['debugFile'])
         }
 
-        brokerProxy = BrokerProxy.getInstance(bcp)
+        brokerProxy = brokerConnection.proxy
 
         if (executionGroup) {
             executionGroupProxy = brokerProxy.getExecutionGroupByName(executionGroup)
@@ -106,7 +108,7 @@ class IIBHelper {
 
         String name = executionGroup
         if (executionGroup == null || executionGroup.trim() == "") {
-            throw new IllegalStateException("Tryed creating execution group with blank or null name.")
+            throw new IllegalStateException("Tried creating execution group with blank or null name.")
         }
 
         if (executionGroupProxy == null) {

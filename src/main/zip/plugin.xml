@@ -593,8 +593,8 @@
       <property name='jarPath' required='true'>
         <property-ui type='textBox'
                      label='Jar Path'
-                     description="The full path containing the specific jars required for your version of IBM Integration Bus. Version 10 requires the IntegrationAPI.jar (e.g. C:\Program Files\IBM\MQSI\7.0\classes\IntegrationAPI.jar).
-                                  IIB Versions below 10 require both ConfigManagerProxy.jar and com.ibm.mq.jar (e.g C:\ProgramFiles\IBM\WebSphere MQ\java\lib\ConfigManagerProxy.jar:C:\Program Files\IBM\WebSphere MQ\java\lib\com.ibm.mq.jar)"
+                     description="The full path containing the specific jars required for your version of IBM Integration Bus. The jar files required for version 9 are com.ibm.mq.jar, com.ibm.jmqi.jar, ConfigManagerProxy.jar, and ibmjsseprovider2.jar 
+                     (e.g C:\ProgramFiles\IBM\WebSphere MQ\java\lib\ConfigManagerProxy.jar:C:\Program Files\IBM\WebSphere MQ\java\lib\com.ibm.mq.jar:C:\Program Files\IBM\WebSphere MQ\java\lib\com.ibm.mq.JMQI.jar:c:\ProgramFiles\ibm\MQSI\9.0.0.1\JRE17\LIB\ibmjsseprovider2.jar)"
                      default-value='${p:resource/WebSphere Message Broker/jarPath}' />
       </property>
     </properties>
