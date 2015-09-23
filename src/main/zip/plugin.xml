@@ -12,7 +12,7 @@
 -->
 <plugin xmlns='http://www.urbancode.com/PluginXMLSchema_v1' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>
   <header>
-    <identifier id='com.urbancode.air.plugin.WMBCMP' version='11' name='WebSphere Message Broker - CMP' />
+    <identifier id='com.urbancode.air.plugin.WMBCMP' version='12' name='WebSphere Message Broker - CMP' />
     <description>Integration for WebSphere Message Broker to deploy Broker Archives and start and stop Message Flows using the CMP API.
       This plugin is compatible with both version 9 and 10 of IBM Integration Bus, and is also compatible with versions 7 and 8 of WebSphere Message Broker.</description>
     <tag>Middleware/Enterprise Service Bus/WebSphere Message Broker</tag>
@@ -593,7 +593,7 @@
       <property name='jarPath' required='true'>
         <property-ui type='textBox'
                      label='Jar Path'
-                     description="The full path containing the specific jars required for your version of IBM Integration Bus. The jar files required for version 9 are com.ibm.mq.jar, com.ibm.jmqi.jar, ConfigManagerProxy.jar, and ibmjsseprovider2.jar 
+                     description="The full path containing the specific jars required for your version of IBM Integration Bus. The jar files required for version 9 are com.ibm.mq.jar, com.ibm.jmqi.jar, ConfigManagerProxy.jar, and ibmjsseprovider2.jar
                      (e.g C:\ProgramFiles\IBM\WebSphere MQ\java\lib\ConfigManagerProxy.jar:C:\Program Files\IBM\WebSphere MQ\java\lib\com.ibm.mq.jar:C:\Program Files\IBM\WebSphere MQ\java\lib\com.ibm.mq.JMQI.jar:c:\ProgramFiles\ibm\MQSI\9.0.0.1\JRE17\LIB\ibmjsseprovider2.jar)"
                      default-value='${p:resource/WebSphere Message Broker/jarPath}' />
       </property>

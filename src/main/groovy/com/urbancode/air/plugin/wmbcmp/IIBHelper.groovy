@@ -37,6 +37,7 @@ class IIBHelper {
         version = props['version']
         timeout = Long.valueOf(props['timeout']?.trim()?:60000)
         executionGroup = props['executionGroup']
+        isIncremental = !Boolean.valueOf(props['fullDeploy'])
 
         if (props['port']) {
             port = Integer.valueOf(props['port'])
@@ -52,7 +53,6 @@ class IIBHelper {
                 def channel = props['channel']
                 def queueManager = props['queueManager']
                 brokerConnection = new IIB9BrokerConnection(host, port, queueManager)
-
                 bcp = brokerConnection.connection
 
                 if (channel) {
@@ -79,10 +79,6 @@ class IIBHelper {
 
         if (executionGroup) {
             executionGroupProxy = brokerProxy.getExecutionGroupByName(executionGroup)
-        }
-
-        if (Boolean.valueOf(props['fullDeploy'])) {
-            isIncremental = false
         }
 
         startTime = new Date(System.currentTimeMillis())

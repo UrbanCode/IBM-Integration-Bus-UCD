@@ -167,5 +167,8 @@ Update plugin to allow for IIB v10 Support.
 Add step for overriding local bar files.
 Provide backwards compatibility between versions 7 through 10 of IIB.
       </release-note>
+      <release-note plugin-version="12">
+Fixed issue with incremental deployment always being false
+      </release-note>
   </release-notes>
 </pluginInfo>
