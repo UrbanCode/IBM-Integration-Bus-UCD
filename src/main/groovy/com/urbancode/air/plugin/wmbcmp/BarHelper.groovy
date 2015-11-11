@@ -95,7 +95,6 @@ class BarHelper {
                     println("Property file used for override: ${propFile.absolutePath}")
                 }
 
-
                 BarFile barFile = BarFile.loadBarFile(bar.absolutePath)
                 //application and library name left null, so all applications and libraries in the file will be affected
                 //recursion true, recursing through any nested applications/libraries
@@ -104,6 +103,13 @@ class BarHelper {
 
                 //print properties on bar file that are being successfully overridden
                 DeploymentDescriptor descriptor = barFile.getDeploymentDescriptor()
+
+                //the deployment descriptor file doesn't exist or cannot be accessed within the bar file
+                if (!descriptor) {
+                    println("Cannot access deployment descriptor file (broker.xml) for bar file: ${bar.absolutePath}")
+                    throw new RuntimeException("Missing deployment descriptor on bar file: ${bar.absolutePath}")
+                }
+
                 def overrides = descriptor.getOverriddenPropertyIdentifiers()
                 println("Currently overridden properties on bar file (${bar.absolutePath}):")
                 overrides.each {
@@ -113,7 +119,7 @@ class BarHelper {
             catch(Exception ex) {
                 println("Exception thrown when applying property overrides on file : ${bar.absolutePath}.")
                 ex.printStackTrace()
-                System.exit(1)
+                throw ex
             }
         }
 

@@ -170,5 +170,8 @@ Provide backwards compatibility between versions 7 through 10 of IIB.
       <release-note plugin-version="12">
 Fixed issue with incremental deployment always being false
       </release-note>
+     <release-note plugin-version="13">
+Fixed override bar file throwing null pointer, and IIB10 broker connection parameters
+      </release-note>
   </release-notes>
 </pluginInfo>

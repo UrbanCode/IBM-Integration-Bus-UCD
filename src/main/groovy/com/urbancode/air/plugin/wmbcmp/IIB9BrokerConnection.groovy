@@ -14,8 +14,9 @@ class IIB9BrokerConnection {
         catch(Exception ex) {
             println("com.ibm.broker.config.proxy.MQBrokerConnectionParameters class not found")
             println(ex.printStackTrace())
-            System.exit(0)
+            System.exit(1)
         }
+
         connection = connectionClass.newInstance(host, port, queueManager)
         proxy = BrokerProxy.getInstance(connection)
     }
