@@ -1,6 +1,7 @@
 package com.urbancode.air.plugin.wmbcmp
 
 import com.ibm.broker.config.proxy.BrokerProxy
+import com.ibm.broker.config.proxy.ConfigManagerProxyLoggedException
 
 class IIB10BrokerConnection {
     def connection
@@ -17,13 +18,20 @@ class IIB10BrokerConnection {
             System.exit(1)
         }
 
-        if (user) {
+        if (user && password || useSSL) {
             connection = connectionClass.newInstance(host, port, user, password, useSSL)
         }
         else {
             connection = connectionClass.newInstance(host, port)
         }
 
-        proxy = BrokerProxy.getInstance(connection)
+        try {
+            proxy = BrokerProxy.getInstance(connection)
+        }
+        catch(ConfigManagerProxyLoggedException ex) {
+            println("Could not establish a connection with the broker host: ${host} using port: ${port}")
+            println(ex.getMessage())
+            System.exit(1)
+        }
     }
 }

@@ -173,5 +173,9 @@ Fixed issue with incremental deployment always being false
      <release-note plugin-version="13">
 Fixed override bar file throwing null pointer, and IIB10 broker connection parameters
       </release-note>
+      <release-note plugin-version="14">
+Fixes APAR PI55441 could not establish remote connection in IBM integration Bus step 'Create Execution Group'
+Fixes APAR PI52693 Null pointer exception when using the Override Bar Properties step
+      </release-note>
   </release-notes>
 </pluginInfo>

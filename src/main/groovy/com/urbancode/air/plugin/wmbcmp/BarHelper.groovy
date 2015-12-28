@@ -101,19 +101,22 @@ class BarHelper {
                 barFile.applyOverrides(propMap, null, null, true)
                 barFile.save()
 
+                println("Bar property overrides successful.")
+
                 //print properties on bar file that are being successfully overridden
                 DeploymentDescriptor descriptor = barFile.getDeploymentDescriptor()
 
                 //the deployment descriptor file doesn't exist or cannot be accessed within the bar file
                 if (!descriptor) {
-                    println("Cannot access deployment descriptor file (broker.xml) for bar file: ${bar.absolutePath}")
-                    throw new RuntimeException("Missing deployment descriptor on bar file: ${bar.absolutePath}")
+                    println("Warning: Cannot access deployment descriptor file (broker.xml) for bar file: ${bar.absolutePath}")
+                    println("Unable to output contents of the deployment descriptor.")
                 }
-
-                def overrides = descriptor.getOverriddenPropertyIdentifiers()
-                println("Currently overridden properties on bar file (${bar.absolutePath}):")
-                overrides.each {
-                    println(it)
+                else {
+                    def overrides = descriptor.getOverriddenPropertyIdentifiers()
+                    println("Currently overridden properties on bar file (${bar.absolutePath}):")
+                    overrides.each {
+                        println(it)
+                    }
                 }
             }
             catch(Exception ex) {

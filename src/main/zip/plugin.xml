@@ -12,7 +12,7 @@
 -->
 <plugin xmlns='http://www.urbancode.com/PluginXMLSchema_v1' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>
   <header>
-    <identifier id='com.urbancode.air.plugin.WMBCMP' version='13' name='WebSphere Message Broker - CMP' />
+    <identifier id='com.urbancode.air.plugin.WMBCMP' version='14' name='WebSphere Message Broker - CMP' />
     <description>Integration for WebSphere Message Broker to deploy Broker Archives and start and stop Message Flows using the CMP API.
       This plugin is compatible with both version 9 and 10 of IBM Integration Bus, and is also compatible with versions 7 and 8 of WebSphere Message Broker.</description>
     <tag>Middleware/Enterprise Service Bus/WebSphere Message Broker</tag>

@@ -46,6 +46,7 @@ class IIBHelper {
         //local broker connection, regardless of iib version
         if (integrationNodeName) {
             bcp = new LocalBrokerConnectionParameters(integrationNodeName)
+            brokerProxy = BrokerProxy.getInstance(bcp)
         }
         //iib9 remote broker connection
         else if (version.toInteger() < 10) {
@@ -62,7 +63,7 @@ class IIBHelper {
         //iib10 remote connection settings
         else {
             //iib10 allows explicit identification of user for remote connection
-            def user = props['user']
+            def user = props['username']
             def password = props['password']
             def useSSL = Boolean.valueOf(props['useSSL'])
             brokerConnection = new IIB10BrokerConnection(host, port, user, password, useSSL)
@@ -75,7 +76,10 @@ class IIBHelper {
             BrokerProxy.enableAdministrationAPITracing(props['debugFile'])
         }
 
-        brokerProxy = brokerConnection.proxy
+        // if the connection is not local
+        if (!brokerProxy) {
+            brokerProxy = brokerConnection.proxy
+        }
 
         if (executionGroup) {
             executionGroupProxy = brokerProxy.getExecutionGroupByName(executionGroup)
@@ -217,7 +221,9 @@ class IIBHelper {
             else if (dr.getCompletionCode() == CompletionCodeType.submitted) {
                 code = "submitted"
             }
-            throw new Exception("Failed deploying bar File ${fileName} with completion code : " + code)
+            def completionCode = dr.getCompletionCode()
+            throw new Exception("Failed deploying bar File ${fileName} with completion code : " +
+                (completionCode ? completionCode.toString() : code))
         }
 
         checkDeployResult(dr)
