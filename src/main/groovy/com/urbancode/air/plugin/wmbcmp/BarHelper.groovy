@@ -4,7 +4,7 @@
  * IBM UrbanCode Deploy
  * IBM UrbanCode Release
  * IBM AnthillPro
- * (c) Copyright IBM Corporation 2015. All Rights Reserved.
+ * (c) Copyright IBM Corporation 2002, 2016. All Rights Reserved.
  *
  * U.S. Government Users Restricted Rights - Use, duplication or disclosure restricted by
  * GSA ADP Schedule Contract with IBM Corp.
@@ -60,11 +60,16 @@ class BarHelper {
 
         //split each line into key/value pairs separated by =
         for (line in unparsedProps.split ('\n')) {
-            String[] entries = line.split ('=')
-            String name = entries[0].trim()
-            String value = entries[1].trim()
-            propMap.put(name, value)
-            propCount++
+            if (line.contains('=')) {
+                String[] entries = line.split ('=')
+                String name = entries[0].trim()
+                String value = entries[1].trim()
+                propMap.put(name, value)
+                propCount++
+            }
+            else if (line) {
+                throw new Exception("${line} is not a valid property definition. Property definitions must include '=' as a delimiter.")
+            }
         }
     }
 

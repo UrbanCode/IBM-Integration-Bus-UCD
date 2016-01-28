@@ -5,19 +5,19 @@
 - IBM UrbanCode Deploy
 - IBM UrbanCode Release
 - IBM AnthillPro
-- (c) Copyright IBM Corporation 2002, 2013. All Rights Reserved.
+- (c) Copyright IBM Corporation 2002, 2016. All Rights Reserved.
 -
 - U.S. Government Users Restricted Rights - Use, duplication or disclosure restricted by
 - GSA ADP Schedule Contract with IBM Corp.
 -->
 <plugin xmlns='http://www.urbancode.com/PluginXMLSchema_v1' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>
   <header>
-    <identifier id='com.urbancode.air.plugin.WMBCMP' version='14' name='WebSphere Message Broker - CMP' />
+    <identifier id='com.urbancode.air.plugin.WMBCMP' version='15' name='WebSphere Message Broker - CMP' />
     <description>Integration for WebSphere Message Broker to deploy Broker Archives and start and stop Message Flows using the CMP API.
       This plugin is compatible with both version 9 and 10 of IBM Integration Bus, and is also compatible with versions 7 and 8 of WebSphere Message Broker.</description>
     <tag>Middleware/Enterprise Service Bus/WebSphere Message Broker</tag>
   </header>
-  <step-type name='WMB Set Broker Properties'>
+  <step-type name='Set Broker Properties'>
     <description>Set Runtime Properties for the broker.</description>
     <properties>
       <property name='properties' required='true'>
@@ -51,7 +51,7 @@
         <property-ui type='textBox' label='Trace File' description='The file to use for trace logging. If not set trace logging will be disabled.'/>
       </property>
       <property name="version" required='true'>
-        <property-ui type='textBox' label='IBM Integration Bus Version' description='The version of IBM Integration Bus. This determines which API will be required. (i.e. 7, 8, 9, or 10)' default-value='${p?:resource/WebSphere Message Broker/version}'/>
+        <property-ui type='textBox' label='IBM Integration Bus Version' description='The version of IBM Integration Bus. This determines which API will be required. (i.e. 7.0.0.1, 8.0.0.1, 9.0.0.1, or 10.0.0.1)' default-value='${p?:resource/WebSphere Message Broker/version}'/>
       </property>
       <property name='jarPath' required='true'>
         <property-ui type='textBox'
@@ -59,6 +59,13 @@
                      description="The full path containing the specific jars required for your version of IBM Integration Bus. Version 10 requires the IntegrationAPI.jar (e.g. C:\Program Files\IBM\MQSI\7.0\classes\IntegrationAPI.jar).
                                   IIB Versions below 10 require both ConfigManagerProxy.jar and com.ibm.mq.jar (e.g C:\ProgramFiles\IBM\WebSphere MQ\java\lib\ConfigManagerProxy.jar:C:\Program Files\IBM\WebSphere MQ\java\lib\com.ibm.mq.jar)"
                      default-value='${p:resource/WebSphere Message Broker/jarPath}'/>
+      </property>
+      <property name="mqsiprofile">
+        <property-ui type='textBox' label='MQSIPROFILE Executable' description='The absolute path to the mqsiprofile executable on your IIB server. Specifying this value will initialize your command environment. Only specify this
+           path if your command environment needs initializing.' default-value='${p?:resource/WebSphere Message Broker/mqsiprofile}'/>
+      </property>
+      <property name="shell">
+        <property-ui hidden="true" type='textBox' label='Shell' description='Path to your shell executable file.' default-value="/bin/sh"/>
       </property>
     </properties>
     <post-processing><![CDATA[
@@ -69,12 +76,13 @@
  properties.put("Status", "Success");
  }
  ]]></post-processing>
-    <command program='${GROOVY_HOME}/bin/groovy'>
-      <arg value='-cp' />
-      <arg path='classes:${jarPath}' />
-      <arg file='wmb_set_broker_props.groovy' />
-      <arg file='${PLUGIN_INPUT_PROPS}' />
-      <arg file='${PLUGIN_OUTPUT_PROPS}' />
+    <command program="${GROOVY_HOME}/bin/groovy">
+      <arg value="-cp"/>
+      <arg path="classes:"/>
+      <arg file="mqsi_profile_wrapper.groovy"/>
+      <arg value="wmb_set_broker_props.groovy"/>
+      <arg file="${PLUGIN_INPUT_PROPS}"/>
+      <arg file="${PLUGIN_OUTPUT_PROPS}"/>
     </command>
   </step-type>
 
@@ -112,7 +120,7 @@
         <property-ui type='textBox' label='Trace File' description='The file to use for trace logging. If not set trace logging will be disabled.'/>
       </property>
       <property name="version" required='true'>
-        <property-ui type='textBox' label='IBM Integration Bus Version' description='The version of IBM Integration Bus. This determines which API will be required. (i.e. 7, 8, 9, or 10)' default-value='${p?:resource/WebSphere Message Broker/version}'/>
+        <property-ui type='textBox' label='IBM Integration Bus Version' description='The version of IBM Integration Bus. This determines which API will be required. (i.e. 7.0.0.1, 8.0.0.1, 9.0.0.1, or 10.0.0.1)' default-value='${p?:resource/WebSphere Message Broker/version}'/>
       </property>
       <property name='jarPath' required='true'>
         <property-ui type='textBox'
@@ -120,6 +128,13 @@
                      description="The full path containing the specific jars required for your version of IBM Integration Bus. Version 10 requires the IntegrationAPI.jar (e.g. C:\Program Files\IBM\MQSI\7.0\classes\IntegrationAPI.jar).
                                   IIB Versions below 10 require both ConfigManagerProxy.jar and com.ibm.mq.jar (e.g C:\ProgramFiles\IBM\WebSphere MQ\java\lib\ConfigManagerProxy.jar:C:\Program Files\IBM\WebSphere MQ\java\lib\com.ibm.mq.jar)"
                      default-value='${p:resource/WebSphere Message Broker/jarPath}'/>
+      </property>
+      <property name="mqsiprofile">
+        <property-ui type='textBox' label='MQSIPROFILE Executable' description='The absolute path to the mqsiprofile executable on your IIB server. Specifying this value will initialize your command environment. Only specify this 
+           path if your command environment needs initializing.' default-value='${p?:resource/WebSphere Message Broker/mqsiprofile}'/>
+      </property>
+      <property name="shell">
+        <property-ui hidden="true" type='textBox' label='Shell' description='Path to your shell executable file.' default-value="/bin/sh"/>
       </property>
     </properties>
     <post-processing><![CDATA[
@@ -130,15 +145,16 @@
  properties.put("Status", "Success");
  }
  ]]></post-processing>
-    <command program='${GROOVY_HOME}/bin/groovy'>
-      <arg value='-cp' />
-      <arg path='classes:${jarPath}' />
-      <arg file='wmb_create_exe_group_if_needed.groovy' />
-      <arg file='${PLUGIN_INPUT_PROPS}' />
-      <arg file='${PLUGIN_OUTPUT_PROPS}' />
+    <command program="${GROOVY_HOME}/bin/groovy">
+      <arg value="-cp"/>
+      <arg path="classes:"/>
+      <arg file="mqsi_profile_wrapper.groovy"/>
+      <arg value="wmb_create_exe_group_if_needed.groovy"/>
+      <arg file="${PLUGIN_INPUT_PROPS}"/>
+      <arg file="${PLUGIN_OUTPUT_PROPS}"/>
     </command>
   </step-type>
-  <step-type name='WMB Set Execution Group Properties'>
+  <step-type name='Set Execution Group Properties'>
     <description>Set runtime properties for an execution group.</description>
     <properties>
       <property name='executionGroup' required='true'>
@@ -175,7 +191,7 @@
         <property-ui type='textBox' label='Trace File' description='The file to use for trace logging. If not set trace logging will be disabled.'/>
       </property>
       <property name="version" required='true'>
-        <property-ui type='textBox' label='IBM Integration Bus Version' description='The version of IBM Integration Bus. This determines which API will be required. (i.e. 7, 8, 9, or 10)' default-value='${p?:resource/WebSphere Message Broker/version}'/>
+        <property-ui type='textBox' label='IBM Integration Bus Version' description='The version of IBM Integration Bus. This determines which API will be required. (i.e. 7.0.0.1, 8.0.0.1, 9.0.0.1, or 10.0.0.1)' default-value='${p?:resource/WebSphere Message Broker/version}'/>
       </property>
       <property name='jarPath' required='true'>
         <property-ui type='textBox'
@@ -183,6 +199,13 @@
                      description="The full path containing the specific jars required for your version of IBM Integration Bus. Version 10 requires the IntegrationAPI.jar (e.g. C:\Program Files\IBM\MQSI\7.0\classes\IntegrationAPI.jar).
                                   IIB Versions below 10 require both ConfigManagerProxy.jar and com.ibm.mq.jar (e.g C:\ProgramFiles\IBM\WebSphere MQ\java\lib\ConfigManagerProxy.jar:C:\Program Files\IBM\WebSphere MQ\java\lib\com.ibm.mq.jar)"
                      default-value='${p:resource/WebSphere Message Broker/jarPath}'/>
+      </property>
+      <property name="mqsiprofile">
+        <property-ui type='textBox' label='MQSIPROFILE Executable' description='The absolute path to the mqsiprofile executable on your IIB server. Specifying this value will initialize your command environment. Only specify this
+           path if your command environment needs initializing.' default-value='${p?:resource/WebSphere Message Broker/mqsiprofile}'/>
+      </property>
+      <property name="shell">
+        <property-ui hidden="true" type='textBox' label='Shell' description='Path to your shell executable file.' default-value="/bin/sh"/>
       </property>
     </properties>
     <post-processing><![CDATA[
@@ -193,15 +216,16 @@
  properties.put("Status", "Success");
  }
  ]]></post-processing>
-    <command program='${GROOVY_HOME}/bin/groovy'>
-      <arg value='-cp' />
-      <arg path='classes:${jarPath}' />
-      <arg file='wmb_set_execution_group_props.groovy' />
-      <arg file='${PLUGIN_INPUT_PROPS}' />
-      <arg file='${PLUGIN_OUTPUT_PROPS}' />
+    <command program="${GROOVY_HOME}/bin/groovy">
+      <arg value="-cp"/>
+      <arg path="classes:"/>
+      <arg file="mqsi_profile_wrapper.groovy"/>
+      <arg value="wmb_set_execution_group_props.groovy"/>
+      <arg file="${PLUGIN_INPUT_PROPS}"/>
+      <arg file="${PLUGIN_OUTPUT_PROPS}"/>
     </command>
   </step-type>
-  <step-type name='WMB Set Message Flows Property'>
+  <step-type name='Set Message Flows Properties'>
     <description>Sets runtime properties on a list of message flows.</description>
     <properties>
       <property name='dirOffset'>
@@ -255,7 +279,7 @@
         <property-ui type='textBox' label='Trace File' description='The file to use for trace logging. If not set trace logging will be disabled.'/>
       </property>
       <property name="version" required='true'>
-        <property-ui type='textBox' label='IBM Integration Bus Version' description='The version of IBM Integration Bus. This determines which API will be required. (i.e. 7, 8, 9, or 10)' default-value='${p?:resource/WebSphere Message Broker/version}'/>
+        <property-ui type='textBox' label='IBM Integration Bus Version' description='The version of IBM Integration Bus. This determines which API will be required. (i.e. 7.0.0.1, 8.0.0.1, 9.0.0.1, or 10.0.0.1)' default-value='${p?:resource/WebSphere Message Broker/version}'/>
       </property>
       <property name='jarPath' required='true'>
         <property-ui type='textBox'
@@ -263,6 +287,13 @@
                      description="The full path containing the specific jars required for your version of IBM Integration Bus. Version 10 requires the IntegrationAPI.jar (e.g. C:\Program Files\IBM\MQSI\7.0\classes\IntegrationAPI.jar).
                                   IIB Versions below 10 require both ConfigManagerProxy.jar and com.ibm.mq.jar (e.g C:\ProgramFiles\IBM\WebSphere MQ\java\lib\ConfigManagerProxy.jar:C:\Program Files\IBM\WebSphere MQ\java\lib\com.ibm.mq.jar)"
                      default-value='${p:resource/WebSphere Message Broker/jarPath}'/>
+      </property>
+      <property name="mqsiprofile">
+        <property-ui type='textBox' label='MQSIPROFILE Executable' description='The absolute path to the mqsiprofile executable on your IIB server. Specifying this value will initialize your command environment. Only specify this
+           path if your command environment needs initializing.' default-value='${p?:resource/WebSphere Message Broker/mqsiprofile}'/>
+      </property>
+      <property name="shell">
+        <property-ui hidden="true" type='textBox' label='Shell' description='Path to your shell executable file.' default-value="/bin/sh"/>
       </property>
     </properties>
     <post-processing><![CDATA[
@@ -273,15 +304,16 @@
  properties.put("Status", "Success");
  }
  ]]></post-processing>
-    <command program='${GROOVY_HOME}/bin/groovy'>
-      <arg value='-cp' />
-      <arg path='classes:${jarPath}' />
-      <arg file='wmb_set_flow_props.groovy' />
-      <arg file='${PLUGIN_INPUT_PROPS}' />
-      <arg file='${PLUGIN_OUTPUT_PROPS}' />
+    <command program="${GROOVY_HOME}/bin/groovy">
+      <arg value="-cp"/>
+      <arg path="classes:"/>
+      <arg file="mqsi_profile_wrapper.groovy"/>
+      <arg value="wmb_set_flow_props.groovy"/>
+      <arg file="${PLUGIN_INPUT_PROPS}"/>
+      <arg file="${PLUGIN_OUTPUT_PROPS}"/>
     </command>
   </step-type>
-   <step-type name='WMB Delete Flows Using RegEx'>
+   <step-type name='Delete Flows Using RegEx'>
     <description>Delete WMB flows that have been deployed using a BAR file matching the given regular expression. Useful for deploying into shared execution groups.</description>
     <properties>
       <property name='regex' required='true'>
@@ -321,7 +353,7 @@
         <property-ui type='textBox' label='Trace File' description='The file to use for trace logging. If not set trace logging will be disabled.'/>
       </property>
       <property name="version" required='true'>
-        <property-ui type='textBox' label='IBM Integration Bus Version' description='The version of IBM Integration Bus. This determines which API will be required. (i.e. 7, 8, 9, or 10)' default-value='${p?:resource/WebSphere Message Broker/version}'/>
+        <property-ui type='textBox' label='IBM Integration Bus Version' description='The version of IBM Integration Bus. This determines which API will be required. (i.e. 7.0.0.1, 8.0.0.1, 9.0.0.1, or 10.0.0.1)' default-value='${p?:resource/WebSphere Message Broker/version}'/>
       </property>
       <property name='jarPath' required='true'>
         <property-ui type='textBox'
@@ -329,6 +361,13 @@
                      description="The full path containing the specific jars required for your version of IBM Integration Bus. Version 10 requires the IntegrationAPI.jar (e.g. C:\Program Files\IBM\MQSI\7.0\classes\IntegrationAPI.jar).
                                   IIB Versions below 10 require both ConfigManagerProxy.jar and com.ibm.mq.jar (e.g C:\ProgramFiles\IBM\WebSphere MQ\java\lib\ConfigManagerProxy.jar:C:\Program Files\IBM\WebSphere MQ\java\lib\com.ibm.mq.jar)"
                      default-value='${p:resource/WebSphere Message Broker/jarPath}' />
+      </property>
+      <property name="mqsiprofile">
+        <property-ui type='textBox' label='MQSIPROFILE Executable' description='The absolute path to the mqsiprofile executable on your IIB server. Specifying this value will initialize your command environment. Only specify this
+           path if your command environment needs initializing.' default-value='${p?:resource/WebSphere Message Broker/mqsiprofile}'/>
+      </property>
+      <property name="shell">
+        <property-ui hidden="true" type='textBox' label='Shell' description='Path to your shell executable file.' default-value="/bin/sh"/>
       </property>
     </properties>
     <post-processing><![CDATA[
@@ -339,12 +378,13 @@
  properties.put("Status", "Success");
  }
  ]]></post-processing>
-    <command program='${GROOVY_HOME}/bin/groovy'>
-      <arg value='-cp' />
-      <arg path='classes:${jarPath}' />
-      <arg file='wmb_delete_flows_using_regex.groovy' />
-      <arg file='${PLUGIN_INPUT_PROPS}' />
-      <arg file='${PLUGIN_OUTPUT_PROPS}' />
+    <command program="${GROOVY_HOME}/bin/groovy">
+      <arg value="-cp"/>
+      <arg path="classes:"/>
+      <arg file="mqsi_profile_wrapper.groovy"/>
+      <arg value="wmb_delete_flows_using_regex.groovy"/>
+      <arg file="${PLUGIN_INPUT_PROPS}"/>
+      <arg file="${PLUGIN_OUTPUT_PROPS}"/>
     </command>
   </step-type>
 
@@ -388,7 +428,7 @@
         <property-ui type='textBox' label='Trace File' description='The file to use for trace logging. If not set trace logging will be disabled.'/>
       </property>
       <property name="version" required='true'>
-        <property-ui type='textBox' label='IBM Integration Bus Version' description='The version of IBM Integration Bus. This determines which API will be required. (i.e. 7, 8, 9, or 10)' default-value='${p?:resource/WebSphere Message Broker/version}'/>
+        <property-ui type='textBox' label='IBM Integration Bus Version' description='The version of IBM Integration Bus. This determines which API will be required. (i.e. 7.0.0.1, 8.0.0.1, 9.0.0.1, or 10.0.0.1)' default-value='${p?:resource/WebSphere Message Broker/version}'/>
       </property>
       <property name='jarPath' required='true'>
         <property-ui type='textBox'
@@ -396,6 +436,13 @@
                      description="The full path containing the specific jars required for your version of IBM Integration Bus. Version 10 requires the IntegrationAPI.jar (e.g. C:\Program Files\IBM\MQSI\7.0\classes\IntegrationAPI.jar).
                                   IIB Versions below 10 require both ConfigManagerProxy.jar and com.ibm.mq.jar (e.g C:\ProgramFiles\IBM\WebSphere MQ\java\lib\ConfigManagerProxy.jar:C:\Program Files\IBM\WebSphere MQ\java\lib\com.ibm.mq.jar)"
                      default-value='${p:resource/WebSphere Message Broker/jarPath}' />
+      </property>
+      <property name="mqsiprofile">
+        <property-ui type='textBox' label='MQSIPROFILE Executable' description='The absolute path to the mqsiprofile executable on your IIB server. Specifying this value will initialize your command environment. Only specify this
+           path if your command environment needs initializing.' default-value='${p?:resource/WebSphere Message Broker/mqsiprofile}'/>
+      </property>
+      <property name="shell">
+        <property-ui hidden="true" type='textBox' label='Shell' description='Path to your shell executable file.' default-value="/bin/sh"/>
       </property>
     </properties>
     <post-processing><![CDATA[
@@ -406,12 +453,13 @@
  properties.put("Status", "Success");
  }
  ]]></post-processing>
-    <command program='${GROOVY_HOME}/bin/groovy'>
-      <arg value='-cp' />
-      <arg path='classes:${jarPath}' />
-      <arg file='wmb_create_configurable_service.groovy' />
-      <arg file='${PLUGIN_INPUT_PROPS}' />
-      <arg file='${PLUGIN_OUTPUT_PROPS}' />
+    <command program="${GROOVY_HOME}/bin/groovy">
+      <arg value="-cp"/>
+      <arg path="classes:"/>
+      <arg file="mqsi_profile_wrapper.groovy"/>
+      <arg value="wmb_create_configurable_service.groovy"/>
+      <arg file="${PLUGIN_INPUT_PROPS}"/>
+      <arg file="${PLUGIN_OUTPUT_PROPS}"/>
     </command>
   </step-type>
   <step-type name='Delete Configurable Service'>
@@ -451,7 +499,7 @@
         <property-ui type='textBox' label='Trace File' description='The file to use for trace logging. If not set trace logging will be disabled.'/>
       </property>
       <property name="version" required='true'>
-        <property-ui type='textBox' label='IBM Integration Bus Version' description='The version of IBM Integration Bus. This determines which API will be required. (i.e. 7, 8, 9, or 10)' default-value='${p?:resource/WebSphere Message Broker/version}'/>
+        <property-ui type='textBox' label='IBM Integration Bus Version' description='The version of IBM Integration Bus. This determines which API will be required. (i.e. 7.0.0.1, 8.0.0.1, 9.0.0.1, or 10.0.0.1)' default-value='${p?:resource/WebSphere Message Broker/version}'/>
       </property>
       <property name='jarPath' required='true'>
         <property-ui type='textBox'
@@ -459,6 +507,13 @@
                      description="The full path containing the specific jars required for your version of IBM Integration Bus. Version 10 requires the IntegrationAPI.jar (e.g. C:\Program Files\IBM\MQSI\7.0\classes\IntegrationAPI.jar).
                                   IIB Versions below 10 require both ConfigManagerProxy.jar and com.ibm.mq.jar (e.g C:\ProgramFiles\IBM\WebSphere MQ\java\lib\ConfigManagerProxy.jar:C:\Program Files\IBM\WebSphere MQ\java\lib\com.ibm.mq.jar)"
                      default-value='${p:resource/WebSphere Message Broker/jarPath}' />
+      </property>
+      <property name="mqsiprofile">
+        <property-ui type='textBox' label='MQSIPROFILE Executable' description='The absolute path to the mqsiprofile executable on your IIB server. Specifying this value will initialize your command environment. Only specify this
+           path if your command environment needs initializing.' default-value='${p?:resource/WebSphere Message Broker/mqsiprofile}'/>
+      </property>
+      <property name="shell">
+        <property-ui hidden="true" type='textBox' label='Shell' description='Path to your shell executable file.' default-value="/bin/sh"/>
       </property>
     </properties>
     <post-processing><![CDATA[
@@ -469,17 +524,17 @@
  properties.put("Status", "Success");
  }
  ]]></post-processing>
-    <command program='${GROOVY_HOME}/bin/groovy'>
-      <arg value='-cp' />
-      <arg path='classes:${jarPath}' />
-      <arg file='wmb_delete_configurable_service.groovy' />
-      <arg file='${PLUGIN_INPUT_PROPS}' />
-      <arg file='${PLUGIN_OUTPUT_PROPS}' />
+    <command program="${GROOVY_HOME}/bin/groovy">
+      <arg value="-cp"/>
+      <arg path="classes:"/>
+      <arg file="mqsi_profile_wrapper.groovy"/>
+      <arg value="wmb_delete_configurable_service.groovy"/>
+      <arg file="${PLUGIN_INPUT_PROPS}"/>
+      <arg file="${PLUGIN_OUTPUT_PROPS}"/>
     </command>
   </step-type>
 
-
-  <step-type name='WMB Deploy'>
+  <step-type name='Deploy'>
     <description>Deploy a Broker Archive.</description>
     <properties>
       <property name='barFileNames' required='true'>
@@ -525,7 +580,7 @@
         <property-ui type='textBox' label='Trace File' description='The file to use for trace logging. If not set trace logging will be disabled.'/>
       </property>
       <property name="version" required='true'>
-        <property-ui type='textBox' label='IBM Integration Bus Version' description='The version of IBM Integration Bus. This determines which API will be required. (i.e. 7, 8, 9, or 10)' default-value='${p?:resource/WebSphere Message Broker/version}'/>
+        <property-ui type='textBox' label='IBM Integration Bus Version' description='The version of IBM Integration Bus. This determines which API will be required. (i.e. 7.0.0.1, 8.0.0.1, 9.0.0.1, or 10.0.0.1)' default-value='${p?:resource/WebSphere Message Broker/version}'/>
       </property>
       <property name='jarPath' required='true'>
         <property-ui type='textBox'
@@ -533,6 +588,13 @@
                      description="The full path containing the specific jars required for your version of IBM Integration Bus. Version 10 requires the IntegrationAPI.jar (e.g. C:\Program Files\IBM\MQSI\7.0\classes\IntegrationAPI.jar).
                                   IIB Versions below 10 require both ConfigManagerProxy.jar and com.ibm.mq.jar (e.g C:\ProgramFiles\IBM\WebSphere MQ\java\lib\ConfigManagerProxy.jar:C:\Program Files\IBM\WebSphere MQ\java\lib\com.ibm.mq.jar)"
                      default-value='${p:resource/WebSphere Message Broker/jarPath}' />
+      </property>
+      <property name="mqsiprofile">
+        <property-ui type='textBox' label='MQSIPROFILE Executable' description='The absolute path to the mqsiprofile executable on your IIB server. Specifying this value will initialize your command environment. Only specify this
+           path if your command environment needs initializing.' default-value='${p?:resource/WebSphere Message Broker/mqsiprofile}'/>
+      </property>
+      <property name="shell">
+        <property-ui hidden="true" type='textBox' label='Shell' description='Path to your shell executable file.' default-value="/bin/sh"/>
       </property>
     </properties>
     <post-processing><![CDATA[
@@ -543,15 +605,16 @@
  properties.put("Status", "Success");
  }
  ]]></post-processing>
-    <command program='${GROOVY_HOME}/bin/groovy'>
-      <arg value='-cp' />
-      <arg path='classes:${jarPath}' />
-      <arg file='wmb_deploy.groovy' />
-      <arg file='${PLUGIN_INPUT_PROPS}' />
-      <arg file='${PLUGIN_OUTPUT_PROPS}' />
+    <command program="${GROOVY_HOME}/bin/groovy">
+      <arg value="-cp"/>
+      <arg path="classes:"/>
+      <arg file="mqsi_profile_wrapper.groovy"/>
+      <arg value="wmb_deploy.groovy"/>
+      <arg file="${PLUGIN_INPUT_PROPS}"/>
+      <arg file="${PLUGIN_OUTPUT_PROPS}"/>
     </command>
   </step-type>
-  <step-type name='WMB Start Message Flows'>
+  <step-type name='Start Message Flows'>
     <description>Start Message Flows that are stopped.</description>
     <properties>
       <property name='executionGroup' required='true'>
@@ -588,7 +651,7 @@
         <property-ui type='textBox' label='Trace File' description='The file to use for trace logging. If not set trace logging will be disabled.'/>
       </property>
       <property name="version" required='true'>
-        <property-ui type='textBox' label='IBM Integration Bus Version' description='The version of IBM Integration Bus. This determines which API will be required. (i.e. 7, 8, 9, or 10)' default-value='${p?:resource/WebSphere Message Broker/version}'/>
+        <property-ui type='textBox' label='IBM Integration Bus Version' description='The version of IBM Integration Bus. This determines which API will be required. (i.e. 7.0.0.1, 8.0.0.1, 9.0.0.1, or 10.0.0.1)' default-value='${p?:resource/WebSphere Message Broker/version}'/>
       </property>
       <property name='jarPath' required='true'>
         <property-ui type='textBox'
@@ -596,6 +659,13 @@
                      description="The full path containing the specific jars required for your version of IBM Integration Bus. The jar files required for version 9 are com.ibm.mq.jar, com.ibm.jmqi.jar, ConfigManagerProxy.jar, and ibmjsseprovider2.jar
                      (e.g C:\ProgramFiles\IBM\WebSphere MQ\java\lib\ConfigManagerProxy.jar:C:\Program Files\IBM\WebSphere MQ\java\lib\com.ibm.mq.jar:C:\Program Files\IBM\WebSphere MQ\java\lib\com.ibm.mq.JMQI.jar:c:\ProgramFiles\ibm\MQSI\9.0.0.1\JRE17\LIB\ibmjsseprovider2.jar)"
                      default-value='${p:resource/WebSphere Message Broker/jarPath}' />
+      </property>
+      <property name="mqsiprofile">
+        <property-ui type='textBox' label='MQSIPROFILE Executable' description='The absolute path to the mqsiprofile executable on your IIB server. Specifying this value will initialize your command environment. Only specify this
+           path if your command environment needs initializing.' default-value='${p?:resource/WebSphere Message Broker/mqsiprofile}'/>
+      </property>
+      <property name="shell">
+        <property-ui hidden="true" type='textBox' label='Shell' description='Path to your shell executable file.' default-value="/bin/sh"/>
       </property>
     </properties>
     <post-processing><![CDATA[
@@ -606,15 +676,16 @@
  properties.put("Status", "Success");
  }
  ]]></post-processing>
-    <command program='${GROOVY_HOME}/bin/groovy'>
-      <arg value='-cp' />
-      <arg path='classes:${jarPath}' />
-      <arg file='wmb_start_msg_flow.groovy' />
-      <arg file='${PLUGIN_INPUT_PROPS}' />
-      <arg file='${PLUGIN_OUTPUT_PROPS}' />
+    <command program="${GROOVY_HOME}/bin/groovy">
+      <arg value="-cp"/>
+      <arg path="classes:"/>
+      <arg file="mqsi_profile_wrapper.groovy"/>
+      <arg value="wmb_start_msg_flow.groovy"/>
+      <arg file="${PLUGIN_INPUT_PROPS}"/>
+      <arg file="${PLUGIN_OUTPUT_PROPS}"/>
     </command>
   </step-type>
-  <step-type name='WMB Stop Message Flows'>
+  <step-type name='Stop Message Flows'>
     <description>Stop Message Flows that are running.</description>
     <properties>
       <property name='executionGroup' required='true'>
@@ -651,7 +722,7 @@
         <property-ui type='textBox' label='Trace File' description='The file to use for trace logging. If not set trace logging will be disabled.'/>
       </property>
       <property name="version" required='true'>
-        <property-ui type='textBox' label='IBM Integration Bus Version' description='The version of IBM Integration Bus. This determines which API will be required. (i.e. 7, 8, 9, or 10)' default-value='${p?:resource/WebSphere Message Broker/version}'/>
+        <property-ui type='textBox' label='IBM Integration Bus Version' description='The version of IBM Integration Bus. This determines which API will be required. (i.e. 7.0.0.1, 8.0.0.1, 9.0.0.1, or 10.0.0.1)' default-value='${p?:resource/WebSphere Message Broker/version}'/>
       </property>
       <property name='jarPath' required='true'>
         <property-ui type='textBox'
@@ -659,6 +730,13 @@
                      description="The full path containing the specific jars required for your version of IBM Integration Bus. Version 10 requires the IntegrationAPI.jar (e.g. C:\Program Files\IBM\MQSI\7.0\classes\IntegrationAPI.jar).
                                   IIB Versions below 10 require both ConfigManagerProxy.jar and com.ibm.mq.jar (e.g C:\ProgramFiles\IBM\WebSphere MQ\java\lib\ConfigManagerProxy.jar:C:\Program Files\IBM\WebSphere MQ\java\lib\com.ibm.mq.jar)"
                      default-value='${p:resource/WebSphere Message Broker/jarPath}' />
+      </property>
+      <property name="mqsiprofile">
+        <property-ui type='textBox' label='MQSIPROFILE Executable' description='The absolute path to the mqsiprofile executable on your IIB server. Specifying this value will initialize your command environment. Only specify this
+           path if your command environment needs initializing.' default-value='${p?:resource/WebSphere Message Broker/mqsiprofile}'/>
+      </property>
+      <property name="shell">
+        <property-ui hidden="true" type='textBox' label='Shell' description='Path to your shell executable file.' default-value="/bin/sh"/>
       </property>
     </properties>
     <post-processing><![CDATA[
@@ -669,15 +747,16 @@
  properties.put("Status", "Success");
  }
  ]]></post-processing>
-    <command program='${GROOVY_HOME}/bin/groovy'>
-      <arg value='-cp' />
-      <arg path='classes:${jarPath}' />
-      <arg file='wmb_stop_msg_flow.groovy' />
-      <arg file='${PLUGIN_INPUT_PROPS}' />
-      <arg file='${PLUGIN_OUTPUT_PROPS}' />
+    <command program="${GROOVY_HOME}/bin/groovy">
+      <arg value="-cp"/>
+      <arg path="classes:"/>
+      <arg file="mqsi_profile_wrapper.groovy"/>
+      <arg value="wmb_stop_msg_flow.groovy"/>
+      <arg file="${PLUGIN_INPUT_PROPS}"/>
+      <arg file="${PLUGIN_OUTPUT_PROPS}"/>
     </command>
   </step-type>
-  <step-type name="WMB Override Bar Properties">
+  <step-type name="Override Bar Properties">
     <description>Overrides configuration properties inside a Broker Archive file. This step is not compatible with WebSphere Message Broker version 7.</description>
     <properties>
       <property name="includes" required="true">

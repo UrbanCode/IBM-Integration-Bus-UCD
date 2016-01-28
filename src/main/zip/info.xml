@@ -177,5 +177,10 @@ Fixed override bar file throwing null pointer, and IIB10 broker connection param
 Fixes APAR PI55441 could not establish remote connection in IBM integration Bus step 'Create Execution Group'
 Fixes APAR PI52693 Null pointer exception when using the Override Bar Properties step
       </release-note>
+      <release-note plugin-version="15">
+Additional Error Handling for APAR PI54665 timeout in UCD after deploy finished in IIB
+Added functionality to specify mqsiprofile script to set user environment per step
+Change names of plugin steps to remove "WMB"
+      </release-note>
   </release-notes>
 </pluginInfo>

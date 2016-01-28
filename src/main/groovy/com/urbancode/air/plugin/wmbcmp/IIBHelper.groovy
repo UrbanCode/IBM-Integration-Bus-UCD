@@ -4,7 +4,7 @@
  * IBM UrbanCode Deploy
  * IBM UrbanCode Release
  * IBM AnthillPro
- * (c) Copyright IBM Corporation 2015. All Rights Reserved.
+ * (c) Copyright IBM Corporation 2002, 2016. All Rights Reserved.
  *
  * U.S. Government Users Restricted Rights - Use, duplication or disclosure restricted by
  * GSA ADP Schedule Contract with IBM Corp.
@@ -15,6 +15,8 @@ import com.ibm.broker.config.proxy.*
 import com.urbancode.air.plugin.wmbcmp.IIB9BrokerConnection
 import com.urbancode.air.plugin.wmbcmp.IIB10BrokerConnection
 import java.util.regex.Pattern
+
+import com.urbancode.air.ExitCodeException
 
 class IIBHelper {
     def logProxy
@@ -34,7 +36,13 @@ class IIBHelper {
         def host = props['brokerHost']
         def port
         def integrationNodeName = props['integrationNodeName']
+
+        // strip excess decimal points
         version = props['version']
+        def integerPoint = version.indexOf('.') // point between integer and digits after the decimal point
+        version = integerPoint != -1 ? version.substring(0, integerPoint) : version
+        def versionInt = version.toInteger()
+
         timeout = Long.valueOf(props['timeout']?.trim()?:60000)
         executionGroup = props['executionGroup']
         isIncremental = !Boolean.valueOf(props['fullDeploy'])
@@ -45,20 +53,21 @@ class IIBHelper {
 
         //local broker connection, regardless of iib version
         if (integrationNodeName) {
+            println("Establishing connection with a local broker...")
+
             bcp = new LocalBrokerConnectionParameters(integrationNodeName)
             brokerProxy = BrokerProxy.getInstance(bcp)
+
+            def properties = BrokerProxy.getProperties()
+            properties.toString()
         }
         //iib9 remote broker connection
-        else if (version.toInteger() < 10) {
+        else if (versionInt < 10) {
                 //user determined by queue manager
                 def channel = props['channel']
                 def queueManager = props['queueManager']
-                brokerConnection = new IIB9BrokerConnection(host, port, queueManager)
+                brokerConnection = new IIB9BrokerConnection(host, port, queueManager, channel)
                 bcp = brokerConnection.connection
-
-                if (channel) {
-                    bcp.setAdvancedConnectionParameters(channel, null,null, -1, -1, null)
-                }
         }
         //iib10 remote connection settings
         else {
@@ -205,28 +214,40 @@ class IIBHelper {
 
         println "Using timeout ${timeout}"
         DeployResult dr = executionGroupProxy.deploy(fileName, isIncremental, timeout)
-
-        if (dr.getCompletionCode() != CompletionCodeType.success) {
-            checkDeployResult(dr)
-            String code = "unknown"
-            if (dr.getCompletionCode() == CompletionCodeType.failure) {
-                code = "failure"
-            }
-            else if (dr.getCompletionCode() == CompletionCodeType.cancelled) {
-                code = "cancelled"
-            }
-            else if (dr.getCompletionCode() == CompletionCodeType.pending) {
-                code = "pending"
-            }
-            else if (dr.getCompletionCode() == CompletionCodeType.submitted) {
-                code = "submitted"
-            }
-            def completionCode = dr.getCompletionCode()
-            throw new Exception("Failed deploying bar File ${fileName} with completion code : " +
-                (completionCode ? completionCode.toString() : code))
-        }
+        def completionCode = dr.getCompletionCode()
 
         checkDeployResult(dr)
+
+        if (completionCode != CompletionCodeType.success) {
+            String message = "Unknown Completion Code Type"
+
+            if (completionCode == CompletionCodeType.failure) {
+                message = "The deployment operation has failed."
+            }
+            else if (completionCode == CompletionCodeType.cancelled) {
+                message = "The deployment was submitted to the broker, but was cancelled by user action before processing."
+            }
+            else if (completionCode == CompletionCodeType.pending) {
+                message = "The deployment is queued and waiting to be processed by the broker."
+            }
+            else if (completionCode == CompletionCodeType.submitted) {
+                message = "The deployment request was sent to the broker's administration agent and is currently being processed."
+            }
+            else if (completionCode == CompletionCodeType.unknown) {
+                message = "No information has been received from the broker about the deployment request."
+            }
+            else if (completionCode == CompletionCodeType.initiated) {
+                message = "The deployment has been created and is about to be queued on the broker."
+            }
+            else if (completionCode == CompletionCodeType.timedOut) {
+                message = "The deployment request was sent to the broker but no response was received in the expected time frame."
+            }
+            else {
+                throw new Exception("Deployment Result could not be obtained.")
+            }
+            throw new Exception("Failed deploying bar File ${fileName} with completion code : " +
+                (completionCode.toString() + ":" + message))
+        }
     }
 
     public String[] getMessageFlowsFromProperties(props) {
@@ -409,6 +430,7 @@ class IIBHelper {
     public void checkDeployResult() {
         checkDeployResult(null)
     }
+
     public void checkDeployResult(def deployResult) {
         Enumeration logEntries = null
 

@@ -28,7 +28,7 @@ public class PropertiesHelper {
                 inputPropsStream.close();
             }
         }
-        
+
         return props;
     }
 }

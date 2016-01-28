@@ -7,7 +7,7 @@ class IIB9BrokerConnection {
     def connection
     BrokerProxy proxy
 
-    public IIB9BrokerConnection(def host, def port, def queueManager) {
+    public IIB9BrokerConnection(def host, def port, def queueManager, def channel) {
         def connectionClass
         try {
             connectionClass = "com.ibm.broker.config.proxy.MQBrokerConnectionParameters" as Class
@@ -19,6 +19,10 @@ class IIB9BrokerConnection {
         }
 
         connection = connectionClass.newInstance(host, port, queueManager)
+
+        if (channel) {
+            connection.setAdvancedConnectionParameters(channel, null,null, -1, -1, null)
+        }
 
         try {
             proxy = BrokerProxy.getInstance(connection)
