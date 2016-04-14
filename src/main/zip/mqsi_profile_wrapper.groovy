@@ -22,7 +22,7 @@ def argScript = PLUGIN_HOME + File.separator + this.args[0]
 def classpath = PLUGIN_HOME + File.separator + "classes" + File.pathSeparator + props['jarPath']
 def mqsiprofile = new File(props['mqsiprofile'].trim())
 def groovyHome = System.getProperty("groovy.home")
-def groovyExe = groovyHome + File.separator + "bin" + File.separator + "groovy"
+def groovyExe = groovyHome + File.separator + "bin" + File.separator + (isWindows ? "groovy.bat" : "groovy")
 def version = props['version'].trim()
 def cmdArgs
 
@@ -56,7 +56,7 @@ if (props['mqsiprofile'].trim()) {
 
         // run script regardless of whether environment was set
         cmdArgs = [
-            "${groovyExe}.bat",
+            groovyExe,
             "-cp",
             classpath,
             argScript,

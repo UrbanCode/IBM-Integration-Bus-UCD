@@ -11,17 +11,27 @@
  */
 package com.urbancode.air.plugin.wmbcmp
 
-import com.ibm.broker.config.proxy.*
-import com.urbancode.air.plugin.wmbcmp.IIB9BrokerConnection
-import com.urbancode.air.plugin.wmbcmp.IIB10BrokerConnection
-import java.util.regex.Pattern
+import com.ibm.broker.config.proxy.BrokerConnectionParameters
+import com.ibm.broker.config.proxy.BrokerProxy
+import com.ibm.broker.config.proxy.ConfigurableService
+import com.ibm.broker.config.proxy.DeployedObject
+import com.ibm.broker.config.proxy.DeployResult
+import com.ibm.broker.config.proxy.ExecutionGroupProxy
+import com.ibm.broker.config.proxy.LocalBrokerConnectionParameters
+import com.ibm.broker.config.proxy.LogEntry
+import com.ibm.broker.config.proxy.MessageFlowProxy
 
 import com.urbancode.air.ExitCodeException
+import com.urbancode.air.plugin.wmbcmp.IIB9BrokerConnection
+import com.urbancode.air.plugin.wmbcmp.IIB10BrokerConnection
+
+
+import java.util.regex.Pattern
 
 class IIBHelper {
     def logProxy
     def timeout
-    def executionGroup
+    def executionGroups
     def version
     def brokerConnection
     Date startTime
@@ -44,7 +54,6 @@ class IIBHelper {
         def versionInt = version.toInteger()
 
         timeout = Long.valueOf(props['timeout']?.trim()?:60000)
-        executionGroup = props['executionGroup']
         isIncremental = !Boolean.valueOf(props['fullDeploy'])
 
         if (props['port']) {
@@ -90,8 +99,12 @@ class IIBHelper {
             brokerProxy = brokerConnection.proxy
         }
 
-        if (executionGroup) {
-            executionGroupProxy = brokerProxy.getExecutionGroupByName(executionGroup)
+        executionGroups = props['executionGroup'].split(',')*.trim()
+        executionGroups -= [null, ""] // remove empty and null entries
+
+        // setup for single execution group
+        if (executionGroups.size() == 1) {
+            setExecutionGroup(executionGroups[0])
         }
 
         startTime = new Date(System.currentTimeMillis())
@@ -110,26 +123,47 @@ class IIBHelper {
         executionGroupProxy.stopMessageFlows()
     }
 
-    public void createExecutionGroupIfNeccessary() {
+    public void createExecutionGroupsIfNeccessary() {
         if (brokerProxy == null || bcp == null) {
             throw new IllegalStateException("Broker Proxy is uninitilized!")
         }
 
-        String name = executionGroup
-        if (executionGroup == null || executionGroup.trim() == "") {
-            throw new IllegalStateException("Tried creating execution group with blank or null name.")
-        }
-
-        if (executionGroupProxy == null) {
-            System.out.println("Execution group ${executionGroup} does not exist. Attempting to create...")
-            executionGroupProxy = brokerProxy.createExecutionGroup(executionGroup)
-            if (executionGroupProxy == null) {
-                throw new RuntimeException("Could not create execution group with name ${name}")
-            }
-            System.out.println("Execution group ${executionGroup} created.")
+        if (executionGroups) {
+            println("Creating execution groups: ${executionGroups}...")
         }
         else {
-            System.out.println("Execution group ${executionGroup} exists. Skipping create...")
+            throw new IllegalStateException("No execution group names to create.")
+        }
+
+        for (String executionGroup : executionGroups) {
+            setExecutionGroup(executionGroup)
+
+            if (executionGroupProxy == null) {
+                System.out.println("Execution group ${executionGroup} does not exist. Attempting to create...")
+                executionGroupProxy = brokerProxy.createExecutionGroup(executionGroup)
+                if (executionGroupProxy == null) {
+                    throw new RuntimeException("Could not create execution group with name ${name}")
+                }
+                System.out.println("Execution group ${executionGroup} created.")
+            }
+            else {
+                System.out.println("Execution group ${executionGroup} exists. Skipping create...")
+            }
+        }
+    }
+
+    public void restartExecutionGroups() {
+        for (String executionGroup : executionGroups) {
+            setExecutionGroup(executionGroup)
+
+            if (executionGroupProxy == null) {
+                throw new RuntimeException("Execution group ${executionGroup} does not exist.")
+            }
+
+            System.out.println("Restarting execution group ${executionGroup}")
+            executionGroupProxy.stop()
+            executionGroupProxy.start()
+            System.out.println("Successfully restarted ${executionGroup}")
         }
     }
 
@@ -208,45 +242,52 @@ class IIBHelper {
             throw new IllegalStateException("Broker Proxy is uninitilized!")
         }
 
-        if (executionGroupProxy == null) {
-            throw new IllegalStateException("Execution group proxy is null! Make sure it is configured correctly!")
-        }
+        for (String executionGroup : executionGroups) {
+            setExecutionGroup(executionGroup)
 
-        println "Using timeout ${timeout}"
-        DeployResult dr = executionGroupProxy.deploy(fileName, isIncremental, timeout)
-        def completionCode = dr.getCompletionCode()
+            if (executionGroupProxy == null) {
+                throw new IllegalStateException("Execution group proxy is null! Make sure it is configured correctly!")
+            }
 
-        checkDeployResult(dr)
+            println "Using execution group: ${executionGroup} and timeout ${timeout}..."
+            DeployResult dr = executionGroupProxy.deploy(fileName, isIncremental, timeout)
+            def completionCode = dr.getCompletionCode()
 
-        if (completionCode != CompletionCodeType.success) {
-            String message = "Unknown Completion Code Type"
+            checkDeployResult(dr)
 
-            if (completionCode == CompletionCodeType.failure) {
-                message = "The deployment operation has failed."
-            }
-            else if (completionCode == CompletionCodeType.cancelled) {
-                message = "The deployment was submitted to the broker, but was cancelled by user action before processing."
-            }
-            else if (completionCode == CompletionCodeType.pending) {
-                message = "The deployment is queued and waiting to be processed by the broker."
-            }
-            else if (completionCode == CompletionCodeType.submitted) {
-                message = "The deployment request was sent to the broker's administration agent and is currently being processed."
-            }
-            else if (completionCode == CompletionCodeType.unknown) {
-                message = "No information has been received from the broker about the deployment request."
-            }
-            else if (completionCode == CompletionCodeType.initiated) {
-                message = "The deployment has been created and is about to be queued on the broker."
-            }
-            else if (completionCode == CompletionCodeType.timedOut) {
-                message = "The deployment request was sent to the broker but no response was received in the expected time frame."
+            if (completionCode != CompletionCodeType.success) {
+                String message = ""
+
+                if (completionCode == CompletionCodeType.failure) {
+                    message = "The deployment operation has failed."
+                }
+                else if (completionCode == CompletionCodeType.cancelled) {
+                    message = "The deployment was submitted to the broker, but was cancelled by user action before processing."
+                }
+                else if (completionCode == CompletionCodeType.pending) {
+                    message = "The deployment is queued and waiting to be processed by the broker."
+                }
+                else if (completionCode == CompletionCodeType.submitted) {
+                    message = "The deployment request was sent to the broker's administration agent and is currently being processed."
+                }
+                else if (completionCode == CompletionCodeType.unknown) {
+                    message = "No information has been received from the broker about the deployment request."
+                }
+                else if (completionCode == CompletionCodeType.initiated) {
+                    message = "The deployment has been created and is about to be queued on the broker."
+                }
+                else if (completionCode == CompletionCodeType.timedOut) {
+                    message = "The deployment request was sent to the broker but no response was received in the expected time frame."
+                }
+                else {
+                    throw new Exception("Deployment Result could not be obtained.")
+                }
+                throw new Exception("Failed deploying bar File ${fileName} with completion code : " +
+                    (completionCode.toString() + ":" + message))
             }
             else {
-                throw new Exception("Deployment Result could not be obtained.")
+                println("${fileName} was successfully deployed to ${executionGroup}.")
             }
-            throw new Exception("Failed deploying bar File ${fileName} with completion code : " +
-                (completionCode.toString() + ":" + message))
         }
     }
 
@@ -466,6 +507,15 @@ class IIBHelper {
 
         if (brokerProxy) {
             brokerProxy.disconnect()
+        }
+    }
+
+    private void setExecutionGroup(String groupName) {
+        if (groupName) {
+            executionGroupProxy = brokerProxy.getExecutionGroupByName(groupName)
+        }
+        else {
+            throw new IllegalStateException("Execution group field specified with blank or null name.")
         }
     }
 }

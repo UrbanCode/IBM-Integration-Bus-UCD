@@ -364,4 +364,6 @@
     <migrate-command name="Override Bar Properties" old="WMB Override Bar Properties">
     </migrate-command>
   </migrate>
+  <migrate to-version="16">
+  </migrate>
 </plugin-upgrade>

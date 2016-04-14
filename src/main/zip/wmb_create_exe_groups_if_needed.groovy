@@ -20,7 +20,7 @@ def props = apTool.getStepProperties()
 def helper = new IIBHelper(props)
 
 try {
-    helper.createExecutionGroupIfNeccessary();
+    helper.createExecutionGroupsIfNeccessary();
     helper.deployBrokerConfig();
 }
 catch (Exception e) {

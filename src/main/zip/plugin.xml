@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!--
+<?xml version="1.0" encoding="UTF-8"?><!--
 - Licensed Materials - Property of IBM Corp.
 - IBM UrbanCode Build
 - IBM UrbanCode Deploy
@@ -9,63 +8,57 @@
 -
 - U.S. Government Users Restricted Rights - Use, duplication or disclosure restricted by
 - GSA ADP Schedule Contract with IBM Corp.
--->
-<plugin xmlns='http://www.urbancode.com/PluginXMLSchema_v1' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>
+--><plugin xmlns="http://www.urbancode.com/PluginXMLSchema_v1" xmlns:server="http://www.urbancode.com/PluginServerXMLSchema_v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <header>
-    <identifier id='com.urbancode.air.plugin.WMBCMP' version='15' name='WebSphere Message Broker - CMP' />
+    <identifier id="com.urbancode.air.plugin.WMBCMP" name="WebSphere Message Broker - CMP" version="16"/>
     <description>Integration for WebSphere Message Broker to deploy Broker Archives and start and stop Message Flows using the CMP API.
       This plugin is compatible with both version 9 and 10 of IBM Integration Bus, and is also compatible with versions 7 and 8 of WebSphere Message Broker.</description>
     <tag>Middleware/Enterprise Service Bus/WebSphere Message Broker</tag>
   </header>
-  <step-type name='Set Broker Properties'>
+  <step-type name="Set Broker Properties">
     <description>Set Runtime Properties for the broker.</description>
     <properties>
-      <property name='properties' required='true'>
-        <property-ui type='textAreaBox' label='Properties' description='A new line separated list of properties to set in the format name=value' />
+      <property name="properties" required="true">
+        <property-ui description="A new line separated list of properties to set in the format name=value" label="Properties" type="textAreaBox"/>
       </property>
-      <property name='brokerHost'>
-        <property-ui type='textBox' label="IP" description="The ip address of the target server for a remote connection." default-value='${p?:resource/WebSphere Message Broker/ip}'/>
+      <property name="brokerHost">
+        <property-ui default-value="${p?:resource/WebSphere Message Broker/ip}" description="The ip address of the target server for a remote connection." label="IP" type="textBox"/>
       </property>
-      <property name='port'>
-        <property-ui type='textBox' label='Port' description='The port of the target server for a remote connection.' default-value='${p?:resource/WebSphere Message Broker/port}'/>
+      <property name="port">
+        <property-ui default-value="${p?:resource/WebSphere Message Broker/port}" description="The port of the target server for a remote connection." label="Port" type="textBox"/>
       </property>
-      <property name='useSSL'>
-        <property-ui type='checkBox' label='Use SSL' description='Administration security authentication/authorization. This option is only available in IIB version 10.' default-value='false'/>
+      <property name="useSSL">
+        <property-ui default-value="false" description="Administration security authentication/authorization. This option is only available in IIB version 10." label="Use SSL" type="checkBox"/>
       </property>
-      <property name='integrationNodeName'>
-        <property-ui type='textBox' label='Integration Node Name' description='Name of Integration Node. Specify this value to create a local broker connection.' default-value='${p?:resource/WebSphere Message Broker/integrationNodeName}'/>
+      <property name="integrationNodeName">
+        <property-ui default-value="${p?:resource/WebSphere Message Broker/integrationNodeName}" description="Name of Integration Node. Specify this value to create a local broker connection." label="Integration Node Name" type="textBox"/>
       </property>
-      <property name='channel'>
-        <property-ui type='textBox' label='Channel' description='The name of the channel to use. Must be defined on the queue manager. Specify this value if you are using below version 10 of IIB.' default-value='${p?:resource/WebSphere Message Broker/channel}'/>
+      <property name="channel">
+        <property-ui default-value="${p?:resource/WebSphere Message Broker/channel}" description="The name of the channel to use. Must be defined on the queue manager. Specify this value if you are using below version 10 of IIB." label="Channel" type="textBox"/>
       </property>
-      <property name='queueManager'>
-        <property-ui type='textBox' label='Queue Manager' description='The WebSphere MQ Queue Manager which the broker is using. Specify this value if you are using below version 10 of IIB.' default-value='${p?:resource/WebSphere Message Broker/port}'/>
+      <property name="queueManager">
+        <property-ui default-value="${p?:resource/WebSphere Message Broker/port}" description="The WebSphere MQ Queue Manager which the broker is using. Specify this value if you are using below version 10 of IIB." label="Queue Manager" type="textBox"/>
       </property>
-      <property name='username'>
-        <property-ui type='textBox' label='Username' description='Username for secure authentication. Explicit user authentication only available with IIB 10.'/>
+      <property name="username">
+        <property-ui description="Username for secure authentication. Explicit user authentication only available with IIB 10." label="Username" type="textBox"/>
       </property>
-      <property name='password'>
-        <property-ui type='secureBox' label='Password' description='Password for secure authentication. Explicit user authentication only available with IIB 10.'/>
+      <property name="password">
+        <property-ui description="Password for secure authentication. Explicit user authentication only available with IIB 10." label="Password" type="secureBox"/>
       </property>
       <property name="debugFile">
-        <property-ui type='textBox' label='Trace File' description='The file to use for trace logging. If not set trace logging will be disabled.'/>
+        <property-ui description="The file to use for trace logging. If not set trace logging will be disabled." label="Trace File" type="textBox"/>
       </property>
-      <property name="version" required='true'>
-        <property-ui type='textBox' label='IBM Integration Bus Version' description='The version of IBM Integration Bus. This determines which API will be required. (i.e. 7.0.0.1, 8.0.0.1, 9.0.0.1, or 10.0.0.1)' default-value='${p?:resource/WebSphere Message Broker/version}'/>
+      <property name="version" required="true">
+        <property-ui default-value="${p:resource/WebSphere Message Broker/version}" description="Enter the version of the installed IBM Integration Bus. This determines which API will be required. For example: 10.0.0.1" label="IBM Integration Bus Version" type="textBox"/>
       </property>
-      <property name='jarPath' required='true'>
-        <property-ui type='textBox'
-                     label='Jar Path'
-                     description="The full path containing the specific jars required for your version of IBM Integration Bus. Version 10 requires the IntegrationAPI.jar (e.g. C:\Program Files\IBM\MQSI\7.0\classes\IntegrationAPI.jar).
-                                  IIB Versions below 10 require both ConfigManagerProxy.jar and com.ibm.mq.jar (e.g C:\ProgramFiles\IBM\WebSphere MQ\java\lib\ConfigManagerProxy.jar:C:\Program Files\IBM\WebSphere MQ\java\lib\com.ibm.mq.jar)"
-                     default-value='${p:resource/WebSphere Message Broker/jarPath}'/>
+      <property name="jarPath" required="true">
+        <property-ui default-value="${p:resource/WebSphere Message Broker/jarPath}" description="The full path containing the specific jars required for your version of IBM Integration Bus. Version 10 requires the IntegrationAPI.jar (e.g. C:\Program Files\IBM\MQSI\7.0\classes\IntegrationAPI.jar).                                   IIB Versions below 10 require both ConfigManagerProxy.jar and com.ibm.mq.jar (e.g C:\ProgramFiles\IBM\WebSphere MQ\java\lib\ConfigManagerProxy.jar:C:\Program Files\IBM\WebSphere MQ\java\lib\com.ibm.mq.jar)" label="Jar Path" type="textBox"/>
       </property>
       <property name="mqsiprofile">
-        <property-ui type='textBox' label='MQSIPROFILE Executable' description='The absolute path to the mqsiprofile executable on your IIB server. Specifying this value will initialize your command environment. Only specify this
-           path if your command environment needs initializing.' default-value='${p?:resource/WebSphere Message Broker/mqsiprofile}'/>
+        <property-ui default-value="${p?:resource/WebSphere Message Broker/mqsiprofile}" description="The absolute path to the mqsiprofile executable on your IIB server. Specifying this value will initialize your command environment. Only specify this            path if your command environment needs initializing." label="MQSIPROFILE Executable" type="textBox"/>
       </property>
       <property name="shell">
-        <property-ui hidden="true" type='textBox' label='Shell' description='Path to your shell executable file.' default-value="/bin/sh"/>
+        <property-ui default-value="/bin/sh" description="Path to your shell executable file." hidden="true" label="Shell" type="textBox"/>
       </property>
     </properties>
     <post-processing><![CDATA[
@@ -86,55 +79,50 @@
     </command>
   </step-type>
 
-  <step-type name='Create Execution Group'>
-    <description>Create an execution group only if it doesn't exist.</description>
+  <step-type name="Create Execution Group">
+    <description>Create execution groups only if they doesn't exist.</description>
     <properties>
-      <property name='executionGroup' required='true'>
-        <property-ui type='textBox' label='Execution Group' description='Name of the Execution Group to create if it does not exist.' />
+      <property name="executionGroup" required="true">
+        <property-ui description="Comma-separated list of Execution Groups to create if they do not exist." label="Execution Groups" type="textBox"/>
       </property>
-      <property name='brokerHost'>
-        <property-ui type='textBox' label="IP" description="The ip address of the target server for a remote connection." default-value='${p?:resource/WebSphere Message Broker/ip}'/>
+      <property name="brokerHost">
+        <property-ui default-value="${p?:resource/WebSphere Message Broker/ip}" description="The ip address of the target server for a remote connection." label="IP" type="textBox"/>
       </property>
-      <property name='port'>
-        <property-ui type='textBox' label='Port' description='The port of the target server for a remote connection.' default-value='${p?:resource/WebSphere Message Broker/port}'/>
+      <property name="port">
+        <property-ui default-value="${p?:resource/WebSphere Message Broker/port}" description="The port of the target server for a remote connection." label="Port" type="textBox"/>
       </property>
-      <property name='useSSL'>
-        <property-ui type='checkBox' label='Use SSL' description='Administration security authentication/authorization. This option is only available in IIB version 10.' default-value='false'/>
+      <property name="useSSL">
+        <property-ui default-value="false" description="Administration security authentication/authorization. This option is only available in IIB version 10." label="Use SSL" type="checkBox"/>
       </property>
-      <property name='integrationNodeName'>
-        <property-ui type='textBox' label='Integration Node Name' description='Name of Integration Node. Specify this value to create a local broker connection.' default-value='${p?:resource/WebSphere Message Broker/integrationNodeName}'/>
+      <property name="integrationNodeName">
+        <property-ui default-value="${p?:resource/WebSphere Message Broker/integrationNodeName}" description="Name of Integration Node. Specify this value to create a local broker connection." label="Integration Node Name" type="textBox"/>
       </property>
-      <property name='channel'>
-        <property-ui type='textBox' label='Channel' description='The name of the channel to use. Must be defined on the queue manager. Specify this value if you are using below version 10 of IIB.' default-value='${p?:resource/WebSphere Message Broker/channel}'/>
+      <property name="channel">
+        <property-ui default-value="${p?:resource/WebSphere Message Broker/channel}" description="The name of the channel to use. Must be defined on the queue manager. Specify this value if you are using below version 10 of IIB." label="Channel" type="textBox"/>
       </property>
-      <property name='queueManager'>
-        <property-ui type='textBox' label='Queue Manager' description='The WebSphere MQ Queue Manager which the broker is using. Specify this value if you are using below version 10 of IIB.' default-value='${p?:resource/WebSphere Message Broker/port}'/>
+      <property name="queueManager">
+        <property-ui default-value="${p?:resource/WebSphere Message Broker/port}" description="The WebSphere MQ Queue Manager which the broker is using. Specify this value if you are using below version 10 of IIB." label="Queue Manager" type="textBox"/>
       </property>
-      <property name='username'>
-        <property-ui type='textBox' label='Username' description='Username for secure authentication. Explicit user authentication only available with IIB 10.'/>
+      <property name="username">
+        <property-ui description="Username for secure authentication. Explicit user authentication only available with IIB 10." label="Username" type="textBox"/>
       </property>
-      <property name='password'>
-        <property-ui type='secureBox' label='Password' description='Password for secure authentication. Explicit user authentication only available with IIB 10.'/>
+      <property name="password">
+        <property-ui description="Password for secure authentication. Explicit user authentication only available with IIB 10." label="Password" type="secureBox"/>
       </property>
       <property name="debugFile">
-        <property-ui type='textBox' label='Trace File' description='The file to use for trace logging. If not set trace logging will be disabled.'/>
+        <property-ui description="The file to use for trace logging. If not set trace logging will be disabled." label="Trace File" type="textBox"/>
       </property>
-      <property name="version" required='true'>
-        <property-ui type='textBox' label='IBM Integration Bus Version' description='The version of IBM Integration Bus. This determines which API will be required. (i.e. 7.0.0.1, 8.0.0.1, 9.0.0.1, or 10.0.0.1)' default-value='${p?:resource/WebSphere Message Broker/version}'/>
+      <property name="version" required="true">
+        <property-ui default-value="${p:resource/WebSphere Message Broker/version}" description="Enter the version of the installed IBM Integration Bus. This determines which API will be required. For example: 10.0.0.1" label="IBM Integration Bus Version" type="textBox"/>
       </property>
-      <property name='jarPath' required='true'>
-        <property-ui type='textBox'
-                     label='Jar Path'
-                     description="The full path containing the specific jars required for your version of IBM Integration Bus. Version 10 requires the IntegrationAPI.jar (e.g. C:\Program Files\IBM\MQSI\7.0\classes\IntegrationAPI.jar).
-                                  IIB Versions below 10 require both ConfigManagerProxy.jar and com.ibm.mq.jar (e.g C:\ProgramFiles\IBM\WebSphere MQ\java\lib\ConfigManagerProxy.jar:C:\Program Files\IBM\WebSphere MQ\java\lib\com.ibm.mq.jar)"
-                     default-value='${p:resource/WebSphere Message Broker/jarPath}'/>
+      <property name="jarPath" required="true">
+        <property-ui default-value="${p:resource/WebSphere Message Broker/jarPath}" description="The full path containing the specific jars required for your version of IBM Integration Bus. Version 10 requires the IntegrationAPI.jar (e.g. C:\Program Files\IBM\MQSI\7.0\classes\IntegrationAPI.jar).                                   IIB Versions below 10 require both ConfigManagerProxy.jar and com.ibm.mq.jar (e.g C:\ProgramFiles\IBM\WebSphere MQ\java\lib\ConfigManagerProxy.jar:C:\Program Files\IBM\WebSphere MQ\java\lib\com.ibm.mq.jar)" label="Jar Path" type="textBox"/>
       </property>
       <property name="mqsiprofile">
-        <property-ui type='textBox' label='MQSIPROFILE Executable' description='The absolute path to the mqsiprofile executable on your IIB server. Specifying this value will initialize your command environment. Only specify this 
-           path if your command environment needs initializing.' default-value='${p?:resource/WebSphere Message Broker/mqsiprofile}'/>
+        <property-ui default-value="${p?:resource/WebSphere Message Broker/mqsiprofile}" description="The absolute path to the mqsiprofile executable on your IIB server. Specifying this value will initialize your command environment. Only specify this             path if your command environment needs initializing." label="MQSIPROFILE Executable" type="textBox"/>
       </property>
       <property name="shell">
-        <property-ui hidden="true" type='textBox' label='Shell' description='Path to your shell executable file.' default-value="/bin/sh"/>
+        <property-ui default-value="/bin/sh" description="Path to your shell executable file." hidden="true" label="Shell" type="textBox"/>
       </property>
     </properties>
     <post-processing><![CDATA[
@@ -149,63 +137,123 @@
       <arg value="-cp"/>
       <arg path="classes:"/>
       <arg file="mqsi_profile_wrapper.groovy"/>
-      <arg value="wmb_create_exe_group_if_needed.groovy"/>
+      <arg value="wmb_create_exe_groups_if_needed.groovy"/>
       <arg file="${PLUGIN_INPUT_PROPS}"/>
       <arg file="${PLUGIN_OUTPUT_PROPS}"/>
     </command>
   </step-type>
-  <step-type name='Set Execution Group Properties'>
-    <description>Set runtime properties for an execution group.</description>
+
+  <step-type name="Restart Execution Groups">
+    <description>Restart execution groups if they exist on the broker.</description>
     <properties>
-      <property name='executionGroup' required='true'>
-        <property-ui type='textBox' label='Execution Group' description='Name of the Execution Group to Deploy to.' />
+      <property name="executionGroup" required="true">
+        <property-ui description="Comma-separated list of Execution Groups to restart." label="Execution Groups" type="textBox"/>
       </property>
-      <property name='properties' required='true'>
-        <property-ui type='textAreaBox' label='Properties' description='A new line separated list of properties to set in the format name=value' />
+      <property name="brokerHost">
+        <property-ui default-value="${p?:resource/WebSphere Message Broker/ip}" description="The ip address of the target server for a remote connection." label="IP" type="textBox"/>
       </property>
-      <property name='brokerHost'>
-        <property-ui type='textBox' label="IP" description="The ip address of the target server for a remote connection." default-value='${p?:resource/WebSphere Message Broker/ip}'/>
+      <property name="port">
+        <property-ui default-value="${p?:resource/WebSphere Message Broker/port}" description="The port of the target server for a remote connection." label="Port" type="textBox"/>
       </property>
-      <property name='port'>
-        <property-ui type='textBox' label='Port' description='The port of the target server for a remote connection.' default-value='${p?:resource/WebSphere Message Broker/port}'/>
+      <property name="useSSL">
+        <property-ui default-value="false" description="Administration security authentication/authorization. This option is only available in IIB version 10." label="Use SSL" type="checkBox"/>
       </property>
-      <property name='useSSL'>
-        <property-ui type='checkBox' label='Use SSL' description='Administration security authentication/authorization. This option is only available in IIB version 10.' default-value='false'/>
+      <property name="integrationNodeName">
+        <property-ui default-value="${p?:resource/WebSphere Message Broker/integrationNodeName}" description="Name of Integration Node. Specify this value to create a local broker connection." label="Integration Node Name" type="textBox"/>
       </property>
-      <property name='integrationNodeName'>
-        <property-ui type='textBox' label='Integration Node Name' description='Name of Integration Node. Specify this value to create a local broker connection.' default-value='${p?:resource/WebSphere Message Broker/integrationNodeName}'/>
+      <property name="channel">
+        <property-ui default-value="${p?:resource/WebSphere Message Broker/channel}" description="The name of the channel to use. Must be defined on the queue manager. Specify this value if you are using below version 10 of IIB." label="Channel" type="textBox"/>
       </property>
-      <property name='channel'>
-        <property-ui type='textBox' label='Channel' description='The name of the channel to use. Must be defined on the queue manager. Specify this value if you are using below version 10 of IIB.' default-value='${p?:resource/WebSphere Message Broker/channel}'/>
+      <property name="queueManager">
+        <property-ui default-value="${p?:resource/WebSphere Message Broker/port}" description="The WebSphere MQ Queue Manager which the broker is using. Specify this value if you are using below version 10 of IIB." label="Queue Manager" type="textBox"/>
       </property>
-      <property name='queueManager'>
-        <property-ui type='textBox' label='Queue Manager' description='The WebSphere MQ Queue Manager which the broker is using. Specify this value if you are using below version 10 of IIB.' default-value='${p?:resource/WebSphere Message Broker/port}'/>
+      <property name="username">
+        <property-ui description="Username for secure authentication. Explicit user authentication only available with IIB 10." label="Username" type="textBox"/>
       </property>
-      <property name='username'>
-        <property-ui type='textBox' label='Username' description='Username for secure authentication. Explicit user authentication only available with IIB 10.'/>
-      </property>
-      <property name='password'>
-        <property-ui type='secureBox' label='Password' description='Password for secure authentication. Explicit user authentication only available with IIB 10.'/>
+      <property name="password">
+        <property-ui description="Password for secure authentication. Explicit user authentication only available with IIB 10." label="Password" type="secureBox"/>
       </property>
       <property name="debugFile">
-        <property-ui type='textBox' label='Trace File' description='The file to use for trace logging. If not set trace logging will be disabled.'/>
+        <property-ui description="The file to use for trace logging. If not set trace logging will be disabled." label="Trace File" type="textBox"/>
       </property>
-      <property name="version" required='true'>
-        <property-ui type='textBox' label='IBM Integration Bus Version' description='The version of IBM Integration Bus. This determines which API will be required. (i.e. 7.0.0.1, 8.0.0.1, 9.0.0.1, or 10.0.0.1)' default-value='${p?:resource/WebSphere Message Broker/version}'/>
+      <property name="version" required="true">
+        <property-ui default-value="${p:resource/WebSphere Message Broker/version}" description="Enter the version of the installed IBM Integration Bus. This determines which API will be required. For example: 10.0.0.1" label="IBM Integration Bus Version" type="textBox"/>
       </property>
-      <property name='jarPath' required='true'>
-        <property-ui type='textBox'
-                     label='Jar Path'
-                     description="The full path containing the specific jars required for your version of IBM Integration Bus. Version 10 requires the IntegrationAPI.jar (e.g. C:\Program Files\IBM\MQSI\7.0\classes\IntegrationAPI.jar).
-                                  IIB Versions below 10 require both ConfigManagerProxy.jar and com.ibm.mq.jar (e.g C:\ProgramFiles\IBM\WebSphere MQ\java\lib\ConfigManagerProxy.jar:C:\Program Files\IBM\WebSphere MQ\java\lib\com.ibm.mq.jar)"
-                     default-value='${p:resource/WebSphere Message Broker/jarPath}'/>
+      <property name="jarPath" required="true">
+        <property-ui default-value="${p:resource/WebSphere Message Broker/jarPath}" description="The full path containing the specific jars required for your version of IBM Integration Bus. Version 10 requires the IntegrationAPI.jar (e.g. C:\Program Files\IBM\MQSI\7.0\classes\IntegrationAPI.jar).                                   IIB Versions below 10 require both ConfigManagerProxy.jar and com.ibm.mq.jar (e.g C:\ProgramFiles\IBM\WebSphere MQ\java\lib\ConfigManagerProxy.jar:C:\Program Files\IBM\WebSphere MQ\java\lib\com.ibm.mq.jar)" label="Jar Path" type="textBox"/>
       </property>
       <property name="mqsiprofile">
-        <property-ui type='textBox' label='MQSIPROFILE Executable' description='The absolute path to the mqsiprofile executable on your IIB server. Specifying this value will initialize your command environment. Only specify this
-           path if your command environment needs initializing.' default-value='${p?:resource/WebSphere Message Broker/mqsiprofile}'/>
+        <property-ui default-value="${p?:resource/WebSphere Message Broker/mqsiprofile}" description="The absolute path to the mqsiprofile executable on your IIB server. Specifying this value will initialize your command environment. Only specify this             path if your command environment needs initializing." label="MQSIPROFILE Executable" type="textBox"/>
       </property>
       <property name="shell">
-        <property-ui hidden="true" type='textBox' label='Shell' description='Path to your shell executable file.' default-value="/bin/sh"/>
+        <property-ui default-value="/bin/sh" description="Path to your shell executable file." hidden="true" label="Shell" type="textBox"/>
+      </property>
+    </properties>
+    <post-processing><![CDATA[
+ if (properties.get("exitCode") != 0) {
+ properties.put(new java.lang.String("Status"), new java.lang.String("Failure"));
+ }
+ else {
+ properties.put("Status", "Success");
+ }
+ ]]></post-processing>
+    <command program="${GROOVY_HOME}/bin/groovy">
+      <arg value="-cp"/>
+      <arg path="classes:"/>
+      <arg file="mqsi_profile_wrapper.groovy"/>
+      <arg value="wmb_restart_execution_group.groovy"/>
+      <arg file="${PLUGIN_INPUT_PROPS}"/>
+      <arg file="${PLUGIN_OUTPUT_PROPS}"/>
+    </command>
+  </step-type>
+
+  <step-type name="Set Execution Group Properties">
+    <description>Set runtime properties for an execution group.</description>
+    <properties>
+      <property name="executionGroup" required="true">
+        <property-ui description="Name of the Execution Group to Deploy to." label="Execution Group" type="textBox"/>
+      </property>
+      <property name="properties" required="true">
+        <property-ui description="A new line separated list of properties to set in the format name=value" label="Properties" type="textAreaBox"/>
+      </property>
+      <property name="brokerHost">
+        <property-ui default-value="${p?:resource/WebSphere Message Broker/ip}" description="The ip address of the target server for a remote connection." label="IP" type="textBox"/>
+      </property>
+      <property name="port">
+        <property-ui default-value="${p?:resource/WebSphere Message Broker/port}" description="The port of the target server for a remote connection." label="Port" type="textBox"/>
+      </property>
+      <property name="useSSL">
+        <property-ui default-value="false" description="Administration security authentication/authorization. This option is only available in IIB version 10." label="Use SSL" type="checkBox"/>
+      </property>
+      <property name="integrationNodeName">
+        <property-ui default-value="${p?:resource/WebSphere Message Broker/integrationNodeName}" description="Name of Integration Node. Specify this value to create a local broker connection." label="Integration Node Name" type="textBox"/>
+      </property>
+      <property name="channel">
+        <property-ui default-value="${p?:resource/WebSphere Message Broker/channel}" description="The name of the channel to use. Must be defined on the queue manager. Specify this value if you are using below version 10 of IIB." label="Channel" type="textBox"/>
+      </property>
+      <property name="queueManager">
+        <property-ui default-value="${p?:resource/WebSphere Message Broker/port}" description="The WebSphere MQ Queue Manager which the broker is using. Specify this value if you are using below version 10 of IIB." label="Queue Manager" type="textBox"/>
+      </property>
+      <property name="username">
+        <property-ui description="Username for secure authentication. Explicit user authentication only available with IIB 10." label="Username" type="textBox"/>
+      </property>
+      <property name="password">
+        <property-ui description="Password for secure authentication. Explicit user authentication only available with IIB 10." label="Password" type="secureBox"/>
+      </property>
+      <property name="debugFile">
+        <property-ui description="The file to use for trace logging. If not set trace logging will be disabled." label="Trace File" type="textBox"/>
+      </property>
+      <property name="version" required="true">
+        <property-ui default-value="${p:resource/WebSphere Message Broker/version}" description="Enter the version of the installed IBM Integration Bus. This determines which API will be required. For example: 10.0.0.1" label="IBM Integration Bus Version" type="textBox"/>
+      </property>
+      <property name="jarPath" required="true">
+        <property-ui default-value="${p:resource/WebSphere Message Broker/jarPath}" description="The full path containing the specific jars required for your version of IBM Integration Bus. Version 10 requires the IntegrationAPI.jar (e.g. C:\Program Files\IBM\MQSI\7.0\classes\IntegrationAPI.jar).                                   IIB Versions below 10 require both ConfigManagerProxy.jar and com.ibm.mq.jar (e.g C:\ProgramFiles\IBM\WebSphere MQ\java\lib\ConfigManagerProxy.jar:C:\Program Files\IBM\WebSphere MQ\java\lib\com.ibm.mq.jar)" label="Jar Path" type="textBox"/>
+      </property>
+      <property name="mqsiprofile">
+        <property-ui default-value="${p?:resource/WebSphere Message Broker/mqsiprofile}" description="The absolute path to the mqsiprofile executable on your IIB server. Specifying this value will initialize your command environment. Only specify this            path if your command environment needs initializing." label="MQSIPROFILE Executable" type="textBox"/>
+      </property>
+      <property name="shell">
+        <property-ui default-value="/bin/sh" description="Path to your shell executable file." hidden="true" label="Shell" type="textBox"/>
       </property>
     </properties>
     <post-processing><![CDATA[
@@ -225,75 +273,62 @@
       <arg file="${PLUGIN_OUTPUT_PROPS}"/>
     </command>
   </step-type>
-  <step-type name='Set Message Flows Properties'>
+  <step-type name="Set Message Flows Properties">
     <description>Sets runtime properties on a list of message flows.</description>
     <properties>
-      <property name='dirOffset'>
-        <property-ui type='textBox'
-                     label='Directory Offset'
-                     description="Path under the current working directory where you want the step to execute.
-                                  Absolute paths are not allowed." />
+      <property name="dirOffset">
+        <property-ui description="Path under the current working directory where you want the step to execute.                                   Absolute paths are not allowed." label="Directory Offset" type="textBox"/>
       </property>
-      <property name='executionGroup' required='true'>
-        <property-ui type='textBox' label='Execution Group' description='Name of the Execution Group to Deploy to.' />
+      <property name="executionGroup" required="true">
+        <property-ui description="Name of the Execution Group to Deploy to." label="Execution Group" type="textBox"/>
       </property>
-      <property name='msgFlows'>
-        <property-ui type='textAreaBox' label='Message Flows' description='A new line separated list of message flows.' />
+      <property name="msgFlows">
+        <property-ui description="A new line separated list of message flows." label="Message Flows" type="textAreaBox"/>
       </property>
-      <property name='properties'>
-        <property-ui type='textAreaBox' label='Properties' description='A new line separated list of properties to set in the format name=value' />
+      <property name="properties">
+        <property-ui description="A new line separated list of properties to set in the format name=value" label="Properties" type="textAreaBox"/>
       </property>
-      <property name='propertyFile'>
-        <property-ui type='textBox'
-                     label="Property File"
-                     description="Specify the name and path to a property file to use as a source of the properties
-                                  instead of explicitly listing the properties in the Properties field and the flows in
-                                  the Message Flows field. The property file would be the same format as the one used by the
-                                  mqsiapplybaroverride command."/>
+      <property name="propertyFile">
+        <property-ui description="Specify the name and path to a property file to use as a source of the properties                                   instead of explicitly listing the properties in the Properties field and the flows in                                   the Message Flows field. The property file would be the same format as the one used by the                                   mqsiapplybaroverride command." label="Property File" type="textBox"/>
       </property>
-      <property name='brokerHost'>
-        <property-ui type='textBox' label="IP" description="The ip address of the target server for a remote connection." default-value='${p?:resource/WebSphere Message Broker/ip}'/>
+      <property name="brokerHost">
+        <property-ui default-value="${p?:resource/WebSphere Message Broker/ip}" description="The ip address of the target server for a remote connection." label="IP" type="textBox"/>
       </property>
-      <property name='port'>
-        <property-ui type='textBox' label='Port' description='The port of the target server for a remote connection.' default-value='${p?:resource/WebSphere Message Broker/port}'/>
+      <property name="port">
+        <property-ui default-value="${p?:resource/WebSphere Message Broker/port}" description="The port of the target server for a remote connection." label="Port" type="textBox"/>
       </property>
-      <property name='useSSL'>
-        <property-ui type='checkBox' label='Use SSL' description='Administration security authentication/authorization. This option is only available in IIB version 10.' default-value='false'/>
+      <property name="useSSL">
+        <property-ui default-value="false" description="Administration security authentication/authorization. This option is only available in IIB version 10." label="Use SSL" type="checkBox"/>
       </property>
-      <property name='integrationNodeName'>
-        <property-ui type='textBox' label='Integration Node Name' description='Name of Integration Node. Specify this value to create a local broker connection.' default-value='${p?:resource/WebSphere Message Broker/integrationNodeName}'/>
+      <property name="integrationNodeName">
+        <property-ui default-value="${p?:resource/WebSphere Message Broker/integrationNodeName}" description="Name of Integration Node. Specify this value to create a local broker connection." label="Integration Node Name" type="textBox"/>
       </property>
-      <property name='channel'>
-        <property-ui type='textBox' label='Channel' description='The name of the channel to use. Must be defined on the queue manager. Specify this value if you are using below version 10 of IIB.' default-value='${p?:resource/WebSphere Message Broker/channel}'/>
+      <property name="channel">
+        <property-ui default-value="${p?:resource/WebSphere Message Broker/channel}" description="The name of the channel to use. Must be defined on the queue manager. Specify this value if you are using below version 10 of IIB." label="Channel" type="textBox"/>
       </property>
-      <property name='queueManager'>
-        <property-ui type='textBox' label='Queue Manager' description='The WebSphere MQ Queue Manager which the broker is using. Specify this value if you are using below version 10 of IIB.' default-value='${p?:resource/WebSphere Message Broker/port}'/>
+      <property name="queueManager">
+        <property-ui default-value="${p?:resource/WebSphere Message Broker/port}" description="The WebSphere MQ Queue Manager which the broker is using. Specify this value if you are using below version 10 of IIB." label="Queue Manager" type="textBox"/>
       </property>
-      <property name='username'>
-        <property-ui type='textBox' label='Username' description='Username for secure authentication. Explicit user authentication only available with IIB 10.'/>
+      <property name="username">
+        <property-ui description="Username for secure authentication. Explicit user authentication only available with IIB 10." label="Username" type="textBox"/>
       </property>
-      <property name='password'>
-        <property-ui type='secureBox' label='Password' description='Password for secure authentication. Explicit user authentication only available with IIB 10.'/>
+      <property name="password">
+        <property-ui description="Password for secure authentication. Explicit user authentication only available with IIB 10." label="Password" type="secureBox"/>
       </property>
       <property name="debugFile">
-        <property-ui type='textBox' label='Trace File' description='The file to use for trace logging. If not set trace logging will be disabled.'/>
+        <property-ui description="The file to use for trace logging. If not set trace logging will be disabled." label="Trace File" type="textBox"/>
       </property>
-      <property name="version" required='true'>
-        <property-ui type='textBox' label='IBM Integration Bus Version' description='The version of IBM Integration Bus. This determines which API will be required. (i.e. 7.0.0.1, 8.0.0.1, 9.0.0.1, or 10.0.0.1)' default-value='${p?:resource/WebSphere Message Broker/version}'/>
+      <property name="version" required="true">
+        <property-ui default-value="${p:resource/WebSphere Message Broker/version}" description="Enter the version of the installed IBM Integration Bus. This determines which API will be required. For example: 10.0.0.1" label="IBM Integration Bus Version" type="textBox"/>
       </property>
-      <property name='jarPath' required='true'>
-        <property-ui type='textBox'
-                     label='Jar Path'
-                     description="The full path containing the specific jars required for your version of IBM Integration Bus. Version 10 requires the IntegrationAPI.jar (e.g. C:\Program Files\IBM\MQSI\7.0\classes\IntegrationAPI.jar).
-                                  IIB Versions below 10 require both ConfigManagerProxy.jar and com.ibm.mq.jar (e.g C:\ProgramFiles\IBM\WebSphere MQ\java\lib\ConfigManagerProxy.jar:C:\Program Files\IBM\WebSphere MQ\java\lib\com.ibm.mq.jar)"
-                     default-value='${p:resource/WebSphere Message Broker/jarPath}'/>
+      <property name="jarPath" required="true">
+        <property-ui default-value="${p:resource/WebSphere Message Broker/jarPath}" description="The full path containing the specific jars required for your version of IBM Integration Bus. Version 10 requires the IntegrationAPI.jar (e.g. C:\Program Files\IBM\MQSI\7.0\classes\IntegrationAPI.jar).                                   IIB Versions below 10 require both ConfigManagerProxy.jar and com.ibm.mq.jar (e.g C:\ProgramFiles\IBM\WebSphere MQ\java\lib\ConfigManagerProxy.jar:C:\Program Files\IBM\WebSphere MQ\java\lib\com.ibm.mq.jar)" label="Jar Path" type="textBox"/>
       </property>
       <property name="mqsiprofile">
-        <property-ui type='textBox' label='MQSIPROFILE Executable' description='The absolute path to the mqsiprofile executable on your IIB server. Specifying this value will initialize your command environment. Only specify this
-           path if your command environment needs initializing.' default-value='${p?:resource/WebSphere Message Broker/mqsiprofile}'/>
+        <property-ui default-value="${p?:resource/WebSphere Message Broker/mqsiprofile}" description="The absolute path to the mqsiprofile executable on your IIB server. Specifying this value will initialize your command environment. Only specify this            path if your command environment needs initializing." label="MQSIPROFILE Executable" type="textBox"/>
       </property>
       <property name="shell">
-        <property-ui hidden="true" type='textBox' label='Shell' description='Path to your shell executable file.' default-value="/bin/sh"/>
+        <property-ui default-value="/bin/sh" description="Path to your shell executable file." hidden="true" label="Shell" type="textBox"/>
       </property>
     </properties>
     <post-processing><![CDATA[
@@ -313,61 +348,56 @@
       <arg file="${PLUGIN_OUTPUT_PROPS}"/>
     </command>
   </step-type>
-   <step-type name='Delete Flows Using RegEx'>
+   <step-type name="Delete Flows Using RegEx">
     <description>Delete WMB flows that have been deployed using a BAR file matching the given regular expression. Useful for deploying into shared execution groups.</description>
     <properties>
-      <property name='regex' required='true'>
-        <property-ui type='textBox' label='RegEx' description='Java compliant regular expression for matching the BAR file name of deployed flows.' />
+      <property name="regex" required="true">
+        <property-ui description="Java compliant regular expression for matching the BAR file name of deployed flows." label="RegEx" type="textBox"/>
       </property>
-      <property name='executionGroup' required='true'>
-        <property-ui type='textBox' label='Execution Group' description='Name of the Execution Group to Deploy to.' />
+      <property name="executionGroup" required="true">
+        <property-ui description="Name of the Execution Group to Deploy to." label="Execution Group" type="textBox"/>
       </property>
-      <property name='timeout'>
-        <property-ui type='textBox' label='Timeout' description='The timeout to wait for each bar file deploy result to come back in Milliseconds. Defaults to 60000'/>
+      <property name="timeout">
+        <property-ui description="The timeout to wait for each bar file deploy result to come back in Milliseconds. Defaults to 60000" label="Timeout" type="textBox"/>
       </property>
-      <property name='brokerHost'>
-        <property-ui type='textBox' label="IP" description="The ip address of the target server for a remote connection." default-value='${p?:resource/WebSphere Message Broker/ip}'/>
+      <property name="brokerHost">
+        <property-ui default-value="${p?:resource/WebSphere Message Broker/ip}" description="The ip address of the target server for a remote connection." label="IP" type="textBox"/>
       </property>
-      <property name='port'>
-        <property-ui type='textBox' label='Port' description='The port of the target server for a remote connection.' default-value='${p?:resource/WebSphere Message Broker/port}'/>
+      <property name="port">
+        <property-ui default-value="${p?:resource/WebSphere Message Broker/port}" description="The port of the target server for a remote connection." label="Port" type="textBox"/>
       </property>
-      <property name='useSSL'>
-        <property-ui type='checkBox' label='Use SSL' description='Administration security authentication/authorization. This option is only available in IIB version 10.' default-value='false'/>
+      <property name="useSSL">
+        <property-ui default-value="false" description="Administration security authentication/authorization. This option is only available in IIB version 10." label="Use SSL" type="checkBox"/>
       </property>
-      <property name='integrationNodeName'>
-        <property-ui type='textBox' label='Integration Node Name' description='Name of Integration Node. Specify this value to create a local broker connection.' default-value='${p?:resource/WebSphere Message Broker/integrationNodeName}'/>
+      <property name="integrationNodeName">
+        <property-ui default-value="${p?:resource/WebSphere Message Broker/integrationNodeName}" description="Name of Integration Node. Specify this value to create a local broker connection." label="Integration Node Name" type="textBox"/>
       </property>
-      <property name='channel'>
-        <property-ui type='textBox' label='Channel' description='The name of the channel to use. Must be defined on the queue manager. Specify this value if you are using below version 10 of IIB.' default-value='${p?:resource/WebSphere Message Broker/channel}'/>
+      <property name="channel">
+        <property-ui default-value="${p?:resource/WebSphere Message Broker/channel}" description="The name of the channel to use. Must be defined on the queue manager. Specify this value if you are using below version 10 of IIB." label="Channel" type="textBox"/>
       </property>
-      <property name='queueManager'>
-        <property-ui type='textBox' label='Queue Manager' description='The WebSphere MQ Queue Manager which the broker is using. Specify this value if you are using below version 10 of IIB.' default-value='${p?:resource/WebSphere Message Broker/port}'/>
+      <property name="queueManager">
+        <property-ui default-value="${p?:resource/WebSphere Message Broker/port}" description="The WebSphere MQ Queue Manager which the broker is using. Specify this value if you are using below version 10 of IIB." label="Queue Manager" type="textBox"/>
       </property>
-      <property name='username'>
-        <property-ui type='textBox' label='Username' description='Username for secure authentication. Explicit user authentication only available with IIB 10.'/>
+      <property name="username">
+        <property-ui description="Username for secure authentication. Explicit user authentication only available with IIB 10." label="Username" type="textBox"/>
       </property>
-      <property name='password'>
-        <property-ui type='secureBox' label='Password' description='Password for secure authentication. Explicit user authentication only available with IIB 10.'/>
+      <property name="password">
+        <property-ui description="Password for secure authentication. Explicit user authentication only available with IIB 10." label="Password" type="secureBox"/>
       </property>
       <property name="debugFile">
-        <property-ui type='textBox' label='Trace File' description='The file to use for trace logging. If not set trace logging will be disabled.'/>
+        <property-ui description="The file to use for trace logging. If not set trace logging will be disabled." label="Trace File" type="textBox"/>
       </property>
-      <property name="version" required='true'>
-        <property-ui type='textBox' label='IBM Integration Bus Version' description='The version of IBM Integration Bus. This determines which API will be required. (i.e. 7.0.0.1, 8.0.0.1, 9.0.0.1, or 10.0.0.1)' default-value='${p?:resource/WebSphere Message Broker/version}'/>
+      <property name="version" required="true">
+        <property-ui default-value="${p:resource/WebSphere Message Broker/version}" description="Enter the version of the installed IBM Integration Bus. This determines which API will be required. For example: 10.0.0.1" label="IBM Integration Bus Version" type="textBox"/>
       </property>
-      <property name='jarPath' required='true'>
-        <property-ui type='textBox'
-                     label='Jar Path'
-                     description="The full path containing the specific jars required for your version of IBM Integration Bus. Version 10 requires the IntegrationAPI.jar (e.g. C:\Program Files\IBM\MQSI\7.0\classes\IntegrationAPI.jar).
-                                  IIB Versions below 10 require both ConfigManagerProxy.jar and com.ibm.mq.jar (e.g C:\ProgramFiles\IBM\WebSphere MQ\java\lib\ConfigManagerProxy.jar:C:\Program Files\IBM\WebSphere MQ\java\lib\com.ibm.mq.jar)"
-                     default-value='${p:resource/WebSphere Message Broker/jarPath}' />
+      <property name="jarPath" required="true">
+        <property-ui default-value="${p:resource/WebSphere Message Broker/jarPath}" description="The full path containing the specific jars required for your version of IBM Integration Bus. Version 10 requires the IntegrationAPI.jar (e.g. C:\Program Files\IBM\MQSI\7.0\classes\IntegrationAPI.jar).                                   IIB Versions below 10 require both ConfigManagerProxy.jar and com.ibm.mq.jar (e.g C:\ProgramFiles\IBM\WebSphere MQ\java\lib\ConfigManagerProxy.jar:C:\Program Files\IBM\WebSphere MQ\java\lib\com.ibm.mq.jar)" label="Jar Path" type="textBox"/>
       </property>
       <property name="mqsiprofile">
-        <property-ui type='textBox' label='MQSIPROFILE Executable' description='The absolute path to the mqsiprofile executable on your IIB server. Specifying this value will initialize your command environment. Only specify this
-           path if your command environment needs initializing.' default-value='${p?:resource/WebSphere Message Broker/mqsiprofile}'/>
+        <property-ui default-value="${p?:resource/WebSphere Message Broker/mqsiprofile}" description="The absolute path to the mqsiprofile executable on your IIB server. Specifying this value will initialize your command environment. Only specify this            path if your command environment needs initializing." label="MQSIPROFILE Executable" type="textBox"/>
       </property>
       <property name="shell">
-        <property-ui hidden="true" type='textBox' label='Shell' description='Path to your shell executable file.' default-value="/bin/sh"/>
+        <property-ui default-value="/bin/sh" description="Path to your shell executable file." hidden="true" label="Shell" type="textBox"/>
       </property>
     </properties>
     <post-processing><![CDATA[
@@ -388,61 +418,56 @@
     </command>
   </step-type>
 
-  <step-type name='Create Or Update Configurable Service'>
+  <step-type name="Create Or Update Configurable Service">
     <description>Create a configurable service if it doesn't exist. If it does, update its properties.</description>
     <properties>
-      <property name='servName' required='true'>
-        <property-ui type='textBox' label='Service Name' description='The name of the service to be created or updated'/>
+      <property name="servName" required="true">
+        <property-ui description="The name of the service to be created or updated" label="Service Name" type="textBox"/>
       </property>
-      <property name='servType' required='true'>
-        <property-ui type='textBox' label='Service Type' description='The type of the service. If there is a service matching Service Name that is not of this type, the step will fail.'/>
+      <property name="servType" required="true">
+        <property-ui description="The type of the service. If there is a service matching Service Name that is not of this type, the step will fail." label="Service Type" type="textBox"/>
       </property>
-      <property name='props' required='true'>
-        <property-ui type='textAreaBox' label='Properties' description='A new line separated list of properties to set in the format name->value' />
+      <property name="props" required="true">
+        <property-ui description="A new line separated list of properties to set in the format name-&gt;value" label="Properties" type="textAreaBox"/>
       </property>
-      <property name='brokerHost'>
-        <property-ui type='textBox' label="IP" description="The ip address of the target server for a remote connection." default-value='${p?:resource/WebSphere Message Broker/ip}'/>
+      <property name="brokerHost">
+        <property-ui default-value="${p?:resource/WebSphere Message Broker/ip}" description="The ip address of the target server for a remote connection." label="IP" type="textBox"/>
       </property>
-      <property name='port'>
-        <property-ui type='textBox' label='Port' description='The port of the target server for a remote connection.' default-value='${p?:resource/WebSphere Message Broker/port}'/>
+      <property name="port">
+        <property-ui default-value="${p?:resource/WebSphere Message Broker/port}" description="The port of the target server for a remote connection." label="Port" type="textBox"/>
       </property>
-      <property name='useSSL'>
-        <property-ui type='checkBox' label='Use SSL' description='Administration security authentication/authorization. This option is only available in IIB version 10.' default-value='false'/>
+      <property name="useSSL">
+        <property-ui default-value="false" description="Administration security authentication/authorization. This option is only available in IIB version 10." label="Use SSL" type="checkBox"/>
       </property>
-      <property name='integrationNodeName'>
-        <property-ui type='textBox' label='Integration Node Name' description='Name of Integration Node. Specify this value to create a local broker connection.' default-value='${p?:resource/WebSphere Message Broker/integrationNodeName}'/>
+      <property name="integrationNodeName">
+        <property-ui default-value="${p?:resource/WebSphere Message Broker/integrationNodeName}" description="Name of Integration Node. Specify this value to create a local broker connection." label="Integration Node Name" type="textBox"/>
       </property>
-      <property name='channel'>
-        <property-ui type='textBox' label='Channel' description='The name of the channel to use. Must be defined on the queue manager. Specify this value if you are using below version 10 of IIB.' default-value='${p?:resource/WebSphere Message Broker/channel}'/>
+      <property name="channel">
+        <property-ui default-value="${p?:resource/WebSphere Message Broker/channel}" description="The name of the channel to use. Must be defined on the queue manager. Specify this value if you are using below version 10 of IIB." label="Channel" type="textBox"/>
       </property>
-      <property name='queueManager'>
-        <property-ui type='textBox' label='Queue Manager' description='The WebSphere MQ Queue Manager which the broker is using. Specify this value if you are using below version 10 of IIB.' default-value='${p?:resource/WebSphere Message Broker/port}'/>
+      <property name="queueManager">
+        <property-ui default-value="${p?:resource/WebSphere Message Broker/port}" description="The WebSphere MQ Queue Manager which the broker is using. Specify this value if you are using below version 10 of IIB." label="Queue Manager" type="textBox"/>
       </property>
-      <property name='username'>
-        <property-ui type='textBox' label='Username' description='Username for secure authentication. Explicit user authentication only available with IIB 10.'/>
+      <property name="username">
+        <property-ui description="Username for secure authentication. Explicit user authentication only available with IIB 10." label="Username" type="textBox"/>
       </property>
-      <property name='password'>
-        <property-ui type='secureBox' label='Password' description='Password for secure authentication. Explicit user authentication only available with IIB 10.'/>
+      <property name="password">
+        <property-ui description="Password for secure authentication. Explicit user authentication only available with IIB 10." label="Password" type="secureBox"/>
       </property>
       <property name="debugFile">
-        <property-ui type='textBox' label='Trace File' description='The file to use for trace logging. If not set trace logging will be disabled.'/>
+        <property-ui description="The file to use for trace logging. If not set trace logging will be disabled." label="Trace File" type="textBox"/>
       </property>
-      <property name="version" required='true'>
-        <property-ui type='textBox' label='IBM Integration Bus Version' description='The version of IBM Integration Bus. This determines which API will be required. (i.e. 7.0.0.1, 8.0.0.1, 9.0.0.1, or 10.0.0.1)' default-value='${p?:resource/WebSphere Message Broker/version}'/>
+      <property name="version" required="true">
+        <property-ui default-value="${p:resource/WebSphere Message Broker/version}" description="Enter the version of the installed IBM Integration Bus. This determines which API will be required. For example: 10.0.0.1" label="IBM Integration Bus Version" type="textBox"/>
       </property>
-      <property name='jarPath' required='true'>
-        <property-ui type='textBox'
-                     label='Jar Path'
-                     description="The full path containing the specific jars required for your version of IBM Integration Bus. Version 10 requires the IntegrationAPI.jar (e.g. C:\Program Files\IBM\MQSI\7.0\classes\IntegrationAPI.jar).
-                                  IIB Versions below 10 require both ConfigManagerProxy.jar and com.ibm.mq.jar (e.g C:\ProgramFiles\IBM\WebSphere MQ\java\lib\ConfigManagerProxy.jar:C:\Program Files\IBM\WebSphere MQ\java\lib\com.ibm.mq.jar)"
-                     default-value='${p:resource/WebSphere Message Broker/jarPath}' />
+      <property name="jarPath" required="true">
+        <property-ui default-value="${p:resource/WebSphere Message Broker/jarPath}" description="The full path containing the specific jars required for your version of IBM Integration Bus. Version 10 requires the IntegrationAPI.jar (e.g. C:\Program Files\IBM\MQSI\7.0\classes\IntegrationAPI.jar).                                   IIB Versions below 10 require both ConfigManagerProxy.jar and com.ibm.mq.jar (e.g C:\ProgramFiles\IBM\WebSphere MQ\java\lib\ConfigManagerProxy.jar:C:\Program Files\IBM\WebSphere MQ\java\lib\com.ibm.mq.jar)" label="Jar Path" type="textBox"/>
       </property>
       <property name="mqsiprofile">
-        <property-ui type='textBox' label='MQSIPROFILE Executable' description='The absolute path to the mqsiprofile executable on your IIB server. Specifying this value will initialize your command environment. Only specify this
-           path if your command environment needs initializing.' default-value='${p?:resource/WebSphere Message Broker/mqsiprofile}'/>
+        <property-ui default-value="${p?:resource/WebSphere Message Broker/mqsiprofile}" description="The absolute path to the mqsiprofile executable on your IIB server. Specifying this value will initialize your command environment. Only specify this            path if your command environment needs initializing." label="MQSIPROFILE Executable" type="textBox"/>
       </property>
       <property name="shell">
-        <property-ui hidden="true" type='textBox' label='Shell' description='Path to your shell executable file.' default-value="/bin/sh"/>
+        <property-ui default-value="/bin/sh" description="Path to your shell executable file." hidden="true" label="Shell" type="textBox"/>
       </property>
     </properties>
     <post-processing><![CDATA[
@@ -462,58 +487,53 @@
       <arg file="${PLUGIN_OUTPUT_PROPS}"/>
     </command>
   </step-type>
-  <step-type name='Delete Configurable Service'>
+  <step-type name="Delete Configurable Service">
     <description>Delete a configurable service.</description>
     <properties>
-      <property name='servName' required='true'>
-        <property-ui type='textBox' label='Service Name' description='The name of the service to be created or updated'/>
+      <property name="servName" required="true">
+        <property-ui description="The name of the service to be created or updated" label="Service Name" type="textBox"/>
       </property>
-      <property name='servType' required='true'>
-        <property-ui type='textBox' label='Service Type' description='The type of the service. If there is a service matching Service Name that is not of this type, the step will fail.'/>
+      <property name="servType" required="true">
+        <property-ui description="The type of the service. If there is a service matching Service Name that is not of this type, the step will fail." label="Service Type" type="textBox"/>
       </property>
-      <property name='brokerHost'>
-        <property-ui type='textBox' label="IP" description="The ip address of the target server for a remote connection." default-value='${p?:resource/WebSphere Message Broker/ip}'/>
+      <property name="brokerHost">
+        <property-ui default-value="${p?:resource/WebSphere Message Broker/ip}" description="The ip address of the target server for a remote connection." label="IP" type="textBox"/>
       </property>
-      <property name='port'>
-        <property-ui type='textBox' label='Port' description='The port of the target server for a remote connection.' default-value='${p?:resource/WebSphere Message Broker/port}'/>
+      <property name="port">
+        <property-ui default-value="${p?:resource/WebSphere Message Broker/port}" description="The port of the target server for a remote connection." label="Port" type="textBox"/>
       </property>
-      <property name='useSSL'>
-        <property-ui type='checkBox' label='Use SSL' description='Administration security authentication/authorization. This option is only available in IIB version 10.' default-value='false'/>
+      <property name="useSSL">
+        <property-ui default-value="false" description="Administration security authentication/authorization. This option is only available in IIB version 10." label="Use SSL" type="checkBox"/>
       </property>
-      <property name='integrationNodeName'>
-        <property-ui type='textBox' label='Integration Node Name' description='Name of Integration Node. Specify this value to create a local broker connection.' default-value='${p?:resource/WebSphere Message Broker/integrationNodeName}'/>
+      <property name="integrationNodeName">
+        <property-ui default-value="${p?:resource/WebSphere Message Broker/integrationNodeName}" description="Name of Integration Node. Specify this value to create a local broker connection." label="Integration Node Name" type="textBox"/>
       </property>
-      <property name='channel'>
-        <property-ui type='textBox' label='Channel' description='The name of the channel to use. Must be defined on the queue manager. Specify this value if you are using below version 10 of IIB.' default-value='${p?:resource/WebSphere Message Broker/channel}'/>
+      <property name="channel">
+        <property-ui default-value="${p?:resource/WebSphere Message Broker/channel}" description="The name of the channel to use. Must be defined on the queue manager. Specify this value if you are using below version 10 of IIB." label="Channel" type="textBox"/>
       </property>
-      <property name='queueManager'>
-        <property-ui type='textBox' label='Queue Manager' description='The WebSphere MQ Queue Manager which the broker is using. Specify this value if you are using below version 10 of IIB.' default-value='${p?:resource/WebSphere Message Broker/port}'/>
+      <property name="queueManager">
+        <property-ui default-value="${p?:resource/WebSphere Message Broker/port}" description="The WebSphere MQ Queue Manager which the broker is using. Specify this value if you are using below version 10 of IIB." label="Queue Manager" type="textBox"/>
       </property>
-      <property name='username'>
-        <property-ui type='textBox' label='Username' description='Username for secure authentication. Explicit user authentication only available with IIB 10.'/>
+      <property name="username">
+        <property-ui description="Username for secure authentication. Explicit user authentication only available with IIB 10." label="Username" type="textBox"/>
       </property>
-      <property name='password'>
-        <property-ui type='secureBox' label='Password' description='Password for secure authentication. Explicit user authentication only available with IIB 10.'/>
+      <property name="password">
+        <property-ui description="Password for secure authentication. Explicit user authentication only available with IIB 10." label="Password" type="secureBox"/>
       </property>
       <property name="debugFile">
-        <property-ui type='textBox' label='Trace File' description='The file to use for trace logging. If not set trace logging will be disabled.'/>
+        <property-ui description="The file to use for trace logging. If not set trace logging will be disabled." label="Trace File" type="textBox"/>
       </property>
-      <property name="version" required='true'>
-        <property-ui type='textBox' label='IBM Integration Bus Version' description='The version of IBM Integration Bus. This determines which API will be required. (i.e. 7.0.0.1, 8.0.0.1, 9.0.0.1, or 10.0.0.1)' default-value='${p?:resource/WebSphere Message Broker/version}'/>
+      <property name="version" required="true">
+        <property-ui default-value="${p:resource/WebSphere Message Broker/version}" description="Enter the version of the installed IBM Integration Bus. This determines which API will be required. For example: 10.0.0.1" label="IBM Integration Bus Version" type="textBox"/>
       </property>
-      <property name='jarPath' required='true'>
-        <property-ui type='textBox'
-                     label='Jar Path'
-                     description="The full path containing the specific jars required for your version of IBM Integration Bus. Version 10 requires the IntegrationAPI.jar (e.g. C:\Program Files\IBM\MQSI\7.0\classes\IntegrationAPI.jar).
-                                  IIB Versions below 10 require both ConfigManagerProxy.jar and com.ibm.mq.jar (e.g C:\ProgramFiles\IBM\WebSphere MQ\java\lib\ConfigManagerProxy.jar:C:\Program Files\IBM\WebSphere MQ\java\lib\com.ibm.mq.jar)"
-                     default-value='${p:resource/WebSphere Message Broker/jarPath}' />
+      <property name="jarPath" required="true">
+        <property-ui default-value="${p:resource/WebSphere Message Broker/jarPath}" description="The full path containing the specific jars required for your version of IBM Integration Bus. Version 10 requires the IntegrationAPI.jar (e.g. C:\Program Files\IBM\MQSI\7.0\classes\IntegrationAPI.jar).                                   IIB Versions below 10 require both ConfigManagerProxy.jar and com.ibm.mq.jar (e.g C:\ProgramFiles\IBM\WebSphere MQ\java\lib\ConfigManagerProxy.jar:C:\Program Files\IBM\WebSphere MQ\java\lib\com.ibm.mq.jar)" label="Jar Path" type="textBox"/>
       </property>
       <property name="mqsiprofile">
-        <property-ui type='textBox' label='MQSIPROFILE Executable' description='The absolute path to the mqsiprofile executable on your IIB server. Specifying this value will initialize your command environment. Only specify this
-           path if your command environment needs initializing.' default-value='${p?:resource/WebSphere Message Broker/mqsiprofile}'/>
+        <property-ui default-value="${p?:resource/WebSphere Message Broker/mqsiprofile}" description="The absolute path to the mqsiprofile executable on your IIB server. Specifying this value will initialize your command environment. Only specify this            path if your command environment needs initializing." label="MQSIPROFILE Executable" type="textBox"/>
       </property>
       <property name="shell">
-        <property-ui hidden="true" type='textBox' label='Shell' description='Path to your shell executable file.' default-value="/bin/sh"/>
+        <property-ui default-value="/bin/sh" description="Path to your shell executable file." hidden="true" label="Shell" type="textBox"/>
       </property>
     </properties>
     <post-processing><![CDATA[
@@ -534,67 +554,62 @@
     </command>
   </step-type>
 
-  <step-type name='Deploy'>
+  <step-type name="Deploy">
     <description>Deploy a Broker Archive.</description>
     <properties>
-      <property name='barFileNames' required='true'>
-        <property-ui type='textAreaBox' label='Bar File Names' description='Comma-separated list of Broker Archive files to deploy.' />
+      <property name="barFileNames" required="true">
+        <property-ui description="Comma-separated list of Broker Archive files to deploy." label="Bar File Names" type="textAreaBox"/>
       </property>
-      <property name='executionGroup' required='true'>
-        <property-ui type='textBox' label='Execution Group' description='Name of the Execution Group to Deploy to.' />
+      <property name="executionGroup" required="true">
+        <property-ui description="Comma-separated list of Execution Groups to Deploy to." label="Execution Groups" type="textAreaBox"/>
       </property>
-      <property name='fullDeploy'>
-        <property-ui type='checkBox' label='Full Deploy' description='If true empties Execution Group before Deploy.' />
+      <property name="fullDeploy">
+        <property-ui description="If true empties Execution Group before Deploy." label="Full Deploy" type="checkBox"/>
       </property>
-      <property name='timeout'>
-        <property-ui type='textBox' label='Timeout' description='The timeout to wait for each bar file deploy result to come back in Milliseconds. Defaults to 60000'/>
+      <property name="timeout">
+        <property-ui description="The timeout to wait for each bar file deploy result to come back in Milliseconds. Defaults to 60000" label="Timeout" type="textBox"/>
       </property>
-      <property name='startStopMsgFlows'>
-        <property-ui type='checkBox' label='Start/Stop Message Flows' description='Check to stop all Message Flows in the Execution Group before deployment and start all Message Flows after deployment.' />
+      <property name="startStopMsgFlows">
+        <property-ui description="Check to stop all Message Flows in the Execution Group before deployment and start all Message Flows after deployment." label="Start/Stop Message Flows" type="checkBox"/>
       </property>
-      <property name='brokerHost'>
-        <property-ui type='textBox' label="IP" description="The ip address of the target server for a remote connection." default-value='${p?:resource/WebSphere Message Broker/ip}'/>
+      <property name="brokerHost">
+        <property-ui default-value="${p?:resource/WebSphere Message Broker/ip}" description="The ip address of the target server for a remote connection." label="IP" type="textBox"/>
       </property>
-      <property name='port'>
-        <property-ui type='textBox' label='Port' description='The port of the target server for a remote connection.' default-value='${p?:resource/WebSphere Message Broker/port}'/>
+      <property name="port">
+        <property-ui default-value="${p?:resource/WebSphere Message Broker/port}" description="The port of the target server for a remote connection." label="Port" type="textBox"/>
       </property>
-      <property name='useSSL'>
-        <property-ui type='checkBox' label='Use SSL' description='Administration security authentication/authorization. This option is only available in IIB version 10.' default-value='false'/>
+      <property name="useSSL">
+        <property-ui default-value="false" description="Administration security authentication/authorization. This option is only available in IIB version 10." label="Use SSL" type="checkBox"/>
       </property>
-      <property name='integrationNodeName'>
-        <property-ui type='textBox' label='Integration Node Name' description='Name of Integration Node. Specify this value to create a local broker connection.' default-value='${p?:resource/WebSphere Message Broker/integrationNodeName}'/>
+      <property name="integrationNodeName">
+        <property-ui default-value="${p?:resource/WebSphere Message Broker/integrationNodeName}" description="Name of Integration Node. Specify this value to create a local broker connection." label="Integration Node Name" type="textBox"/>
       </property>
-      <property name='channel'>
-        <property-ui type='textBox' label='Channel' description='The name of the channel to use. Must be defined on the queue manager. Specify this value if you are using below version 10 of IIB.' default-value='${p?:resource/WebSphere Message Broker/channel}'/>
+      <property name="channel">
+        <property-ui default-value="${p?:resource/WebSphere Message Broker/channel}" description="The name of the channel to use. Must be defined on the queue manager. Specify this value if you are using below version 10 of IIB." label="Channel" type="textBox"/>
       </property>
-      <property name='queueManager'>
-        <property-ui type='textBox' label='Queue Manager' description='The WebSphere MQ Queue Manager which the broker is using. Specify this value if you are using below version 10 of IIB.' default-value='${p?:resource/WebSphere Message Broker/port}'/>
+      <property name="queueManager">
+        <property-ui default-value="${p?:resource/WebSphere Message Broker/port}" description="The WebSphere MQ Queue Manager which the broker is using. Specify this value if you are using below version 10 of IIB." label="Queue Manager" type="textBox"/>
       </property>
-      <property name='username'>
-        <property-ui type='textBox' label='Username' description='Username for secure authentication. Explicit user authentication only available with IIB 10.'/>
+      <property name="username">
+        <property-ui description="Username for secure authentication. Explicit user authentication only available with IIB 10." label="Username" type="textBox"/>
       </property>
-      <property name='password'>
-        <property-ui type='secureBox' label='Password' description='Password for secure authentication. Explicit user authentication only available with IIB 10.'/>
+      <property name="password">
+        <property-ui description="Password for secure authentication. Explicit user authentication only available with IIB 10." label="Password" type="secureBox"/>
       </property>
       <property name="debugFile">
-        <property-ui type='textBox' label='Trace File' description='The file to use for trace logging. If not set trace logging will be disabled.'/>
+        <property-ui description="The file to use for trace logging. If not set trace logging will be disabled." label="Trace File" type="textBox"/>
       </property>
-      <property name="version" required='true'>
-        <property-ui type='textBox' label='IBM Integration Bus Version' description='The version of IBM Integration Bus. This determines which API will be required. (i.e. 7.0.0.1, 8.0.0.1, 9.0.0.1, or 10.0.0.1)' default-value='${p?:resource/WebSphere Message Broker/version}'/>
+      <property name="version" required="true">
+        <property-ui default-value="${p:resource/WebSphere Message Broker/version}" description="Enter the version of the installed IBM Integration Bus. This determines which API will be required. For example: 10.0.0.1" label="IBM Integration Bus Version" type="textBox"/>
       </property>
-      <property name='jarPath' required='true'>
-        <property-ui type='textBox'
-                     label='Jar Path'
-                     description="The full path containing the specific jars required for your version of IBM Integration Bus. Version 10 requires the IntegrationAPI.jar (e.g. C:\Program Files\IBM\MQSI\7.0\classes\IntegrationAPI.jar).
-                                  IIB Versions below 10 require both ConfigManagerProxy.jar and com.ibm.mq.jar (e.g C:\ProgramFiles\IBM\WebSphere MQ\java\lib\ConfigManagerProxy.jar:C:\Program Files\IBM\WebSphere MQ\java\lib\com.ibm.mq.jar)"
-                     default-value='${p:resource/WebSphere Message Broker/jarPath}' />
+      <property name="jarPath" required="true">
+        <property-ui default-value="${p:resource/WebSphere Message Broker/jarPath}" description="The full path containing the specific jars required for your version of IBM Integration Bus. Version 10 requires the IntegrationAPI.jar (e.g. C:\Program Files\IBM\MQSI\7.0\classes\IntegrationAPI.jar).                                   IIB Versions below 10 require both ConfigManagerProxy.jar and com.ibm.mq.jar (e.g C:\ProgramFiles\IBM\WebSphere MQ\java\lib\ConfigManagerProxy.jar:C:\Program Files\IBM\WebSphere MQ\java\lib\com.ibm.mq.jar)" label="Jar Path" type="textBox"/>
       </property>
       <property name="mqsiprofile">
-        <property-ui type='textBox' label='MQSIPROFILE Executable' description='The absolute path to the mqsiprofile executable on your IIB server. Specifying this value will initialize your command environment. Only specify this
-           path if your command environment needs initializing.' default-value='${p?:resource/WebSphere Message Broker/mqsiprofile}'/>
+        <property-ui default-value="${p?:resource/WebSphere Message Broker/mqsiprofile}" description="The absolute path to the mqsiprofile executable on your IIB server. Specifying this value will initialize your command environment. Only specify this            path if your command environment needs initializing." label="MQSIPROFILE Executable" type="textBox"/>
       </property>
       <property name="shell">
-        <property-ui hidden="true" type='textBox' label='Shell' description='Path to your shell executable file.' default-value="/bin/sh"/>
+        <property-ui default-value="/bin/sh" description="Path to your shell executable file." hidden="true" label="Shell" type="textBox"/>
       </property>
     </properties>
     <post-processing><![CDATA[
@@ -614,58 +629,53 @@
       <arg file="${PLUGIN_OUTPUT_PROPS}"/>
     </command>
   </step-type>
-  <step-type name='Start Message Flows'>
+  <step-type name="Start Message Flows">
     <description>Start Message Flows that are stopped.</description>
     <properties>
-      <property name='executionGroup' required='true'>
-        <property-ui type='textBox' label='Execution Group' description='Name of the Execution Group.' />
+      <property name="executionGroup" required="true">
+        <property-ui description="Name of the Execution Group." label="Execution Group" type="textBox"/>
       </property>
-      <property name='messageFlows'>
-        <property-ui type='textAreaBox' label='Message Flows' description='NewLine-separated list of Message Flow names to start.' />
+      <property name="messageFlows">
+        <property-ui description="NewLine-separated list of Message Flow names to start." label="Message Flows" type="textAreaBox"/>
       </property>
-      <property name='brokerHost'>
-        <property-ui type='textBox' label="IP" description="The ip address of the target server for a remote connection." default-value='${p?:resource/WebSphere Message Broker/ip}'/>
+      <property name="brokerHost">
+        <property-ui default-value="${p?:resource/WebSphere Message Broker/ip}" description="The ip address of the target server for a remote connection." label="IP" type="textBox"/>
       </property>
-      <property name='port'>
-        <property-ui type='textBox' label='Port' description='The port of the target server for a remote connection.' default-value='${p?:resource/WebSphere Message Broker/port}'/>
+      <property name="port">
+        <property-ui default-value="${p?:resource/WebSphere Message Broker/port}" description="The port of the target server for a remote connection." label="Port" type="textBox"/>
       </property>
-      <property name='useSSL'>
-        <property-ui type='checkBox' label='Use SSL' description='Administration security authentication/authorization. This option is only available in IIB version 10.' default-value='false'/>
+      <property name="useSSL">
+        <property-ui default-value="false" description="Administration security authentication/authorization. This option is only available in IIB version 10." label="Use SSL" type="checkBox"/>
       </property>
-      <property name='integrationNodeName'>
-        <property-ui type='textBox' label='Integration Node Name' description='Name of Integration Node. Specify this value to create a local broker connection.' default-value='${p?:resource/WebSphere Message Broker/integrationNodeName}'/>
+      <property name="integrationNodeName">
+        <property-ui default-value="${p?:resource/WebSphere Message Broker/integrationNodeName}" description="Name of Integration Node. Specify this value to create a local broker connection." label="Integration Node Name" type="textBox"/>
       </property>
-      <property name='channel'>
-        <property-ui type='textBox' label='Channel' description='The name of the channel to use. Must be defined on the queue manager. Specify this value if you are using below version 10 of IIB.' default-value='${p?:resource/WebSphere Message Broker/channel}'/>
+      <property name="channel">
+        <property-ui default-value="${p?:resource/WebSphere Message Broker/channel}" description="The name of the channel to use. Must be defined on the queue manager. Specify this value if you are using below version 10 of IIB." label="Channel" type="textBox"/>
       </property>
-      <property name='queueManager'>
-        <property-ui type='textBox' label='Queue Manager' description='The WebSphere MQ Queue Manager which the broker is using. Specify this value if you are using below version 10 of IIB.' default-value='${p?:resource/WebSphere Message Broker/port}'/>
+      <property name="queueManager">
+        <property-ui default-value="${p?:resource/WebSphere Message Broker/port}" description="The WebSphere MQ Queue Manager which the broker is using. Specify this value if you are using below version 10 of IIB." label="Queue Manager" type="textBox"/>
       </property>
-      <property name='username'>
-        <property-ui type='textBox' label='Username' description='Username for secure authentication. Explicit user authentication only available with IIB 10.'/>
+      <property name="username">
+        <property-ui description="Username for secure authentication. Explicit user authentication only available with IIB 10." label="Username" type="textBox"/>
       </property>
-      <property name='password'>
-        <property-ui type='secureBox' label='Password' description='Password for secure authentication. Explicit user authentication only available with IIB 10.'/>
+      <property name="password">
+        <property-ui description="Password for secure authentication. Explicit user authentication only available with IIB 10." label="Password" type="secureBox"/>
       </property>
       <property name="debugFile">
-        <property-ui type='textBox' label='Trace File' description='The file to use for trace logging. If not set trace logging will be disabled.'/>
+        <property-ui description="The file to use for trace logging. If not set trace logging will be disabled." label="Trace File" type="textBox"/>
       </property>
-      <property name="version" required='true'>
-        <property-ui type='textBox' label='IBM Integration Bus Version' description='The version of IBM Integration Bus. This determines which API will be required. (i.e. 7.0.0.1, 8.0.0.1, 9.0.0.1, or 10.0.0.1)' default-value='${p?:resource/WebSphere Message Broker/version}'/>
+      <property name="version" required="true">
+        <property-ui default-value="${p:resource/WebSphere Message Broker/version}" description="Enter the version of the installed IBM Integration Bus. This determines which API will be required. For example: 10.0.0.1" label="IBM Integration Bus Version" type="textBox"/>
       </property>
-      <property name='jarPath' required='true'>
-        <property-ui type='textBox'
-                     label='Jar Path'
-                     description="The full path containing the specific jars required for your version of IBM Integration Bus. The jar files required for version 9 are com.ibm.mq.jar, com.ibm.jmqi.jar, ConfigManagerProxy.jar, and ibmjsseprovider2.jar
-                     (e.g C:\ProgramFiles\IBM\WebSphere MQ\java\lib\ConfigManagerProxy.jar:C:\Program Files\IBM\WebSphere MQ\java\lib\com.ibm.mq.jar:C:\Program Files\IBM\WebSphere MQ\java\lib\com.ibm.mq.JMQI.jar:c:\ProgramFiles\ibm\MQSI\9.0.0.1\JRE17\LIB\ibmjsseprovider2.jar)"
-                     default-value='${p:resource/WebSphere Message Broker/jarPath}' />
+      <property name="jarPath" required="true">
+        <property-ui default-value="${p:resource/WebSphere Message Broker/jarPath}" description="The full path containing the specific jars required for your version of IBM Integration Bus. The jar files required for version 9 are com.ibm.mq.jar, com.ibm.jmqi.jar, ConfigManagerProxy.jar, and ibmjsseprovider2.jar                      (e.g C:\ProgramFiles\IBM\WebSphere MQ\java\lib\ConfigManagerProxy.jar:C:\Program Files\IBM\WebSphere MQ\java\lib\com.ibm.mq.jar:C:\Program Files\IBM\WebSphere MQ\java\lib\com.ibm.mq.JMQI.jar:c:\ProgramFiles\ibm\MQSI\9.0.0.1\JRE17\LIB\ibmjsseprovider2.jar)" label="Jar Path" type="textBox"/>
       </property>
       <property name="mqsiprofile">
-        <property-ui type='textBox' label='MQSIPROFILE Executable' description='The absolute path to the mqsiprofile executable on your IIB server. Specifying this value will initialize your command environment. Only specify this
-           path if your command environment needs initializing.' default-value='${p?:resource/WebSphere Message Broker/mqsiprofile}'/>
+        <property-ui default-value="${p?:resource/WebSphere Message Broker/mqsiprofile}" description="The absolute path to the mqsiprofile executable on your IIB server. Specifying this value will initialize your command environment. Only specify this            path if your command environment needs initializing." label="MQSIPROFILE Executable" type="textBox"/>
       </property>
       <property name="shell">
-        <property-ui hidden="true" type='textBox' label='Shell' description='Path to your shell executable file.' default-value="/bin/sh"/>
+        <property-ui default-value="/bin/sh" description="Path to your shell executable file." hidden="true" label="Shell" type="textBox"/>
       </property>
     </properties>
     <post-processing><![CDATA[
@@ -685,58 +695,53 @@
       <arg file="${PLUGIN_OUTPUT_PROPS}"/>
     </command>
   </step-type>
-  <step-type name='Stop Message Flows'>
+  <step-type name="Stop Message Flows">
     <description>Stop Message Flows that are running.</description>
     <properties>
-      <property name='executionGroup' required='true'>
-        <property-ui type='textBox' label='Execution Group' description='Name of the Execution Group.' />
+      <property name="executionGroup" required="true">
+        <property-ui description="Name of the Execution Group." label="Execution Group" type="textBox"/>
       </property>
-      <property name='messageFlows'>
-        <property-ui type='textAreaBox' label='Message Flows' description='NewLine-separated list of Message Flow names to start.' />
+      <property name="messageFlows">
+        <property-ui description="NewLine-separated list of Message Flow names to start." label="Message Flows" type="textAreaBox"/>
       </property>
-      <property name='brokerHost'>
-        <property-ui type='textBox' label="IP" description="The ip address of the target server for a remote connection." default-value='${p?:resource/WebSphere Message Broker/ip}'/>
+      <property name="brokerHost">
+        <property-ui default-value="${p?:resource/WebSphere Message Broker/ip}" description="The ip address of the target server for a remote connection." label="IP" type="textBox"/>
       </property>
-      <property name='port'>
-        <property-ui type='textBox' label='Port' description='The port of the target server for a remote connection.' default-value='${p?:resource/WebSphere Message Broker/port}'/>
+      <property name="port">
+        <property-ui default-value="${p?:resource/WebSphere Message Broker/port}" description="The port of the target server for a remote connection." label="Port" type="textBox"/>
       </property>
-      <property name='useSSL'>
-        <property-ui type='checkBox' label='Use SSL' description='Administration security authentication/authorization. This option is only available in IIB version 10.' default-value='false'/>
+      <property name="useSSL">
+        <property-ui default-value="false" description="Administration security authentication/authorization. This option is only available in IIB version 10." label="Use SSL" type="checkBox"/>
       </property>
-      <property name='integrationNodeName'>
-        <property-ui type='textBox' label='Integration Node Name' description='Name of Integration Node. Specify this value to create a local broker connection.' default-value='${p?:resource/WebSphere Message Broker/integrationNodeName}'/>
+      <property name="integrationNodeName">
+        <property-ui default-value="${p?:resource/WebSphere Message Broker/integrationNodeName}" description="Name of Integration Node. Specify this value to create a local broker connection." label="Integration Node Name" type="textBox"/>
       </property>
-      <property name='channel'>
-        <property-ui type='textBox' label='Channel' description='The name of the channel to use. Must be defined on the queue manager. Specify this value if you are using below version 10 of IIB.' default-value='${p?:resource/WebSphere Message Broker/channel}'/>
+      <property name="channel">
+        <property-ui default-value="${p?:resource/WebSphere Message Broker/channel}" description="The name of the channel to use. Must be defined on the queue manager. Specify this value if you are using below version 10 of IIB." label="Channel" type="textBox"/>
       </property>
-      <property name='queueManager'>
-        <property-ui type='textBox' label='Queue Manager' description='The WebSphere MQ Queue Manager which the broker is using. Specify this value if you are using below version 10 of IIB.' default-value='${p?:resource/WebSphere Message Broker/port}'/>
+      <property name="queueManager">
+        <property-ui default-value="${p?:resource/WebSphere Message Broker/port}" description="The WebSphere MQ Queue Manager which the broker is using. Specify this value if you are using below version 10 of IIB." label="Queue Manager" type="textBox"/>
       </property>
-      <property name='username'>
-        <property-ui type='textBox' label='Username' description='Username for secure authentication. Explicit user authentication only available with IIB 10.'/>
+      <property name="username">
+        <property-ui description="Username for secure authentication. Explicit user authentication only available with IIB 10." label="Username" type="textBox"/>
       </property>
-      <property name='password'>
-        <property-ui type='secureBox' label='Password' description='Password for secure authentication. Explicit user authentication only available with IIB 10.'/>
+      <property name="password">
+        <property-ui description="Password for secure authentication. Explicit user authentication only available with IIB 10." label="Password" type="secureBox"/>
       </property>
       <property name="debugFile">
-        <property-ui type='textBox' label='Trace File' description='The file to use for trace logging. If not set trace logging will be disabled.'/>
+        <property-ui description="The file to use for trace logging. If not set trace logging will be disabled." label="Trace File" type="textBox"/>
       </property>
-      <property name="version" required='true'>
-        <property-ui type='textBox' label='IBM Integration Bus Version' description='The version of IBM Integration Bus. This determines which API will be required. (i.e. 7.0.0.1, 8.0.0.1, 9.0.0.1, or 10.0.0.1)' default-value='${p?:resource/WebSphere Message Broker/version}'/>
+      <property name="version" required="true">
+        <property-ui default-value="${p:resource/WebSphere Message Broker/version}" description="Enter the version of the installed IBM Integration Bus. This determines which API will be required. For example: 10.0.0.1" label="IBM Integration Bus Version" type="textBox"/>
       </property>
-      <property name='jarPath' required='true'>
-        <property-ui type='textBox'
-                     label='Jar Path'
-                     description="The full path containing the specific jars required for your version of IBM Integration Bus. Version 10 requires the IntegrationAPI.jar (e.g. C:\Program Files\IBM\MQSI\7.0\classes\IntegrationAPI.jar).
-                                  IIB Versions below 10 require both ConfigManagerProxy.jar and com.ibm.mq.jar (e.g C:\ProgramFiles\IBM\WebSphere MQ\java\lib\ConfigManagerProxy.jar:C:\Program Files\IBM\WebSphere MQ\java\lib\com.ibm.mq.jar)"
-                     default-value='${p:resource/WebSphere Message Broker/jarPath}' />
+      <property name="jarPath" required="true">
+        <property-ui default-value="${p:resource/WebSphere Message Broker/jarPath}" description="The full path containing the specific jars required for your version of IBM Integration Bus. Version 10 requires the IntegrationAPI.jar (e.g. C:\Program Files\IBM\MQSI\7.0\classes\IntegrationAPI.jar).                                   IIB Versions below 10 require both ConfigManagerProxy.jar and com.ibm.mq.jar (e.g C:\ProgramFiles\IBM\WebSphere MQ\java\lib\ConfigManagerProxy.jar:C:\Program Files\IBM\WebSphere MQ\java\lib\com.ibm.mq.jar)" label="Jar Path" type="textBox"/>
       </property>
       <property name="mqsiprofile">
-        <property-ui type='textBox' label='MQSIPROFILE Executable' description='The absolute path to the mqsiprofile executable on your IIB server. Specifying this value will initialize your command environment. Only specify this
-           path if your command environment needs initializing.' default-value='${p?:resource/WebSphere Message Broker/mqsiprofile}'/>
+        <property-ui default-value="${p?:resource/WebSphere Message Broker/mqsiprofile}" description="The absolute path to the mqsiprofile executable on your IIB server. Specifying this value will initialize your command environment. Only specify this            path if your command environment needs initializing." label="MQSIPROFILE Executable" type="textBox"/>
       </property>
       <property name="shell">
-        <property-ui hidden="true" type='textBox' label='Shell' description='Path to your shell executable file.' default-value="/bin/sh"/>
+        <property-ui default-value="/bin/sh" description="Path to your shell executable file." hidden="true" label="Shell" type="textBox"/>
       </property>
     </properties>
     <post-processing><![CDATA[
@@ -760,29 +765,19 @@
     <description>Overrides configuration properties inside a Broker Archive file. This step is not compatible with WebSphere Message Broker version 7.</description>
     <properties>
       <property name="includes" required="true">
-        <property-ui type='textAreaBox' label="Bar File Includes" description="New line separated list of broker archive files or patterns to include *.bar includes all bar files in the working directory."/>
+        <property-ui description="New line separated list of broker archive files or patterns to include *.bar includes all bar files in the working directory." label="Bar File Includes" type="textAreaBox"/>
       </property>
       <property name="excludes">
-        <property-ui type='textAreaBox' label="Bar File Excludes" description="New line separated list of Broker Archives to exclude *.bar includes all bar files in the working directory."/>
+        <property-ui description="New line separated list of Broker Archives to exclude *.bar includes all bar files in the working directory." label="Bar File Excludes" type="textAreaBox"/>
       </property>
       <property name="properties" required="true">
-        <property-ui type='textAreaBox' label='Properties' description="A new line separated list of properties to set in the format name=value, or a Property file. (You must specify either Properties or a Properties File, not both)" />
+        <property-ui description="A new line separated list of properties to set in the format name=value, or a Property file. (You must specify either Properties or a Properties File, not both)" label="Properties" type="textAreaBox"/>
       </property>
-      <property name='jarPath' required='true'>
-        <property-ui type='textBox'
-                     label='Jar Path'
-                     description="The full path containing the specific jars required for your version of IBM Integration Bus. Version 10 requires the IntegrationAPI.jar (e.g. C:\Program Files\IBM\MQSI\7.0\classes\IntegrationAPI.jar).
-                                  IIB Versions below 10 require both ConfigManagerProxy.jar and com.ibm.mq.jar (e.g C:\ProgramFiles\IBM\WebSphere MQ\java\lib\ConfigManagerProxy.jar:C:\Program Files\IBM\WebSphere MQ\java\lib\com.ibm.mq.jar)"
-                     default-value='${p:resource/WebSphere Message Broker/jarPath}' />
+      <property name="jarPath" required="true">
+        <property-ui default-value="${p:resource/WebSphere Message Broker/jarPath}" description="The full path containing the specific jars required for your version of IBM Integration Bus. Version 10 requires the IntegrationAPI.jar (e.g. C:\Program Files\IBM\MQSI\7.0\classes\IntegrationAPI.jar).                                   IIB Versions below 10 require both ConfigManagerProxy.jar and com.ibm.mq.jar (e.g C:\ProgramFiles\IBM\WebSphere MQ\java\lib\ConfigManagerProxy.jar:C:\Program Files\IBM\WebSphere MQ\java\lib\com.ibm.mq.jar)" label="Jar Path" type="textBox"/>
       </property>
       <property name="onFail">
-        <property-ui type="selectBox"
-                     label="On Failure"
-                     description="Choice of action when overrides fail on a particular bar file.
-                     (Fast Fail: Step will fail right away when an override failure occurs, and will not attempt to override properties on any additional bar files.
-                     Best Effort: Step will attempt to override properties on all bar files, and will fail at the end if any override failures occurred. Useful to pinpoint which bar files are invalid.
-                     Warn: Step will continue on if an override failure occurs, and print a warning declaring the bar file that failed.)"
-                     default-value="fastFail"/>
+        <property-ui default-value="fastFail" description="Choice of action when overrides fail on a particular bar file.                      (Fast Fail: Step will fail right away when an override failure occurs, and will not attempt to override properties on any additional bar files.                      Best Effort: Step will attempt to override properties on all bar files, and will fail at the end if any override failures occurred. Useful to pinpoint which bar files are invalid.                      Warn: Step will continue on if an override failure occurs, and print a warning declaring the bar file that failed.)" label="On Failure" type="selectBox"/>
             <value label="Fast Fail">fastFail</value>
             <value label="Best Effort">bestEffort</value>
             <value label="Warn">warn</value>
@@ -796,12 +791,12 @@
  properties.put("Status", "Success");
  }
  ]]></post-processing>
-    <command program='${GROOVY_HOME}/bin/groovy'>
-      <arg value='-cp' />
-      <arg path='classes:${jarPath}' />
-      <arg file='wmb_set_bar_props.groovy' />
-      <arg file='${PLUGIN_INPUT_PROPS}' />
-      <arg file='${PLUGIN_OUTPUT_PROPS}' />
+    <command program="${GROOVY_HOME}/bin/groovy">
+      <arg value="-cp"/>
+      <arg path="classes:${jarPath}"/>
+      <arg file="wmb_set_bar_props.groovy"/>
+      <arg file="${PLUGIN_INPUT_PROPS}"/>
+      <arg file="${PLUGIN_OUTPUT_PROPS}"/>
     </command>
   </step-type>
 </plugin>
