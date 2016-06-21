@@ -14,6 +14,7 @@ package com.urbancode.air.plugin.wmbcmp
 import com.ibm.broker.config.proxy.BrokerConnectionParameters
 import com.ibm.broker.config.proxy.BrokerProxy
 import com.ibm.broker.config.proxy.ConfigurableService
+import com.ibm.broker.config.proxy.CompletionCodeType
 import com.ibm.broker.config.proxy.DeployedObject
 import com.ibm.broker.config.proxy.DeployResult
 import com.ibm.broker.config.proxy.ExecutionGroupProxy
@@ -47,6 +48,15 @@ class IIBHelper {
         def port
         def integrationNodeName = props['integrationNodeName']
 
+        if (props['port']) {
+            port = Integer.valueOf(props['port'])
+        }
+
+        if ((!host || !port) && !integrationNodeName) {
+            throw new IllegalStateException("Must specify either an ip and port, or the Integration Node Name to" +
+                                            "connect to a broker.")
+        }
+
         // strip excess decimal points
         version = props['version']
         def integerPoint = version.indexOf('.') // point between integer and digits after the decimal point
@@ -55,10 +65,6 @@ class IIBHelper {
 
         timeout = Long.valueOf(props['timeout']?.trim()?:60000)
         isIncremental = !Boolean.valueOf(props['fullDeploy'])
-
-        if (props['port']) {
-            port = Integer.valueOf(props['port'])
-        }
 
         //local broker connection, regardless of iib version
         if (integrationNodeName) {

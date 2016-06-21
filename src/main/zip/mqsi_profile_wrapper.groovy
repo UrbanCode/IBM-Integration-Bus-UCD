@@ -12,6 +12,8 @@
 import com.urbancode.air.AirPluginTool;
 import com.urbancode.air.CommandHelper;
 
+import java.util.regex.Pattern
+
 final def apTool = new AirPluginTool(this.args[1], this.args[2])
 final def PLUGIN_HOME = System.getenv("PLUGIN_HOME")
 final def isWindows = apTool.isWindows
@@ -19,14 +21,79 @@ final def props = apTool.getStepProperties()
 
 CommandHelper helper = new CommandHelper(new File('.').canonicalFile)
 def argScript = PLUGIN_HOME + File.separator + this.args[0]
-def classpath = PLUGIN_HOME + File.separator + "classes" + File.pathSeparator + props['jarPath']
-def mqsiprofile = new File(props['mqsiprofile'].trim())
+def jarPath = props['jarPath'].trim()
+def classpath = new StringBuilder(PLUGIN_HOME + File.separator + "classes")
+def mqsiprofile = props['mqsiprofile'] ? props['mqsiprofile'].trim() : ""
 def groovyHome = System.getProperty("groovy.home")
 def groovyExe = groovyHome + File.separator + "bin" + File.separator + (isWindows ? "groovy.bat" : "groovy")
-def version = props['version'].trim()
+def version = props['version'] ? props['version'].trim() : ""
 def cmdArgs
 
-if (props['mqsiprofile'].trim()) {
+// append required jar files to classpath
+def jarDir = new File(jarPath)
+def requiredJars = []
+
+version = Integer.parseInt(version.split("\\.")[0])
+
+if (version < 10) {
+    requiredJars << "ConfigManagerProxy"
+
+    if (!argScript.contains("set_bar_props.groovy")) {
+        requiredJars.addAll([
+            "connector",
+            "ibmjsseprovider2",
+            "com.ibm.mq",
+            "com.ibm.mq.commonservices",
+            "com.ibm.mq.headers",
+            "com.ibm.mq.jmqi",
+            "com.ibm.mq.pcf"
+        ])
+    }
+}
+else {
+    requiredJars << "IntegrationAPI"
+}
+
+for (def jarEntry : jarPath.split(File.pathSeparator)) {
+    def jarFile = new File(jarEntry.trim())
+
+    if (jarFile.isDirectory() && requiredJars) {
+        def regexPattern = ""
+        for (def jar : requiredJars) {
+            regexPattern += "|.*${jar}(.jar)?\$"
+        }
+
+        def filePattern = Pattern.compile(regexPattern)
+
+        def buildClassPath = {
+            if (filePattern.matcher(it.name).find()) {
+                def jarName = it.name
+                requiredJars.remove(jarName.substring(0, jarName.lastIndexOf('.')))
+                classpath.append(File.pathSeparator + it.absolutePath)
+            }
+        }
+
+        jarFile.eachFileRecurse(buildClassPath)
+    }
+    else if (jarFile.isFile()) {
+        def jarName = jarFile.name
+        requiredJars.remove(jarName.substring(0, jarName.lastIndexOf('.')))
+        classpath.append(File.pathSeparator + jarFile.absolutePath)
+    }
+    else {
+        println("[Warning] ${jarFile} is not a file or directory on the file system, and it will be ignored.")
+    }
+}
+
+if (requiredJars) {
+    println("[Warning] the following jar files were not found on the Jar Path and are required with this version " +
+            "of IIB: '${requiredJars}' Some steps may fail.")
+}
+
+
+if (mqsiprofile) {
+    mqsiprofile = new File(mqsiprofile)
+
     if (!mqsiprofile.isFile()) {
         throw new FileNotFoundException("${mqsiprofile.absolutePath} is not a file on the file system.")
     }
@@ -71,7 +138,8 @@ if (props['mqsiprofile'].trim()) {
         cmdArgs = [
             defaultShell,
             "-c",
-            ". ${mqsiprofile.absolutePath} && ${groovyExe} -cp ${classpath} ${argScript} ${this.args[1]} ${this.args[2]}"
+            ". ${mqsiprofile.absolutePath} && ${groovyExe} -cp ${classpath.toString()} " +
+            "${argScript} ${this.args[1]} ${this.args[2]}"
         ]
     }
 }
