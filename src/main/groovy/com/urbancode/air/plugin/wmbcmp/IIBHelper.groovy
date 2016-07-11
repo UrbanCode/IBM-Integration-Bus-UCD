@@ -105,7 +105,7 @@ class IIBHelper {
             brokerProxy = brokerConnection.proxy
         }
 
-        executionGroups = props['executionGroup'].split(',')*.trim()
+        executionGroups = props['executionGroup'].split('\n|,')*.trim()
         executionGroups -= [null, ""] // remove empty and null entries
 
         // setup for single execution group

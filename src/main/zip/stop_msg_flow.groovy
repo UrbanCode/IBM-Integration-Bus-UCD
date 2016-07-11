@@ -21,9 +21,9 @@ def helper = new IIBHelper(props)
 
 try {
     if (messageFlows) {
-        for (def messageFlow in messageFlows.split("\n")) {
+        for (def messageFlow in messageFlows.split("\n|,")*.trim()) {
             println "Stopping message flow ${messageFlow}";
-            helper.stopMsgFlow(messageFlow.trim());
+            helper.stopMsgFlow(messageFlow);
         }
     }
     else {

@@ -23,7 +23,7 @@ try {
         helper.stopAllMsgFlows();
     }
 
-    props['barFileNames'].split('\n').each { barFileName ->
+    props['barFileNames'].split('\n|,')*.trim().each { barFileName ->
         println "Deploying bar file ${barFileName}";
         helper.deployBrokerArchive(barFileName);
     }

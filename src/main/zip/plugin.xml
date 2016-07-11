@@ -38,8 +38,8 @@
         <property-ui type="textBox"
                      label="Port"
                      default-value="${p?:resource/WebSphere Message Broker/port}"
-                     description="The port of the target server for a remote connection.You must specify either an 'IP' 
-                                  and 'Port' to connect to a remote broker or an 'Integration Node Name' to connect to 
+                     description="The port of the target server for a remote connection.You must specify either an 'IP'
+                                  and 'Port' to connect to a remote broker or an 'Integration Node Name' to connect to
                                   a local broker."/>
       </property>
       <property name="useSSL">
@@ -53,7 +53,7 @@
         <property-ui type="textBox"
                      label="Integration Node Name"
                      default-value="${p?:resource/WebSphere Message Broker/integrationNodeName}"
-                     description="Name of Integration Node. You must specify either an 'IP' and 'Port' to connect to a 
+                     description="Name of Integration Node. You must specify either an 'IP' and 'Port' to connect to a
                                   remote broker or an 'Integration Node Name' to connect to a local broker."/>
       </property>
       <property name="channel">
@@ -98,7 +98,7 @@
         <property-ui type="textBox"
                      label="Jar Path"
                      default-value="${p:resource/WebSphere Message Broker/jarPath}"
-                     description="Specify either a directory to recursively search from which contains all required 
+                     description="Specify either a directory to recursively search from which contains all required
                                   jars, or specify each individual jar path split by your file systems path separator.
                                   For a list of required jar files please view the plugin documentation."/>
       </property>
@@ -136,13 +136,13 @@
   </step-type>
 
   <step-type name="Create Execution Group">
-    <description>Create execution groups only if they doesn't exist.</description>
+    <description>Create execution groups, but only if they do not exist.</description>
     <properties>
       <property name="executionGroup" required="true">
         <property-ui type="textBox"
                      label="Execution Groups"
                      default-value="${p?:resource/WebSphere Message Broker/executionGroup}"
-                     description="Comma-separated list of Execution Groups defined on the broker to create if they do 
+                     description="Comma or new line separated list of Execution Groups defined on the broker to create if they do
                                   not exist."/>
       </property>
       <property name="brokerHost">
@@ -157,8 +157,8 @@
         <property-ui type="textBox"
                      label="Port"
                      default-value="${p?:resource/WebSphere Message Broker/port}"
-                     description="The port of the target server for a remote connection.You must specify either an 'IP' 
-                                  and 'Port' to connect to a remote broker or an 'Integration Node Name' to connect to 
+                     description="The port of the target server for a remote connection.You must specify either an 'IP'
+                                  and 'Port' to connect to a remote broker or an 'Integration Node Name' to connect to
                                   a local broker."/>
       </property>
       <property name="useSSL">
@@ -172,7 +172,7 @@
         <property-ui type="textBox"
                      label="Integration Node Name"
                      default-value="${p?:resource/WebSphere Message Broker/integrationNodeName}"
-                     description="Name of Integration Node. You must specify either an 'IP' and 'Port' to connect to a 
+                     description="Name of Integration Node. You must specify either an 'IP' and 'Port' to connect to a
                                   remote broker or an 'Integration Node Name' to connect to a local broker."/>
       </property>
       <property name="channel">
@@ -217,7 +217,7 @@
         <property-ui type="textBox"
                      label="Jar Path"
                      default-value="${p:resource/WebSphere Message Broker/jarPath}"
-                     description="Specify either a directory to recursively search from which contains all required 
+                     description="Specify either a directory to recursively search from which contains all required
                                   jars, or specify each individual jar path split by your file systems path separator.
                                   For a list of required jar files please view the plugin documentation."/>
       </property>
@@ -261,7 +261,7 @@
         <property-ui type="textBox"
                      label="Execution Groups"
                      default-value="${p?:resource/WebSphere Message Broker/executionGroup}"
-                     description="Comma-separated list of Execution Groups defined on the broker to restart."/>
+                     description="Comma or new line separated list of Execution Groups defined on the broker to restart."/>
       </property>
       <property name="brokerHost">
         <property-ui type="textBox"
@@ -275,8 +275,8 @@
         <property-ui type="textBox"
                      label="Port"
                      default-value="${p?:resource/WebSphere Message Broker/port}"
-                     description="The port of the target server for a remote connection.You must specify either an 'IP' 
-                                  and 'Port' to connect to a remote broker or an 'Integration Node Name' to connect to 
+                     description="The port of the target server for a remote connection.You must specify either an 'IP'
+                                  and 'Port' to connect to a remote broker or an 'Integration Node Name' to connect to
                                   a local broker."/>
       </property>
       <property name="useSSL">
@@ -290,7 +290,7 @@
         <property-ui type="textBox"
                      label="Integration Node Name"
                      default-value="${p?:resource/WebSphere Message Broker/integrationNodeName}"
-                     description="Name of Integration Node. You must specify either an 'IP' and 'Port' to connect to a 
+                     description="Name of Integration Node. You must specify either an 'IP' and 'Port' to connect to a
                                   remote broker or an 'Integration Node Name' to connect to a local broker."/>
       </property>
       <property name="channel">
@@ -335,7 +335,7 @@
         <property-ui type="textBox"
                      label="Jar Path"
                      default-value="${p:resource/WebSphere Message Broker/jarPath}"
-                     description="Specify either a directory to recursively search from which contains all required 
+                     description="Specify either a directory to recursively search from which contains all required
                                   jars, or specify each individual jar path split by your file systems path separator.
                                   For a list of required jar files please view the plugin documentation."/>
       </property>
@@ -398,8 +398,8 @@
         <property-ui type="textBox"
                      label="Port"
                      default-value="${p?:resource/WebSphere Message Broker/port}"
-                     description="The port of the target server for a remote connection.You must specify either an 'IP' 
-                                  and 'Port' to connect to a remote broker or an 'Integration Node Name' to connect to 
+                     description="The port of the target server for a remote connection.You must specify either an 'IP'
+                                  and 'Port' to connect to a remote broker or an 'Integration Node Name' to connect to
                                   a local broker."/>
       </property>
       <property name="useSSL">
@@ -413,7 +413,7 @@
         <property-ui type="textBox"
                      label="Integration Node Name"
                      default-value="${p?:resource/WebSphere Message Broker/integrationNodeName}"
-                     description="Name of Integration Node. You must specify either an 'IP' and 'Port' to connect to a 
+                     description="Name of Integration Node. You must specify either an 'IP' and 'Port' to connect to a
                                   remote broker or an 'Integration Node Name' to connect to a local broker."/>
       </property>
       <property name="channel">
@@ -458,7 +458,7 @@
         <property-ui type="textBox"
                      label="Jar Path"
                      default-value="${p:resource/WebSphere Message Broker/jarPath}"
-                     description="Specify either a directory to recursively search from which contains all required 
+                     description="Specify either a directory to recursively search from which contains all required
                                   jars, or specify each individual jar path split by your file systems path separator.
                                   For a list of required jar files please view the plugin documentation."/>
       </property>
@@ -539,8 +539,8 @@
         <property-ui type="textBox"
                      label="Port"
                      default-value="${p?:resource/WebSphere Message Broker/port}"
-                     description="The port of the target server for a remote connection.You must specify either an 'IP' 
-                                  and 'Port' to connect to a remote broker or an 'Integration Node Name' to connect to 
+                     description="The port of the target server for a remote connection.You must specify either an 'IP'
+                                  and 'Port' to connect to a remote broker or an 'Integration Node Name' to connect to
                                   a local broker."/>
       </property>
       <property name="useSSL">
@@ -554,7 +554,7 @@
         <property-ui type="textBox"
                      label="Integration Node Name"
                      default-value="${p?:resource/WebSphere Message Broker/integrationNodeName}"
-                     description="Name of Integration Node. You must specify either an 'IP' and 'Port' to connect to a 
+                     description="Name of Integration Node. You must specify either an 'IP' and 'Port' to connect to a
                                   remote broker or an 'Integration Node Name' to connect to a local broker."/>
       </property>
       <property name="channel">
@@ -599,7 +599,7 @@
         <property-ui type="textBox"
                      label="Jar Path"
                      default-value="${p:resource/WebSphere Message Broker/jarPath}"
-                     description="Specify either a directory to recursively search from which contains all required 
+                     description="Specify either a directory to recursively search from which contains all required
                                   jars, or specify each individual jar path split by your file systems path separator.
                                   For a list of required jar files please view the plugin documentation."/>
       </property>
@@ -668,8 +668,8 @@
         <property-ui type="textBox"
                      label="Port"
                      default-value="${p?:resource/WebSphere Message Broker/port}"
-                     description="The port of the target server for a remote connection.You must specify either an 'IP' 
-                                  and 'Port' to connect to a remote broker or an 'Integration Node Name' to connect to 
+                     description="The port of the target server for a remote connection.You must specify either an 'IP'
+                                  and 'Port' to connect to a remote broker or an 'Integration Node Name' to connect to
                                   a local broker."/>
       </property>
       <property name="useSSL">
@@ -683,7 +683,7 @@
         <property-ui type="textBox"
                      label="Integration Node Name"
                      default-value="${p?:resource/WebSphere Message Broker/integrationNodeName}"
-                     description="Name of Integration Node. You must specify either an 'IP' and 'Port' to connect to a 
+                     description="Name of Integration Node. You must specify either an 'IP' and 'Port' to connect to a
                                   remote broker or an 'Integration Node Name' to connect to a local broker."/>
       </property>
       <property name="channel">
@@ -728,7 +728,7 @@
         <property-ui type="textBox"
                      label="Jar Path"
                      default-value="${p:resource/WebSphere Message Broker/jarPath}"
-                     description="Specify either a directory to recursively search from which contains all required 
+                     description="Specify either a directory to recursively search from which contains all required
                                   jars, or specify each individual jar path split by your file systems path separator.
                                   For a list of required jar files please view the plugin documentation."/>
       </property>
@@ -796,8 +796,8 @@
         <property-ui type="textBox"
                      label="Port"
                      default-value="${p?:resource/WebSphere Message Broker/port}"
-                     description="The port of the target server for a remote connection.You must specify either an 'IP' 
-                                  and 'Port' to connect to a remote broker or an 'Integration Node Name' to connect to 
+                     description="The port of the target server for a remote connection.You must specify either an 'IP'
+                                  and 'Port' to connect to a remote broker or an 'Integration Node Name' to connect to
                                   a local broker."/>
       </property>
       <property name="useSSL">
@@ -811,7 +811,7 @@
         <property-ui type="textBox"
                      label="Integration Node Name"
                      default-value="${p?:resource/WebSphere Message Broker/integrationNodeName}"
-                     description="Name of Integration Node. You must specify either an 'IP' and 'Port' to connect to a 
+                     description="Name of Integration Node. You must specify either an 'IP' and 'Port' to connect to a
                                   remote broker or an 'Integration Node Name' to connect to a local broker."/>
       </property>
       <property name="channel">
@@ -856,7 +856,7 @@
         <property-ui type="textBox"
                      label="Jar Path"
                      default-value="${p:resource/WebSphere Message Broker/jarPath}"
-                     description="Specify either a directory to recursively search from which contains all required 
+                     description="Specify either a directory to recursively search from which contains all required
                                   jars, or specify each individual jar path split by your file systems path separator.
                                   For a list of required jar files please view the plugin documentation."/>
       </property>
@@ -918,8 +918,8 @@
         <property-ui type="textBox"
                      label="Port"
                      default-value="${p?:resource/WebSphere Message Broker/port}"
-                     description="The port of the target server for a remote connection.You must specify either an 'IP' 
-                                  and 'Port' to connect to a remote broker or an 'Integration Node Name' to connect to 
+                     description="The port of the target server for a remote connection.You must specify either an 'IP'
+                                  and 'Port' to connect to a remote broker or an 'Integration Node Name' to connect to
                                   a local broker."/>
       </property>
       <property name="useSSL">
@@ -933,7 +933,7 @@
         <property-ui type="textBox"
                      label="Integration Node Name"
                      default-value="${p?:resource/WebSphere Message Broker/integrationNodeName}"
-                     description="Name of Integration Node. You must specify either an 'IP' and 'Port' to connect to a 
+                     description="Name of Integration Node. You must specify either an 'IP' and 'Port' to connect to a
                                   remote broker or an 'Integration Node Name' to connect to a local broker."/>
       </property>
       <property name="channel">
@@ -978,7 +978,7 @@
         <property-ui type="textBox"
                      label="Jar Path"
                      default-value="${p:resource/WebSphere Message Broker/jarPath}"
-                     description="Specify either a directory to recursively search from which contains all required 
+                     description="Specify either a directory to recursively search from which contains all required
                                   jars, or specify each individual jar path split by your file systems path separator.
                                   For a list of required jar files please view the plugin documentation."/>
       </property>
@@ -1021,13 +1021,13 @@
       <property name="barFileNames" required="true">
         <property-ui type="textAreaBox"
                      label="Bar File Names"
-                     description="Comma-separated list of Broker Archive files to deploy."/>
+                     description="Comma or new line separated list of Broker Archive files to deploy."/>
       </property>
       <property name="executionGroup" required="true">
         <property-ui type="textAreaBox"
                      label="Execution Groups"
                      default-value="${p?:resource/WebSphere Message Broker/executionGroup}"
-                     description="Comma-separated list of Execution Groups to Deploy to."/>
+                     description="Comma or new line separated list of Execution Groups to Deploy to."/>
       </property>
       <property name="fullDeploy">
         <property-ui type="checkBox"
@@ -1058,8 +1058,8 @@
         <property-ui type="textBox"
                      label="Port"
                      default-value="${p?:resource/WebSphere Message Broker/port}"
-                     description="The port of the target server for a remote connection.You must specify either an 'IP' 
-                                  and 'Port' to connect to a remote broker or an 'Integration Node Name' to connect to 
+                     description="The port of the target server for a remote connection.You must specify either an 'IP'
+                                  and 'Port' to connect to a remote broker or an 'Integration Node Name' to connect to
                                   a local broker."/>
       </property>
       <property name="useSSL">
@@ -1073,7 +1073,7 @@
         <property-ui type="textBox"
                      label="Integration Node Name"
                      default-value="${p?:resource/WebSphere Message Broker/integrationNodeName}"
-                     description="Name of Integration Node. You must specify either an 'IP' and 'Port' to connect to a 
+                     description="Name of Integration Node. You must specify either an 'IP' and 'Port' to connect to a
                                   remote broker or an 'Integration Node Name' to connect to a local broker."/>
       </property>
       <property name="channel">
@@ -1118,7 +1118,7 @@
         <property-ui type="textBox"
                      label="Jar Path"
                      default-value="${p:resource/WebSphere Message Broker/jarPath}"
-                     description="Specify either a directory to recursively search from which contains all required 
+                     description="Specify either a directory to recursively search from which contains all required
                                   jars, or specify each individual jar path split by your file systems path separator.
                                   For a list of required jar files please view the plugin documentation."/>
       </property>
@@ -1166,7 +1166,7 @@
       <property name="messageFlows">
         <property-ui type="textAreaBox"
                      label="Message Flows"
-                     description="NewLine-separated list of Message Flow names to start."/>
+                     description="Comma or new line separated list of Message Flow names to start."/>
       </property>
       <property name="brokerHost">
         <property-ui type="textBox"
@@ -1180,8 +1180,8 @@
         <property-ui type="textBox"
                      label="Port"
                      default-value="${p?:resource/WebSphere Message Broker/port}"
-                     description="The port of the target server for a remote connection.You must specify either an 'IP' 
-                                  and 'Port' to connect to a remote broker or an 'Integration Node Name' to connect to 
+                     description="The port of the target server for a remote connection.You must specify either an 'IP'
+                                  and 'Port' to connect to a remote broker or an 'Integration Node Name' to connect to
                                   a local broker."/>
       </property>
       <property name="useSSL">
@@ -1195,7 +1195,7 @@
         <property-ui type="textBox"
                      label="Integration Node Name"
                      default-value="${p?:resource/WebSphere Message Broker/integrationNodeName}"
-                     description="Name of Integration Node. You must specify either an 'IP' and 'Port' to connect to a 
+                     description="Name of Integration Node. You must specify either an 'IP' and 'Port' to connect to a
                                   remote broker or an 'Integration Node Name' to connect to a local broker."/>
       </property>
       <property name="channel">
@@ -1240,7 +1240,7 @@
         <property-ui type="textBox"
                      label="Jar Path"
                      default-value="${p:resource/WebSphere Message Broker/jarPath}"
-                     description="Specify either a directory to recursively search from which contains all required 
+                     description="Specify either a directory to recursively search from which contains all required
                                   jars, or specify each individual jar path split by your file systems path separator.
                                   For a list of required jar files please view the plugin documentation."/>
       </property>
@@ -1288,7 +1288,7 @@
       <property name="messageFlows">
         <property-ui type="textAreaBox"
                      label="Message Flows"
-                     description="NewLine-separated list of Message Flow names to start."/>
+                     description="Comma or new line separated list of Message Flow names to start."/>
       </property>
       <property name="brokerHost">
         <property-ui type="textBox"
@@ -1302,8 +1302,8 @@
         <property-ui type="textBox"
                      label="Port"
                      default-value="${p?:resource/WebSphere Message Broker/port}"
-                     description="The port of the target server for a remote connection.You must specify either an 'IP' 
-                                  and 'Port' to connect to a remote broker or an 'Integration Node Name' to connect to 
+                     description="The port of the target server for a remote connection.You must specify either an 'IP'
+                                  and 'Port' to connect to a remote broker or an 'Integration Node Name' to connect to
                                   a local broker."/>
       </property>
       <property name="useSSL">
@@ -1317,7 +1317,7 @@
         <property-ui type="textBox"
                      label="Integration Node Name"
                      default-value="${p?:resource/WebSphere Message Broker/integrationNodeName}"
-                     description="Name of Integration Node. You must specify either an 'IP' and 'Port' to connect to a 
+                     description="Name of Integration Node. You must specify either an 'IP' and 'Port' to connect to a
                                   remote broker or an 'Integration Node Name' to connect to a local broker."/>
       </property>
       <property name="channel">
@@ -1362,7 +1362,7 @@
         <property-ui type="textBox"
                      label="Jar Path"
                      default-value="${p:resource/WebSphere Message Broker/jarPath}"
-                     description="Specify either a directory to recursively search from which contains all required 
+                     description="Specify either a directory to recursively search from which contains all required
                                   jars, or specify each individual jar path split by your file systems path separator.
                                   For a list of required jar files please view the plugin documentation."/>
       </property>
@@ -1431,7 +1431,7 @@
         <property-ui type="textBox"
                      label="Jar Path"
                      default-value="${p:resource/WebSphere Message Broker/jarPath}"
-                     description="Specify either a directory to recursively search from which contains all required 
+                     description="Specify either a directory to recursively search from which contains all required
                                   jars, or specify each individual jar path split by your file systems path separator.
                                   For a list of required jar files please view the plugin documentation."/>
       </property>
@@ -1440,9 +1440,9 @@
                      label="On Failure"
                      default-value="fastFail"
                      description="Choice of action when overrides fail on a particular bar file. (Fast Fail: Step will
-                                  fail right away. Best Effort: Step will attempt to override properties on all bar 
-                                  files, and will fail at the end if any override failures occurred. Useful to pinpoint 
-                                  which bar files are invalid. Warn: Step will continue on if an override failure 
+                                  fail right away. Best Effort: Step will attempt to override properties on all bar
+                                  files, and will fail at the end if any override failures occurred. Useful to pinpoint
+                                  which bar files are invalid. Warn: Step will continue on if an override failure
                                   occurs, and print a warning declaring the bar file that failed.)"/>
             <value label="Fast Fail">fastFail</value>
             <value label="Best Effort">bestEffort</value>
@@ -1485,7 +1485,7 @@
         <property-ui type="textBox"
                      label="Queue Manager"
                      default-value="${p?:resource/iib.queueManager}"
-                     description="The name of your WebSphere MQ Queue Manager. If this is not specified a queue manager 
+                     description="The name of your WebSphere MQ Queue Manager. If this is not specified a queue manager
                                   is created unless running z/OS, in which case this step will fail."/>
       </property>
       <property name="serviceUserId">
@@ -1503,7 +1503,7 @@
       <property name="additionalArgs">
         <property-ui type="textAreaBox"
                      label="Additional Arguments"
-                     description="Any additional arguments to pass to the 'mqsicreatebroker' script when running this 
+                     description="Any additional arguments to pass to the 'mqsicreatebroker' script when running this
                                   step. Multiple arguments are split by new line. (e.g. '-i generalDefaultUserId')"/>
       </property>
     </properties>
