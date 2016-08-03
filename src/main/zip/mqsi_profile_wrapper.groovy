@@ -60,9 +60,9 @@ for (def jarEntry : jarPath.split(File.pathSeparator)) {
     if (jarFile.isDirectory() && requiredJars) {
         def regexPattern = ""
         for (def jar : requiredJars) {
-            regexPattern += "|.*${jar}(.jar)?\$"
+            regexPattern += ".*${jar}(.jar)?\$|"
         }
-
+        regexPattern = regexPattern.substring(0, regexPattern.length()-1)
         def filePattern = Pattern.compile(regexPattern)
 
         def buildClassPath = {
