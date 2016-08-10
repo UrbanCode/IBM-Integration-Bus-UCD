@@ -168,6 +168,7 @@
       <delivery artifact-set="Default">
         <directory>lib/test</directory>
         <directory>lib/build</directory>
+        <directory>lib</directory>
       </delivery>
     </dependency>
 

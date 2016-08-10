@@ -127,7 +127,7 @@
  ]]></post-processing>
     <command program="${GROOVY_HOME}/bin/groovy">
       <arg value="-cp"/>
-      <arg path="classes:"/>
+      <arg path="classes:lib/commons-lang.jar"/>
       <arg file="mqsi_profile_wrapper.groovy"/>
       <arg value="set_broker_props.groovy"/>
       <arg file="${PLUGIN_INPUT_PROPS}"/>
@@ -246,7 +246,7 @@
  ]]></post-processing>
     <command program="${GROOVY_HOME}/bin/groovy">
       <arg value="-cp"/>
-      <arg path="classes:"/>
+      <arg path="classes:lib/commons-lang.jar"/>
       <arg file="mqsi_profile_wrapper.groovy"/>
       <arg value="create_exe_groups_if_needed.groovy"/>
       <arg file="${PLUGIN_INPUT_PROPS}"/>
@@ -364,7 +364,7 @@
  ]]></post-processing>
     <command program="${GROOVY_HOME}/bin/groovy">
       <arg value="-cp"/>
-      <arg path="classes:"/>
+      <arg path="classes:lib/commons-lang.jar"/>
       <arg file="mqsi_profile_wrapper.groovy"/>
       <arg value="restart_execution_group.groovy"/>
       <arg file="${PLUGIN_INPUT_PROPS}"/>
@@ -487,7 +487,7 @@
  ]]></post-processing>
     <command program="${GROOVY_HOME}/bin/groovy">
       <arg value="-cp"/>
-      <arg path="classes:"/>
+      <arg path="classes:lib/commons-lang.jar"/>
       <arg file="mqsi_profile_wrapper.groovy"/>
       <arg value="set_execution_group_props.groovy"/>
       <arg file="${PLUGIN_INPUT_PROPS}"/>
@@ -628,7 +628,7 @@
  ]]></post-processing>
     <command program="${GROOVY_HOME}/bin/groovy">
       <arg value="-cp"/>
-      <arg path="classes:"/>
+      <arg path="classes:lib/commons-lang.jar"/>
       <arg file="mqsi_profile_wrapper.groovy"/>
       <arg value="set_flow_props.groovy"/>
       <arg file="${PLUGIN_INPUT_PROPS}"/>
@@ -757,7 +757,7 @@
  ]]></post-processing>
     <command program="${GROOVY_HOME}/bin/groovy">
       <arg value="-cp"/>
-      <arg path="classes:"/>
+      <arg path="classes:lib/commons-lang.jar"/>
       <arg file="mqsi_profile_wrapper.groovy"/>
       <arg value="delete_flows_using_regex.groovy"/>
       <arg file="${PLUGIN_INPUT_PROPS}"/>
@@ -885,7 +885,7 @@
  ]]></post-processing>
     <command program="${GROOVY_HOME}/bin/groovy">
       <arg value="-cp"/>
-      <arg path="classes:"/>
+      <arg path="classes:lib/commons-lang.jar"/>
       <arg file="mqsi_profile_wrapper.groovy"/>
       <arg value="create_configurable_service.groovy"/>
       <arg file="${PLUGIN_INPUT_PROPS}"/>
@@ -1007,7 +1007,7 @@
  ]]></post-processing>
     <command program="${GROOVY_HOME}/bin/groovy">
       <arg value="-cp"/>
-      <arg path="classes:"/>
+      <arg path="classes:lib/commons-lang.jar"/>
       <arg file="mqsi_profile_wrapper.groovy"/>
       <arg value="delete_configurable_service.groovy"/>
       <arg file="${PLUGIN_INPUT_PROPS}"/>
@@ -1147,7 +1147,7 @@
  ]]></post-processing>
     <command program="${GROOVY_HOME}/bin/groovy">
       <arg value="-cp"/>
-      <arg path="classes:"/>
+      <arg path="classes:lib/commons-lang.jar"/>
       <arg file="mqsi_profile_wrapper.groovy"/>
       <arg value="deploy.groovy"/>
       <arg file="${PLUGIN_INPUT_PROPS}"/>
@@ -1269,7 +1269,7 @@
  ]]></post-processing>
     <command program="${GROOVY_HOME}/bin/groovy">
       <arg value="-cp"/>
-      <arg path="classes:"/>
+      <arg path="classes:lib/commons-lang.jar"/>
       <arg file="mqsi_profile_wrapper.groovy"/>
       <arg value="start_msg_flow.groovy"/>
       <arg file="${PLUGIN_INPUT_PROPS}"/>
@@ -1391,7 +1391,7 @@
  ]]></post-processing>
     <command program="${GROOVY_HOME}/bin/groovy">
       <arg value="-cp"/>
-      <arg path="classes:"/>
+      <arg path="classes:lib/commons-lang.jar"/>
       <arg file="mqsi_profile_wrapper.groovy"/>
       <arg value="stop_msg_flow.groovy"/>
       <arg file="${PLUGIN_INPUT_PROPS}"/>
@@ -1459,7 +1459,7 @@
  ]]></post-processing>
     <command program="${GROOVY_HOME}/bin/groovy">
       <arg value="-cp"/>
-      <arg path="classes:"/>
+      <arg path="classes:lib/commons-lang.jar"/>
       <arg file="mqsi_profile_wrapper.groovy"/>
       <arg value="set_bar_props.groovy"/>
       <arg file="${PLUGIN_INPUT_PROPS}"/>

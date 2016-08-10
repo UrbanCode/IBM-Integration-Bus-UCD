@@ -9,6 +9,9 @@
  * U.S. Government Users Restricted Rights - Use, duplication or disclosure restricted by
  * GSA ADP Schedule Contract with IBM Corp.
  */
+
+import org.apache.commons.lang.StringUtils
+
 import com.urbancode.air.AirPluginTool;
 import com.urbancode.air.CommandHelper;
 
@@ -59,10 +62,11 @@ for (def jarEntry : jarPath.split(File.pathSeparator)) {
 
     if (jarFile.isDirectory() && requiredJars) {
         def regexPattern = ""
+        def regexArr = []
         for (def jar : requiredJars) {
-            regexPattern += ".*${jar}(.jar)?\$|"
+            regexArr << ".*${jar}[^\\" + File.separator + "]*.jar\$"
         }
-        regexPattern = regexPattern.substring(0, regexPattern.length()-1)
+        regexPattern = StringUtils.join(regexArr, '|')
         def filePattern = Pattern.compile(regexPattern)
 
         def buildClassPath = {
