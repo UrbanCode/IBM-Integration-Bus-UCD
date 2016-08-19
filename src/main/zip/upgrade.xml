@@ -366,4 +366,11 @@
   </migrate>
   <migrate to-version="16">
   </migrate>
+  <migrate to-version="17">
+    <migrate-command name="Deploy">
+        <migrate-properties>
+            <migrate-property name="env" />
+        </migrate-properties>
+    </migrate-command>
+  </migrate>
 </plugin-upgrade>

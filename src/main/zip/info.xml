@@ -186,5 +186,8 @@ Change names of plugin steps to remove "WMB"
 Altered 'Create Execution Group' and 'Deploy' steps to allow multiple execution groups
 Add step for restarting execution groups.
       </release-note>
+      <release-note plugin-version="17">
+Added property for setting environment variables to 'Deploy' step
+      </release-note>
   </release-notes>
 </pluginInfo>

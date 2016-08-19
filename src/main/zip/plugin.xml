@@ -12,7 +12,7 @@
            xmlns:server="http://www.urbancode.com/PluginServerXMLSchema_v1"
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <header>
-    <identifier id="com.urbancode.air.plugin.WMBCMP" name="WebSphere Message Broker - CMP" version="16"/>
+    <identifier id="com.urbancode.air.plugin.WMBCMP" name="WebSphere Message Broker - CMP" version="17"/>
     <description>Integration for WebSphere Message Broker to deploy Broker Archives and start and stop Message Flows
                  using the CMP API. This plugin is compatible with both version 9 and 10 of IBM Integration Bus, and
                  is also compatible with versions 7 and 8 of WebSphere Message Broker.</description>
@@ -1129,6 +1129,14 @@
                      description="The absolute path to the mqsiprofile executable on your IIB server. Specifying this
                                   value will initialize your command environment. Only specify this path if your command
                                   environment needs initializing."/>
+      </property>
+      <property name="env">
+        <property-ui type="textAreaBox"
+                     label="Environment Variables"
+                     default-value="${p?:resource/WebSphere Message Broker/environment}"
+                     description="A newline or comma separated list of environment variables to set for the deployment
+                                  process. Each entry must be in the form 'VAR=VALUE' (i.e. java.library.path=/opt/mqm/java/lib64:
+                                  /opt/mqm/java/lib)"/>
       </property>
       <property name="shell">
         <property-ui type="textBox"

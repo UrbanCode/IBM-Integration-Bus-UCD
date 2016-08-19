@@ -27,10 +27,26 @@ def argScript = PLUGIN_HOME + File.separator + this.args[0]
 def jarPath = props['jarPath'].trim()
 def classpath = new StringBuilder(PLUGIN_HOME + File.separator + "classes")
 def mqsiprofile = props['mqsiprofile'] ? props['mqsiprofile'].trim() : ""
+def env = props['env']
 def groovyHome = System.getProperty("groovy.home")
 def groovyExe = groovyHome + File.separator + "bin" + File.separator + (isWindows ? "groovy.bat" : "groovy")
 def version = props['version'] ? props['version'].trim() : ""
 def cmdArgs
+
+if (env) {
+    env = env.split("\n|,")
+
+    for (def envArg : env) {
+        if(envArg.trim() && envArg.contains('=')) {
+            def (key, val) = envArg.trim().split('=', 2)  // split by first occurrence
+            println("[Action] Setting environment variable ${key}=${val}")
+            helper.addEnvironmentVariable(key, val)
+        }
+        else {
+            println("[Error] Missing a delimiter '=' for environment variable definition : ${envArg}")
+        }
+    }
+}
 
 // append required jar files to classpath
 def jarDir = new File(jarPath)
@@ -119,7 +135,7 @@ if (mqsiprofile) {
         }
 
         cmdArgs = [mqsiprofile.absolutePath]
-        helper.runCommand("Setting up mqsi environment...", cmdArgs, envSet)
+        helper.runCommand("[Action] Setting up mqsi environment...", cmdArgs, envSet)
 
         for (def entry : envMap) {
             helper.addEnvironmentVariable(entry.key, entry.value)
