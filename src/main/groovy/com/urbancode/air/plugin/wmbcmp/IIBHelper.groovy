@@ -105,12 +105,15 @@ class IIBHelper {
             brokerProxy = brokerConnection.proxy
         }
 
-        executionGroups = props['executionGroup'].split('\n|,')*.trim()
-        executionGroups -= [null, ""] // remove empty and null entries
+        String executionGroup = props['executionGroup']
+        if(executionGroup != null && !executionGroup.trim().isEmpty()) {
+            executionGroups = props['executionGroup'].split('\n|,')*.trim()
+            executionGroups -= [null, ""] // remove empty and null entries
 
-        // setup for single execution group
-        if (executionGroups.size() == 1) {
-            setExecutionGroup(executionGroups[0])
+            // setup for single execution group
+            if (executionGroups.size() == 1) {
+                setExecutionGroup(executionGroups[0])
+            }
         }
 
         startTime = new Date(System.currentTimeMillis())

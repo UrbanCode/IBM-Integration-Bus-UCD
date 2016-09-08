@@ -189,5 +189,8 @@ Add step for restarting execution groups.
       <release-note plugin-version="17">
 Added property for setting environment variables to 'Deploy' step
       </release-note>
+      <release-note plugin-version="18">
+<p>Fixed NullPointerException in Create Or Update Configurable Service step.</p>
+      </release-note>
   </release-notes>
 </pluginInfo>
