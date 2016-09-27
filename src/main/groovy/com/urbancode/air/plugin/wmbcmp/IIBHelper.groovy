@@ -35,6 +35,7 @@ class IIBHelper {
     def executionGroups
     def version
     def brokerConnection
+    Integer timeoutCreate
     Date startTime
     boolean isDebugEnabled
     boolean isIncremental
@@ -115,6 +116,7 @@ class IIBHelper {
                 setExecutionGroup(executionGroups[0])
             }
         }
+        timeoutCreate = Integer.valueOf(props['timeoutCreate']?.trim()?:-1)
 
         startTime = new Date(System.currentTimeMillis())
         logProxy = brokerProxy.getLog()
@@ -122,7 +124,7 @@ class IIBHelper {
 
     public void stopAllMsgFlows() {
         if (brokerProxy == null || bcp == null) {
-            throw new IllegalStateException("Broker Proxy is uninitilized!")
+            throw new IllegalStateException("Broker Proxy is uninitialized!")
         }
 
         if (executionGroupProxy == null) {
@@ -136,6 +138,7 @@ class IIBHelper {
         if (brokerProxy == null || bcp == null) {
             throw new IllegalStateException("Broker Proxy is uninitilized!")
         }
+        brokerProxy.setSynchronous(timeoutCreate)
 
         if (executionGroups) {
             println("Creating execution groups: ${executionGroups}...")

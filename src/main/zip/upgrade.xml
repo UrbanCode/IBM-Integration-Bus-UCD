@@ -375,4 +375,11 @@
   </migrate>
   <migrate to-version="18">
   </migrate>
+  <migrate to-version="19">
+    <migrate-command name="Set Broker Properties">
+      <migrate-properties>
+        <migrate-property name="timeoutCreate" default=""/>
+        </migrate-properties>
+      </migrate-command>
+  </migrate>
 </plugin-upgrade>
