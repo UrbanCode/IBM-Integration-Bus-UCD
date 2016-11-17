@@ -12,7 +12,7 @@
            xmlns:server="http://www.urbancode.com/PluginServerXMLSchema_v1"
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <header>
-    <identifier id="com.urbancode.air.plugin.WMBCMP" name="WebSphere Message Broker - CMP" version="19"/>
+    <identifier id="com.urbancode.air.plugin.WMBCMP" name="WebSphere Message Broker - CMP" version="20"/>
     <description>Integration for WebSphere Message Broker to deploy Broker Archives and start and stop Message Flows
                  using the CMP API. This plugin is compatible with both version 9 and 10 of IBM Integration Bus, and
                  is also compatible with versions 7 and 8 of WebSphere Message Broker.</description>
@@ -134,7 +134,7 @@
  ]]></post-processing>
     <command program="${GROOVY_HOME}/bin/groovy">
       <arg value="-cp"/>
-      <arg path="classes:lib/commons-lang.jar"/>
+      <arg path="classes:lib/commons-lang.jar:lib/securedata.jar:lib/jettison-1.1.jar:lib/commons-codec.jar:lib/CommonsUtil.jar"/>
       <arg file="mqsi_profile_wrapper.groovy"/>
       <arg value="set_broker_props.groovy"/>
       <arg file="${PLUGIN_INPUT_PROPS}"/>
@@ -253,7 +253,7 @@
  ]]></post-processing>
     <command program="${GROOVY_HOME}/bin/groovy">
       <arg value="-cp"/>
-      <arg path="classes:lib/commons-lang.jar"/>
+      <arg path="classes:lib/commons-lang.jar:lib/securedata.jar:lib/jettison-1.1.jar:lib/commons-codec.jar:lib/CommonsUtil.jar"/>
       <arg file="mqsi_profile_wrapper.groovy"/>
       <arg value="create_exe_groups_if_needed.groovy"/>
       <arg file="${PLUGIN_INPUT_PROPS}"/>
@@ -371,7 +371,7 @@
  ]]></post-processing>
     <command program="${GROOVY_HOME}/bin/groovy">
       <arg value="-cp"/>
-      <arg path="classes:lib/commons-lang.jar"/>
+      <arg path="classes:lib/commons-lang.jar:lib/securedata.jar:lib/jettison-1.1.jar:lib/commons-codec.jar:lib/CommonsUtil.jar"/>
       <arg file="mqsi_profile_wrapper.groovy"/>
       <arg value="restart_execution_group.groovy"/>
       <arg file="${PLUGIN_INPUT_PROPS}"/>
@@ -494,7 +494,7 @@
  ]]></post-processing>
     <command program="${GROOVY_HOME}/bin/groovy">
       <arg value="-cp"/>
-      <arg path="classes:lib/commons-lang.jar"/>
+      <arg path="classes:lib/commons-lang.jar:lib/securedata.jar:lib/jettison-1.1.jar:lib/commons-codec.jar:lib/CommonsUtil.jar"/>
       <arg file="mqsi_profile_wrapper.groovy"/>
       <arg value="set_execution_group_props.groovy"/>
       <arg file="${PLUGIN_INPUT_PROPS}"/>
@@ -635,7 +635,7 @@
  ]]></post-processing>
     <command program="${GROOVY_HOME}/bin/groovy">
       <arg value="-cp"/>
-      <arg path="classes:lib/commons-lang.jar"/>
+      <arg path="classes:lib/commons-lang.jar:lib/securedata.jar:lib/jettison-1.1.jar:lib/commons-codec.jar:lib/CommonsUtil.jar"/>
       <arg file="mqsi_profile_wrapper.groovy"/>
       <arg value="set_flow_props.groovy"/>
       <arg file="${PLUGIN_INPUT_PROPS}"/>
@@ -764,7 +764,7 @@
  ]]></post-processing>
     <command program="${GROOVY_HOME}/bin/groovy">
       <arg value="-cp"/>
-      <arg path="classes:lib/commons-lang.jar"/>
+      <arg path="classes:lib/commons-lang.jar:lib/securedata.jar:lib/jettison-1.1.jar:lib/commons-codec.jar:lib/CommonsUtil.jar"/>
       <arg file="mqsi_profile_wrapper.groovy"/>
       <arg value="delete_flows_using_regex.groovy"/>
       <arg file="${PLUGIN_INPUT_PROPS}"/>
@@ -892,7 +892,7 @@
  ]]></post-processing>
     <command program="${GROOVY_HOME}/bin/groovy">
       <arg value="-cp"/>
-      <arg path="classes:lib/commons-lang.jar"/>
+      <arg path="classes:lib/commons-lang.jar:lib/securedata.jar:lib/jettison-1.1.jar:lib/commons-codec.jar:lib/CommonsUtil.jar"/>
       <arg file="mqsi_profile_wrapper.groovy"/>
       <arg value="create_configurable_service.groovy"/>
       <arg file="${PLUGIN_INPUT_PROPS}"/>
@@ -1014,7 +1014,7 @@
  ]]></post-processing>
     <command program="${GROOVY_HOME}/bin/groovy">
       <arg value="-cp"/>
-      <arg path="classes:lib/commons-lang.jar"/>
+      <arg path="classes:lib/commons-lang.jar:lib/securedata.jar:lib/jettison-1.1.jar:lib/commons-codec.jar:lib/CommonsUtil.jar"/>
       <arg file="mqsi_profile_wrapper.groovy"/>
       <arg value="delete_configurable_service.groovy"/>
       <arg file="${PLUGIN_INPUT_PROPS}"/>
@@ -1162,7 +1162,7 @@
  ]]></post-processing>
     <command program="${GROOVY_HOME}/bin/groovy">
       <arg value="-cp"/>
-      <arg path="classes:lib/commons-lang.jar"/>
+      <arg path="classes:lib/commons-lang.jar:lib/securedata.jar:lib/jettison-1.1.jar:lib/commons-codec.jar:lib/CommonsUtil.jar"/>
       <arg file="mqsi_profile_wrapper.groovy"/>
       <arg value="deploy.groovy"/>
       <arg file="${PLUGIN_INPUT_PROPS}"/>
@@ -1284,7 +1284,7 @@
  ]]></post-processing>
     <command program="${GROOVY_HOME}/bin/groovy">
       <arg value="-cp"/>
-      <arg path="classes:lib/commons-lang.jar"/>
+      <arg path="classes:lib/commons-lang.jar:lib/securedata.jar:lib/jettison-1.1.jar:lib/commons-codec.jar:lib/CommonsUtil.jar"/>
       <arg file="mqsi_profile_wrapper.groovy"/>
       <arg value="start_msg_flow.groovy"/>
       <arg file="${PLUGIN_INPUT_PROPS}"/>
@@ -1406,7 +1406,7 @@
  ]]></post-processing>
     <command program="${GROOVY_HOME}/bin/groovy">
       <arg value="-cp"/>
-      <arg path="classes:lib/commons-lang.jar"/>
+      <arg path="classes:lib/commons-lang.jar:lib/securedata.jar:lib/jettison-1.1.jar:lib/commons-codec.jar:lib/CommonsUtil.jar"/>
       <arg file="mqsi_profile_wrapper.groovy"/>
       <arg value="stop_msg_flow.groovy"/>
       <arg file="${PLUGIN_INPUT_PROPS}"/>
@@ -1474,7 +1474,7 @@
  ]]></post-processing>
     <command program="${GROOVY_HOME}/bin/groovy">
       <arg value="-cp"/>
-      <arg path="classes:lib/commons-lang.jar"/>
+      <arg path="classes:lib/commons-lang.jar:lib/securedata.jar:lib/jettison-1.1.jar:lib/commons-codec.jar:lib/CommonsUtil.jar"/>
       <arg file="mqsi_profile_wrapper.groovy"/>
       <arg value="set_bar_props.groovy"/>
       <arg file="${PLUGIN_INPUT_PROPS}"/>
@@ -1532,7 +1532,7 @@
      ]]></post-processing>
     <command program="${GROOVY_HOME}/bin/groovy">
       <arg value="-cp"/>
-      <arg path="classes"/>
+      <arg path="classes:lib/securedata.jar:lib/jettison-1.1.jar:lib/commons-codec.jar:lib/CommonsUtil.jar"/>
       <arg file="create_broker.groovy"/>
       <arg file="${PLUGIN_INPUT_PROPS}"/>
       <arg file="${PLUGIN_OUTPUT_PROPS}"/>
@@ -1574,7 +1574,7 @@
      ]]></post-processing>
     <command program="${GROOVY_HOME}/bin/groovy">
       <arg value="-cp"/>
-      <arg path="classes"/>
+      <arg path="classes:lib/securedata.jar:lib/jettison-1.1.jar:lib/commons-codec.jar:lib/CommonsUtil.jar"/>
       <arg file="delete_broker.groovy"/>
       <arg file="${PLUGIN_INPUT_PROPS}"/>
       <arg file="${PLUGIN_OUTPUT_PROPS}"/>
@@ -1605,7 +1605,7 @@
      ]]></post-processing>
     <command program="${GROOVY_HOME}/bin/groovy">
       <arg value="-cp"/>
-      <arg path="classes"/>
+      <arg path="classes:lib/securedata.jar:lib/jettison-1.1.jar:lib/commons-codec.jar:lib/CommonsUtil.jar"/>
       <arg file="start_broker.groovy"/>
       <arg file="${PLUGIN_INPUT_PROPS}"/>
       <arg file="${PLUGIN_OUTPUT_PROPS}"/>
@@ -1636,7 +1636,7 @@
      ]]></post-processing>
     <command program="${GROOVY_HOME}/bin/groovy">
       <arg value="-cp"/>
-      <arg path="classes"/>
+      <arg path="classes:lib/securedata.jar:lib/jettison-1.1.jar:lib/commons-codec.jar:lib/CommonsUtil.jar"/>
       <arg file="stop_broker.groovy"/>
       <arg file="${PLUGIN_INPUT_PROPS}"/>
       <arg file="${PLUGIN_OUTPUT_PROPS}"/>

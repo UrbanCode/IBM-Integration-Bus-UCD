@@ -195,5 +195,8 @@ Added property for setting environment variables to 'Deploy' step
       <release-note plugin-version="19">
 Altered 'Create Execution Group' step so that it will wait until execution group has finished generating before finishing.
       </release-note>
+    <release-note plugin-version="20">
+Support property file encryption.
+    </release-note>
   </release-notes>
 </pluginInfo>
