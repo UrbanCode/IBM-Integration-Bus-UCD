@@ -198,5 +198,10 @@ Altered 'Create Execution Group' step so that it will wait until execution group
     <release-note plugin-version="20">
 Support property file encryption.
     </release-note>
+    <release-note plugin-version="21">
+Updated 'Deploy' step to wait for deployments to return 'success' before continuing.
+Removed deprecated method from 'Create Execution Group.'
+Changed to only establish a local broker connection if remote connection parameters aren't specified.
+    </release-note>
   </release-notes>
 </pluginInfo>

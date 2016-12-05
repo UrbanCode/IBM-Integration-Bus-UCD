@@ -21,7 +21,6 @@ def helper = new IIBHelper(props)
 
 try {
     helper.createExecutionGroupsIfNeccessary();
-    helper.deployBrokerConfig();
 }
 catch (Exception e) {
     e.printStackTrace();

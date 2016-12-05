@@ -12,7 +12,7 @@
            xmlns:server="http://www.urbancode.com/PluginServerXMLSchema_v1"
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <header>
-    <identifier id="com.urbancode.air.plugin.WMBCMP" name="WebSphere Message Broker - CMP" version="20"/>
+    <identifier id="com.urbancode.air.plugin.WMBCMP" name="WebSphere Message Broker - CMP" version="21"/>
     <description>Integration for WebSphere Message Broker to deploy Broker Archives and start and stop Message Flows
                  using the CMP API. This plugin is compatible with both version 9 and 10 of IBM Integration Bus, and
                  is also compatible with versions 7 and 8 of WebSphere Message Broker.</description>
@@ -66,7 +66,7 @@
       <property name="queueManager">
         <property-ui type="textBox"
                      label="Queue Manager"
-                     default-value="${p?:resource/WebSphere Message Broker/port}"
+                     default-value="${p?:resource/WebSphere Message Broker/queueManager}"
                      description="The WebSphere MQ Queue Manager which the broker is using.
                                   Specify this value if you are using below version 10 of IIB."/>
       </property>
@@ -115,13 +115,6 @@
                      label="Shell"
                      default-value="/bin/sh"
                      description="Path to your shell executable file." hidden="true"/>
-      </property>
-      <property name="timeoutCreate">
-        <property-ui type="textBox"
-                     label="Timeout"
-                     default-value=""
-                     description="The maximum time to wait for an execution group to be created in Milliseconds.
-                                  If left blank or set to -1, the process will wait indefinitely until execution group is created."/>
       </property>
     </properties>
     <post-processing><![CDATA[
@@ -192,7 +185,7 @@
       <property name="queueManager">
         <property-ui type="textBox"
                      label="Queue Manager"
-                     default-value="${p?:resource/WebSphere Message Broker/port}"
+                     default-value="${p?:resource/WebSphere Message Broker/queueManager}"
                      description="The WebSphere MQ Queue Manager which the broker is using. Specify this value if you
                                   are using below version 10 of IIB."/>
       </property>
@@ -235,6 +228,13 @@
                      description="The absolute path to the mqsiprofile executable on your IIB server. Specifying this
                                   value will initialize your command environment. Only specify this path if your command
                                   environment needs initializing."/>
+      </property>
+      <property name="timeoutCreate">
+        <property-ui type="textBox"
+                     label="Timeout"
+                     default-value=""
+                     description="The maximum time to wait for an execution group to be created in Milliseconds.
+                                  If left blank or set to -1, the process will wait indefinitely until execution group is created."/>
       </property>
       <property name="shell">
         <property-ui type="textBox"
@@ -310,7 +310,7 @@
       <property name="queueManager">
         <property-ui type="textBox"
                      label="Queue Manager"
-                     default-value="${p?:resource/WebSphere Message Broker/port}"
+                     default-value="${p?:resource/WebSphere Message Broker/queueManager}"
                      description="The WebSphere MQ Queue Manager which the broker is using. Specify this value if you
                                   are using below version 10 of IIB."/>
       </property>
@@ -433,7 +433,7 @@
       <property name="queueManager">
         <property-ui type="textBox"
                      label="Queue Manager"
-                     default-value="${p?:resource/WebSphere Message Broker/port}"
+                     default-value="${p?:resource/WebSphere Message Broker/queueManager}"
                      description="The WebSphere MQ Queue Manager which the broker is using. Specify this value if you
                                   are using below version 10 of IIB."/>
       </property>
@@ -574,7 +574,7 @@
       <property name="queueManager">
         <property-ui type="textBox"
                      label="Queue Manager"
-                     default-value="${p?:resource/WebSphere Message Broker/port}"
+                     default-value="${p?:resource/WebSphere Message Broker/queueManager}"
                      description="The WebSphere MQ Queue Manager which the broker is using. Specify this value if you
                                   are using below version 10 of IIB."/>
       </property>
@@ -703,7 +703,7 @@
       <property name="queueManager">
         <property-ui type="textBox"
                      label="Queue Manager"
-                     default-value="${p?:resource/WebSphere Message Broker/port}"
+                     default-value="${p?:resource/WebSphere Message Broker/queueManager}"
                      description="The WebSphere MQ Queue Manager which the broker is using. Specify this value if you
                                   are using below version 10 of IIB."/>
       </property>
@@ -831,7 +831,7 @@
       <property name="queueManager">
         <property-ui type="textBox"
                      label="Queue Manager"
-                     default-value="${p?:resource/WebSphere Message Broker/port}"
+                     default-value="${p?:resource/WebSphere Message Broker/queueManager}"
                      description="The WebSphere MQ Queue Manager which the broker is using. Specify this value if you
                                   are using below version 10 of IIB."/>
       </property>
@@ -953,7 +953,7 @@
       <property name="queueManager">
         <property-ui type="textBox"
                      label="Queue Manager"
-                     default-value="${p?:resource/WebSphere Message Broker/port}"
+                     default-value="${p?:resource/WebSphere Message Broker/queueManager}"
                      description="The WebSphere MQ Queue Manager which the broker is using. Specify this value if you
                                   are using below version 10 of IIB."/>
       </property>
@@ -1044,8 +1044,8 @@
       <property name="timeout">
         <property-ui type="textBox"
                      label="Timeout"
-                     description="The timeout to wait for each bar file deploy result to come back in Milliseconds.
-                                  Defaults to 60000"/>
+                     description="The timeout to wait for each bar file deployment result to come back 
+                                  as success in Milliseconds. Defaults to 60000"/>
       </property>
       <property name="startStopMsgFlows">
         <property-ui type="checkBox"
@@ -1093,7 +1093,7 @@
       <property name="queueManager">
         <property-ui type="textBox"
                      label="Queue Manager"
-                     default-value="${p?:resource/WebSphere Message Broker/port}"
+                     default-value="${p?:resource/WebSphere Message Broker/queueManager}"
                      description="The WebSphere MQ Queue Manager which the broker is using. Specify this value if you
                                   are using below version 10 of IIB."/>
       </property>
@@ -1223,7 +1223,7 @@
       <property name="queueManager">
         <property-ui type="textBox"
                      label="Queue Manager"
-                     default-value="${p?:resource/WebSphere Message Broker/port}"
+                     default-value="${p?:resource/WebSphere Message Broker/queueManager}"
                      description="The WebSphere MQ Queue Manager which the broker is using. Specify this value if you
                                   are using below version 10 of IIB."/>
       </property>
@@ -1345,7 +1345,7 @@
       <property name="queueManager">
         <property-ui type="textBox"
                      label="Queue Manager"
-                     default-value="${p?:resource/WebSphere Message Broker/port}"
+                     default-value="${p?:resource/WebSphere Message Broker/queueManager}"
                      description="The WebSphere MQ Queue Manager which the broker is using. Specify this value if you
                                   are using below version 10 of IIB."/>
       </property>

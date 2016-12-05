@@ -53,11 +53,6 @@ class IIBHelper {
             port = Integer.valueOf(props['port'])
         }
 
-        if ((!host || !port) && !integrationNodeName) {
-            throw new IllegalStateException("Must specify either an ip and port, or the Integration Node Name to" +
-                                            "connect to a broker.")
-        }
-
         // strip excess decimal points
         version = props['version']
         def integerPoint = version.indexOf('.') // point between integer and digits after the decimal point
@@ -67,8 +62,28 @@ class IIBHelper {
         timeout = Long.valueOf(props['timeout']?.trim()?:60000)
         isIncremental = !Boolean.valueOf(props['fullDeploy'])
 
+        if (host && port) {
+            //iib9 remote broker connection
+            if (versionInt < 10) {
+                    //user determined by queue manager
+                    def channel = props['channel']
+                    def queueManager = props['queueManager']
+                    brokerConnection = new IIB9BrokerConnection(host, port, queueManager, channel)
+                    bcp = brokerConnection.connection
+            }
+            //iib10 remote connection settings
+            else {
+                //iib10 allows explicit identification of user for remote connection
+                def user = props['username']
+                def password = props['password']
+                def useSSL = Boolean.valueOf(props['useSSL'])
+                brokerConnection = new IIB10BrokerConnection(host, port, user, password, useSSL)
+
+                bcp = brokerConnection.connection
+            }
+        }
         //local broker connection, regardless of iib version
-        if (integrationNodeName) {
+        else if (integrationNodeName) {
             println("Establishing connection with a local broker...")
 
             bcp = new LocalBrokerConnectionParameters(integrationNodeName)
@@ -77,23 +92,8 @@ class IIBHelper {
             def properties = BrokerProxy.getProperties()
             properties.toString()
         }
-        //iib9 remote broker connection
-        else if (versionInt < 10) {
-                //user determined by queue manager
-                def channel = props['channel']
-                def queueManager = props['queueManager']
-                brokerConnection = new IIB9BrokerConnection(host, port, queueManager, channel)
-                bcp = brokerConnection.connection
-        }
-        //iib10 remote connection settings
         else {
-            //iib10 allows explicit identification of user for remote connection
-            def user = props['username']
-            def password = props['password']
-            def useSSL = Boolean.valueOf(props['useSSL'])
-            brokerConnection = new IIB10BrokerConnection(host, port, user, password, useSSL)
-
-            bcp = brokerConnection.connection
+            throw new IllegalStateException("Must specify either an 'Integration Node Name' or an 'IP' and 'Port'.")
         }
 
         if (props['debugFile']) {
@@ -138,6 +138,7 @@ class IIBHelper {
         if (brokerProxy == null || bcp == null) {
             throw new IllegalStateException("Broker Proxy is uninitilized!")
         }
+
         brokerProxy.setSynchronous(timeoutCreate)
 
         if (executionGroups) {
@@ -199,7 +200,7 @@ class IIBHelper {
         else {
             if (servType !=  service.getType()) {
                 StringBuilder errMsg = new StringBuilder()
-                errMsg.append("Cannot change the type of a configuable service.")
+                errMsg.append("Cannot change the type of a configurable service.")
                 errMsg.append("\n\tService Name : ").append(servName)
                 errMsg.append("\n\tRequested Type : ").append(servType)
                 errMsg.append("\n\tCurrent Type : ").append(service.getType())
@@ -212,7 +213,6 @@ class IIBHelper {
     private void createConfigurableService(String servType, String servName, Map<String,String>propsMap) {
         println "Creating configurable service '${servName}' of type '${servType}'"
         brokerProxy.createConfigurableService(servType, servName)
-        deployBrokerConfig()
         ConfigurableService service = brokerProxy.getConfigurableService(null, servName)
         propsMap.each { key, value ->
             println "Setting property '${key}' = '${value}'"
@@ -253,6 +253,9 @@ class IIBHelper {
         if (brokerProxy == null || bcp == null) {
             throw new IllegalStateException("Broker Proxy is uninitilized!")
         }
+
+
+        brokerProxy.setSynchronous(timeout.intValue())
 
         for (String executionGroup : executionGroups) {
             setExecutionGroup(executionGroup)
@@ -366,6 +369,7 @@ class IIBHelper {
         }
 
         String oldVal = executionGroupProxy.getRuntimeProperty(name)
+        String executionGroup = executionGroupProxy.getRuntimeProperty("This/label")
         println "Setting property ${name} to ${value} from ${oldVal} on Execution Group ${executionGroup}!"
         executionGroupProxy.setRuntimeProperty(name, value)
     }
@@ -387,27 +391,6 @@ class IIBHelper {
         String oldVal = msgFlowProxy.getRuntimeProperty(name)
         println "Setting property ${name} to ${value} from ${oldVal} on Message Flow ${msgFlowName} in Execution Group ${executionGroup}!"
         msgFlowProxy.setRuntimeProperty(name, value)
-    }
-
-    public void deployBrokerConfig() {
-        if (brokerProxy == null || bcp == null) {
-            throw new IllegalStateException("Broker Proxy is uninitilized!")
-        }
-        brokerProxy.deploy(60000)
-        checkDeployResult()
-    }
-
-    public void deployExecutionGroupConfig() {
-        if (brokerProxy == null || bcp == null) {
-            throw new IllegalStateException("Broker Proxy is uninitilized!")
-        }
-
-        if (executionGroupProxy == null) {
-            throw new IllegalStateException("Execution group proxy is null! Make sure it is configured correctly!")
-        }
-
-        brokerProxy.deploy(60000)
-        checkDeployResult()
     }
 
     public void deleteMessageFlowsMatchingRegex(String regex) {
@@ -460,24 +443,6 @@ class IIBHelper {
             System.out.println("No orphaned flows to delete")
         }
 
-    }
-
-    public void deployMsgFlowConfig(String msgFlowName) {
-        if (brokerProxy == null || bcp == null) {
-            throw new IllegalStateException("Broker Proxy is uninitilized!")
-        }
-
-        if (executionGroupProxy == null) {
-            throw new IllegalStateException("Execution group proxy is null! Make sure it is configured correctly!")
-        }
-
-        MessageFlowProxy msgFlowProxy = executionGroupProxy.getMessageFlowByName(msgFlowName)
-        if ( msgFlowProxy == null ) {
-            throw new Exception("could not get message flow to set property on!")
-        }
-
-        brokerProxy.deploy(60000)
-        checkDeployResult()
     }
 
     public void checkDeployResult() {
