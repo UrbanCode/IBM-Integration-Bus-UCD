@@ -199,8 +199,9 @@ Altered 'Create Execution Group' step so that it will wait until execution group
 Support property file encryption.
     </release-note>
     <release-note plugin-version="21">
-Updated 'Deploy' step to wait for deployments to return 'success' before continuing.
-Removed deprecated method from 'Create Execution Group.'
+Fixed APAR 158492 Updated to a synchronous deployment.
+Fixed APAR 158710 Removed deprecated method from 'Create Execution Group.'
+Fixed APAR 158738 Added the missing property 'executionGroup' to 'Set Execution Group Properties' step.
 Changed to only establish a local broker connection if remote connection parameters aren't specified.
     </release-note>
   </release-notes>
