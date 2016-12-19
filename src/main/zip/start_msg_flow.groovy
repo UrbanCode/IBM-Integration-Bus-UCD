@@ -15,11 +15,14 @@ import com.urbancode.air.plugin.*;
 File workDir = new File('.');
 
 Properties props = PropertiesHelper.getProperties(new File(args[0]));
-def messageFlows = props['messageFlows']
-
 def helper = new IIBHelper(props)
 
+def executionGroup = props['executionGroup']
+def messageFlows = props['messageFlows']
+
 try {
+    helper.setExecutionGroup(executionGroup)
+
     if (messageFlows) {
         for (def messageFlow in messageFlows.split("\n|,")*.trim()) {
             println "Starting message flow ${messageFlow}";

@@ -19,8 +19,24 @@ def props = apTool.getStepProperties()
 
 def helper = new IIBHelper(props)
 
+String executionGroup = props['executionGroup']
+def executionGroups
+if(executionGroup != null && !executionGroup.trim().isEmpty()) {
+    executionGroups = executionGroup.split('\n|,')*.trim()
+    executionGroups -= [null, ""] // remove empty and null entries
+}
+
 try {
-    helper.createExecutionGroupsIfNeccessary();
+    if (executionGroups) {
+        println("${helper.getTimestamp()} Creating execution groups: ${executionGroups}...")
+    }
+    else {
+        throw new IllegalStateException("No execution group names to create.")
+    }
+
+    for (String groupName : executionGroups) {
+        helper.createExecutionGroupIfNeccessary(groupName);
+    }
 }
 catch (Exception e) {
     e.printStackTrace();

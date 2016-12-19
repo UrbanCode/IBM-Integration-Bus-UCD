@@ -439,4 +439,11 @@
       </migrate-properties>
     </migrate-command>
   </migrate>
+  <migrate to-version='22'>
+    <migrate-command name="Create Execution Group">
+      <migrate-properties>
+        <migrate-property name="timeout" old="timeoutCreate" default=""/>
+      </migrate-properties>
+    </migrate-command>
+  </migrate>
 </plugin-upgrade>

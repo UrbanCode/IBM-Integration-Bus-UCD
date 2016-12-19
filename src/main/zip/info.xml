@@ -204,5 +204,8 @@ Fixed APAR 158710 Removed deprecated method from 'Create Execution Group.'
 Fixed APAR 158738 Added the missing property 'executionGroup' to 'Set Execution Group Properties' step.
 Changed to only establish a local broker connection if remote connection parameters aren't specified.
     </release-note>
+    <release-note plugin-version="22">
+Added output property to specify completion code after deployment, added timestamps, and restructured plugin
+    </release-note>
   </release-notes>
 </pluginInfo>

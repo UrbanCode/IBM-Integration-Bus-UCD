@@ -19,8 +19,17 @@
 
  def helper = new IIBHelper(props)
 
+ String executionGroup = props['executionGroup']
+ def executionGroups
+ if(executionGroup != null && !executionGroup.trim().isEmpty()) {
+     executionGroups = executionGroup.split('\n|,')*.trim()
+     executionGroups -= [null, ""] // remove empty and null entries
+ }
+
  try {
-     helper.restartExecutionGroups();
+     for (String groupName : executionGroups) {
+         helper.restartExecutionGroup(groupName);
+     }
  }
  catch (Exception e) {
      e.printStackTrace();

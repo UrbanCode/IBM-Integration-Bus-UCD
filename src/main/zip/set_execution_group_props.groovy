@@ -17,13 +17,16 @@ File workDir = new File('.');
 Properties props = PropertiesHelper.getProperties(new File(args[0]));
 def helper = new IIBHelper(props)
 
+def executionGroup = props['executionGroup']
+
 try {
+    helper.setExecutionGroup(executionGroup)
+
     props['properties'].split('\n').each { property ->
         String name = property.split('=', 2)[0];
         String value = property.split('=', 2)[1];
         helper.setExecutionGroupProperty(name, value);
     }
-    helper.deployExecutionGroupConfig();
 }
 catch (Exception e) {
     e.printStackTrace();

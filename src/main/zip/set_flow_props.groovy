@@ -17,6 +17,7 @@ File workDir = new File('.').canonicalFile
 Properties props = PropertiesHelper.getProperties(new File(args[0]))
 def helper = new IIBHelper(props)
 
+def executionGroup = props['executionGroup']
 def dirOffset = props['dirOffset']
 def propertyFile = props['propertyFile']
 
@@ -24,6 +25,8 @@ if (dirOffset) {
     workDir = new File(workDir, dirOffset).canonicalFile
 }
 try {
+    helper.setExecutionGroup(executionGroup)
+
     if (propertyFile) {
         def file = new File(workDir, propertyFile).canonicalFile
         if (file.exists()) {
@@ -49,9 +52,6 @@ try {
                     println "Found invalid property ${it.key}=${it.value}"
                 }
             }
-            flowSet.each {
-                helper.deployMsgFlowConfig(it)
-            }
         }
         else {
             throw new Exception("Property file $file does not exist!")
@@ -69,10 +69,6 @@ try {
                 String value = property.split('=',2)[1]
                 helper.setMsgFlowProperty(msgFlow, name, value)
             }
-        }
-
-        props['msgFlows'].split('\n').each { msgFlow ->
-            helper.deployMsgFlowConfig(msgFlow);
         }
     }
 }

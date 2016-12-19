@@ -14,6 +14,7 @@ package com.urbancode.air.plugin.wmbcmp
 import com.ibm.broker.config.proxy.BrokerConnectionParameters
 import com.ibm.broker.config.proxy.BrokerProxy
 import com.ibm.broker.config.proxy.ConfigurableService
+import com.ibm.broker.config.proxy.ConfigManagerProxyRequestFailureException
 import com.ibm.broker.config.proxy.CompletionCodeType
 import com.ibm.broker.config.proxy.DeployedObject
 import com.ibm.broker.config.proxy.DeployResult
@@ -25,8 +26,7 @@ import com.ibm.broker.config.proxy.MessageFlowProxy
 import com.urbancode.air.ExitCodeException
 import com.urbancode.air.plugin.wmbcmp.IIB9BrokerConnection
 import com.urbancode.air.plugin.wmbcmp.IIB10BrokerConnection
-
-
+import java.text.SimpleDateFormat
 import java.util.regex.Pattern
 
 class IIBHelper {
@@ -35,14 +35,13 @@ class IIBHelper {
     def executionGroups
     def version
     def brokerConnection
-    Integer timeoutCreate
+    Integer syncTimeout
     Date startTime
     boolean isDebugEnabled
     boolean isIncremental
     BrokerConnectionParameters bcp
     BrokerProxy brokerProxy
     ExecutionGroupProxy executionGroupProxy
-
 
     public IIBHelper(Properties props) {
         def host = props['brokerHost']
@@ -59,7 +58,8 @@ class IIBHelper {
         version = integerPoint != -1 ? version.substring(0, integerPoint) : version
         def versionInt = version.toInteger()
 
-        timeout = Long.valueOf(props['timeout']?.trim()?:60000)
+        timeout = Long.valueOf(props['timeout']?.trim()?:60000) // time to wait for a broker response
+        syncTimeout = Integer.valueOf(props['timeout']?.trim()?:-1) // time to wait for broker to update its config
         isIncremental = !Boolean.valueOf(props['fullDeploy'])
 
         if (host && port) {
@@ -84,7 +84,7 @@ class IIBHelper {
         }
         //local broker connection, regardless of iib version
         else if (integrationNodeName) {
-            println("Establishing connection with a local broker...")
+            println("${getTimestamp()} Establishing connection with a local broker...")
 
             bcp = new LocalBrokerConnectionParameters(integrationNodeName)
             brokerProxy = BrokerProxy.getInstance(bcp)
@@ -106,17 +106,7 @@ class IIBHelper {
             brokerProxy = brokerConnection.proxy
         }
 
-        String executionGroup = props['executionGroup']
-        if(executionGroup != null && !executionGroup.trim().isEmpty()) {
-            executionGroups = props['executionGroup'].split('\n|,')*.trim()
-            executionGroups -= [null, ""] // remove empty and null entries
-
-            // setup for single execution group
-            if (executionGroups.size() == 1) {
-                setExecutionGroup(executionGroups[0])
-            }
-        }
-        timeoutCreate = Integer.valueOf(props['timeoutCreate']?.trim()?:-1)
+        brokerProxy.setSynchronous(syncTimeout)
 
         startTime = new Date(System.currentTimeMillis())
         logProxy = brokerProxy.getLog()
@@ -134,58 +124,66 @@ class IIBHelper {
         executionGroupProxy.stopMessageFlows()
     }
 
-    public void createExecutionGroupsIfNeccessary() {
+    public void createExecutionGroupIfNeccessary(String executionGroup) {
         if (brokerProxy == null || bcp == null) {
             throw new IllegalStateException("Broker Proxy is uninitilized!")
         }
 
-        brokerProxy.setSynchronous(timeoutCreate)
+        setExecutionGroup(executionGroup)
 
-        if (executionGroups) {
-            println("Creating execution groups: ${executionGroups}...")
-        }
-        else {
-            throw new IllegalStateException("No execution group names to create.")
-        }
+        if (executionGroupProxy == null) {
+            System.out.println("${getTimestamp()} Execution group ${executionGroup} does not exist."
+                    + " Attempting to create...")
 
-        for (String executionGroup : executionGroups) {
-            setExecutionGroup(executionGroup)
+            try {
+                executionGroupProxy = brokerProxy.createExecutionGroup(executionGroup)
+            }
+            catch (ConfigManagerProxyRequestFailureException ex) {
+                List<LogEntry> responses = ex.getResponseMessages()
+
+                println("Broker rejection errors during execution group creation:")
+                for (LogEntry entry : responses) {
+                    if (entry.isErrorMessage() && entry.getTimestamp() > startTime) {
+                        println("[${entry.getTimestamp().toString()}] ${entry.getMessage()}"
+                            + " : ${entry.getDetail()}")
+                    }
+                }
+
+                throw ex
+            }
 
             if (executionGroupProxy == null) {
-                System.out.println("Execution group ${executionGroup} does not exist. Attempting to create...")
-                executionGroupProxy = brokerProxy.createExecutionGroup(executionGroup)
-                if (executionGroupProxy == null) {
-                    throw new RuntimeException("Could not create execution group with name ${name}")
-                }
-                System.out.println("Execution group ${executionGroup} created.")
+                throw new RuntimeException("Could not create execution group with"
+                + " name ${name}")
             }
-            else {
-                System.out.println("Execution group ${executionGroup} exists. Skipping create...")
-            }
+            System.out.println("${getTimestamp()} Execution group ${executionGroup} created.")
+        }
+        else {
+            System.out.println("${getTimestamp()} Execution group ${executionGroup} exists."
+                    + " Skipping create...")
         }
     }
 
-    public void restartExecutionGroups() {
-        for (String executionGroup : executionGroups) {
-            setExecutionGroup(executionGroup)
+    public void restartExecutionGroup(String executionGroup) {
+        setExecutionGroup(executionGroup)
 
-            if (executionGroupProxy == null) {
-                throw new RuntimeException("Execution group ${executionGroup} does not exist.")
-            }
-
-            System.out.println("Restarting execution group ${executionGroup}")
-            executionGroupProxy.stop()
-            executionGroupProxy.start()
-            System.out.println("Successfully restarted ${executionGroup}")
+        if (executionGroupProxy == null) {
+            throw new RuntimeException("${getTimestamp()} Execution group ${executionGroup} does not exist.")
         }
+
+        System.out.println("${getTimestamp()} Restarting execution group ${executionGroup}")
+        executionGroupProxy.stop()
+        executionGroupProxy.start()
+        System.out.println("${getTimestamp()} Successfully restarted ${executionGroup}")
     }
 
     public void deleteConfigurableService(String servType, String servName) {
         if (brokerProxy == null || bcp == null) {
             throw new IllegalStateException("Broker Proxy is uninitilized!")
         }
-        System.out.println("Deleting Configurable Service '${servName}' of type '${servType}'")
+        System.out.println("${getTimestamp()} Deleting Configurable Service '${servName}' of type '${servType}'")
         brokerProxy.deleteConfigurableService(servType, servName)
+        System.out.println("${getTimestamp()} Successfully deleted Configurable Service.")
     }
 
     public void createOrUpdateConfigurableService(String servType, String servName, Map<String,String> propsMap) {
@@ -211,17 +209,19 @@ class IIBHelper {
     }
 
     private void createConfigurableService(String servType, String servName, Map<String,String>propsMap) {
-        println "Creating configurable service '${servName}' of type '${servType}'"
+        println "${getTimestamp()} Creating configurable service '${servName}' of type '${servType}'"
         brokerProxy.createConfigurableService(servType, servName)
         ConfigurableService service = brokerProxy.getConfigurableService(null, servName)
         propsMap.each { key, value ->
-            println "Setting property '${key}' = '${value}'"
+            println "${getTimestamp()} Setting property '${key}' = '${value}'"
             service.setProperty(key, value)
         }
+
+        println("${getTimestamp()} Successfully created configurable service.")
     }
 
     private void updateConfigurableService(ConfigurableService service, Map<String,String>propsMap, String servName, String servType) {
-        println "Updating configurable service '${servName}' of type '${servType}'"
+        println "${getTimestamp()} Updating configurable service '${servName}' of type '${servType}'"
         def keysToDelete = []
         service.getProperties().each { key,value ->
             if (!propsMap.containsKey(key)) {
@@ -229,6 +229,8 @@ class IIBHelper {
                 keysToDelete << key
             }
         }
+
+        println ("${getTimestamp()} Successfully updated configurable service.")
 
         service.deleteProperties(keysToDelete as String[])
         propsMap.each { key, value ->
@@ -249,71 +251,28 @@ class IIBHelper {
         executionGroupProxy.startMessageFlows()
     }
 
-    public void deployBrokerArchive(String fileName) {
+    /*
+     * Deploy a BAR file to execution groups
+     * @param fileName the name of the BAR file to deploy
+     * @return the completion code returned by the broker
+     */
+    public CompletionCodeType deployBrokerArchive(String fileName, String executionGroup) {
         if (brokerProxy == null || bcp == null) {
             throw new IllegalStateException("Broker Proxy is uninitilized!")
         }
 
+        setExecutionGroup(executionGroup)
 
-        brokerProxy.setSynchronous(timeout.intValue())
-
-        for (String executionGroup : executionGroups) {
-            setExecutionGroup(executionGroup)
-
-            if (executionGroupProxy == null) {
-                throw new IllegalStateException("Execution group proxy is null! Make sure it is configured correctly!")
-            }
-
-            println "Using execution group: ${executionGroup} and timeout ${timeout}..."
-            DeployResult dr = executionGroupProxy.deploy(fileName, isIncremental, timeout)
-            def completionCode = dr.getCompletionCode()
-
-            checkDeployResult(dr)
-
-            if (completionCode != CompletionCodeType.success) {
-                String message = ""
-
-                if (completionCode == CompletionCodeType.failure) {
-                    message = "The deployment operation has failed."
-                }
-                else if (completionCode == CompletionCodeType.cancelled) {
-                    message = "The deployment was submitted to the broker, but was cancelled by user action before processing."
-                }
-                else if (completionCode == CompletionCodeType.pending) {
-                    message = "The deployment is queued and waiting to be processed by the broker."
-                }
-                else if (completionCode == CompletionCodeType.submitted) {
-                    message = "The deployment request was sent to the broker's administration agent and is currently being processed."
-                }
-                else if (completionCode == CompletionCodeType.unknown) {
-                    message = "No information has been received from the broker about the deployment request."
-                }
-                else if (completionCode == CompletionCodeType.initiated) {
-                    message = "The deployment has been created and is about to be queued on the broker."
-                }
-                else if (completionCode == CompletionCodeType.timedOut) {
-                    message = "The deployment request was sent to the broker but no response was received in the expected time frame."
-                }
-                else {
-                    throw new Exception("Deployment Result could not be obtained.")
-                }
-                throw new Exception("Failed deploying bar File ${fileName} with completion code : " +
-                    (completionCode.toString() + ":" + message))
-            }
-            else {
-                println("${fileName} was successfully deployed to ${executionGroup}.")
-            }
+        if (executionGroupProxy == null) {
+            throw new IllegalStateException("Execution group proxy is null! Make sure it is configured correctly!")
         }
-    }
 
-    public String[] getMessageFlowsFromProperties(props) {
-        //todo
+        println "${getTimestamp()} Using execution group: ${executionGroup} and timeout ${timeout}..."
+        DeployResult dr = executionGroupProxy.deploy(fileName, isIncremental, timeout)
+        CompletionCodeType completionCode = dr.getCompletionCode()
 
-    }
-
-    public String[] getMessageFlowsFromBarFile(String fileName) {
-        //todo
-
+        checkDeployResult(dr)
+        return completionCode
     }
 
     public void startMsgFlow(String msgFlowName) {
@@ -370,8 +329,10 @@ class IIBHelper {
 
         String oldVal = executionGroupProxy.getRuntimeProperty(name)
         String executionGroup = executionGroupProxy.getRuntimeProperty("This/label")
-        println "Setting property ${name} to ${value} from ${oldVal} on Execution Group ${executionGroup}!"
+        println "${getTimestamp()} Setting property ${name} to ${value} from ${oldVal} on Execution Group "
+            + "${executionGroup}!"
         executionGroupProxy.setRuntimeProperty(name, value)
+        println("${getTimestamp()} Successfully set execution group property.")
     }
 
     public void setMsgFlowProperty(String msgFlowName, String name, String value) {
@@ -389,8 +350,10 @@ class IIBHelper {
         }
 
         String oldVal = msgFlowProxy.getRuntimeProperty(name)
-        println "Setting property ${name} to ${value} from ${oldVal} on Message Flow ${msgFlowName} in Execution Group ${executionGroup}!"
+        println "${getTimestamp()} Setting property ${name} to ${value} from ${oldVal} on Message Flow "
+            + "${msgFlowName} in Execution Group ${executionGroup}!"
         msgFlowProxy.setRuntimeProperty(name, value)
+        println("${getTimestamp()} Successfully set message flow property.")
     }
 
     public void deleteMessageFlowsMatchingRegex(String regex) {
@@ -424,7 +387,7 @@ class IIBHelper {
         }
 
         if ( flowsToDelete.size() > 0) {
-            println "Deleting "+flowsToDelete.size()+" deployed objects that are orphaned"
+            println "${getTimestamp()} Deleting "+flowsToDelete.size()+" deployed objects that are orphaned"
             println "Using timeout ${timeout}"
 
             // convert to DeployedObject [] to match deleteDeployedObjects method spec
@@ -487,12 +450,18 @@ class IIBHelper {
         }
     }
 
-    private void setExecutionGroup(String groupName) {
+    public void setExecutionGroup(String groupName) {
         if (groupName) {
             executionGroupProxy = brokerProxy.getExecutionGroupByName(groupName)
         }
         else {
             throw new IllegalStateException("Execution group field specified with blank or null name.")
         }
+    }
+
+    public String getTimestamp() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("[MM/dd/yyyy HH:mm:ss]")
+
+        return dateFormat.format(new Date())
     }
 }

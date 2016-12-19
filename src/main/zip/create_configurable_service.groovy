@@ -34,7 +34,6 @@ def helper = new IIBHelper(props)
 
 try {
     helper.createOrUpdateConfigurableService(servType,servName,  properties);
-    helper.deployBrokerConfig();
 }
 catch (Exception e) {
     e.printStackTrace();

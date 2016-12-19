@@ -17,7 +17,10 @@ File workDir = new File('.');
 Properties props = PropertiesHelper.getProperties(new File(args[0]));
 def helper = new IIBHelper(props)
 
+def executionGroup = props['executionGroup']
+
 try {
+    helper.setExecutionGroup(executionGroup)
     String regex = props['regex'];
     println "Deleting message flows that have been deployed via BAR files matching regex: ${regex}";
     helper.deleteMessageFlowsMatchingRegex(regex);
