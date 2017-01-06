@@ -207,5 +207,9 @@ Changed to only establish a local broker connection if remote connection paramet
     <release-note plugin-version="22">
 Added output property to specify completion code after deployment, added timestamps, and restructured plugin
     </release-note>
+    <release-note plugin-version="23">
+Fixed APAR PI73557 Set Broker Properties is using a deprecated method which no longer works.
+Fixed APAR IT18861 Groovy classpath updated to include quotations.
+    </release-note>
   </release-notes>
 </pluginInfo>

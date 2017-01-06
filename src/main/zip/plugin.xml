@@ -12,7 +12,7 @@
            xmlns:server="http://www.urbancode.com/PluginServerXMLSchema_v1"
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <header>
-    <identifier id="com.urbancode.air.plugin.WMBCMP" name="WebSphere Message Broker - CMP" version="22"/>
+    <identifier id="com.urbancode.air.plugin.WMBCMP" name="WebSphere Message Broker - CMP" version="23"/>
     <description>Integration for WebSphere Message Broker to deploy Broker Archives and start and stop Message Flows
                  using the CMP API. This plugin is compatible with both version 9 and 10 of IBM Integration Bus, and
                  is also compatible with versions 7 and 8 of WebSphere Message Broker.</description>
@@ -24,7 +24,12 @@
       <property name="properties" required="true">
         <property-ui type="textAreaBox"
                      label="Properties"
-                     description="A new line separated list of properties to set in the format name=value"/>
+                     description="A new line separated list of properties to set in the format 
+                        'type:name=value'. Possible component types to specify for 'type' are 
+                        configurableservice, httplistener, securitycache, cachemanager, or webadmin. 
+                        The name is specified in the format 'objectName/propertyName'. For 
+                        configurable services the name must be in the format 'service/objectName/propertyName'."/>
+ 
       </property>
       <property name="brokerHost">
         <property-ui type="textBox"

@@ -145,7 +145,7 @@ if (mqsiprofile) {
         cmdArgs = [
             groovyExe,
             "-cp",
-            classpath,
+            "\"${classpath}\"",
             argScript,
             args[1],
             args[2]
@@ -167,7 +167,7 @@ else {
     cmdArgs = [
         groovyExe,
         "-cp",
-        classpath,
+        "\"${classpath}\"",
         argScript,
         this.args[1],
         this.args[2]

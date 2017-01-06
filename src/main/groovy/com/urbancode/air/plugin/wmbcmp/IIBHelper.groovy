@@ -11,6 +11,7 @@
  */
 package com.urbancode.air.plugin.wmbcmp
 
+import com.ibm.broker.config.proxy.AttributeConstants
 import com.ibm.broker.config.proxy.BrokerConnectionParameters
 import com.ibm.broker.config.proxy.BrokerProxy
 import com.ibm.broker.config.proxy.ConfigurableService
@@ -22,7 +23,6 @@ import com.ibm.broker.config.proxy.ExecutionGroupProxy
 import com.ibm.broker.config.proxy.LocalBrokerConnectionParameters
 import com.ibm.broker.config.proxy.LogEntry
 import com.ibm.broker.config.proxy.MessageFlowProxy
-
 import com.urbancode.air.ExitCodeException
 import com.urbancode.air.plugin.wmbcmp.IIB9BrokerConnection
 import com.urbancode.air.plugin.wmbcmp.IIB10BrokerConnection
@@ -139,16 +139,7 @@ class IIBHelper {
                 executionGroupProxy = brokerProxy.createExecutionGroup(executionGroup)
             }
             catch (ConfigManagerProxyRequestFailureException ex) {
-                List<LogEntry> responses = ex.getResponseMessages()
-
-                println("Broker rejection errors during execution group creation:")
-                for (LogEntry entry : responses) {
-                    if (entry.isErrorMessage() && entry.getTimestamp() > startTime) {
-                        println("[${entry.getTimestamp().toString()}] ${entry.getMessage()}"
-                            + " : ${entry.getDetail()}")
-                    }
-                }
-
+                printBrokerResponses(ex)
                 throw ex
             }
 
@@ -302,20 +293,59 @@ class IIBHelper {
 
         MessageFlowProxy msgFlowProxy = executionGroupProxy.getMessageFlowByName(msgFlowName)
         if ( msgFlowProxy == null ) {
-            throw new Exception("could not get message flow to start!")
+            throw new Exception("Could not get message flow to start!")
         }
         msgFlowProxy.stop()
 
     }
 
-    public void setBrokerProperty(String name, String value) {
+    public void setBrokerProperty(String name, String value, String propType) {
         if (brokerProxy == null || bcp == null) {
             throw new IllegalStateException("Broker Proxy is uninitilized!")
         }
 
-        String oldVal = brokerProxy.getRuntimeProperty(name)
-        println "Setting property ${name} to ${value} from ${oldVal} on broker!"
-        brokerProxy.setRuntimeProperty(name, value)
+        final String delimiter = AttributeConstants.OBJECT_NAME_DELIMITER
+
+        try {
+            if (propType.equalsIgnoreCase("cachemanager")) {
+                String oldVal = brokerProxy.getCacheManagerProperty(name)
+
+                println("Setting CacheManager property '${name}' from '${oldVal}' to '${value}'")
+                brokerProxy.setCacheManagerProperty(name, value)
+            }
+            else if (propType.equalsIgnoreCase("configurableservice")) {
+                String oldVal = brokerProxy.getConfigurableServiceProperty(name)
+
+                println("Setting ConfigurableService property '${name}' from '${oldVal}' to '${value}'")
+                brokerProxy.setConfigurableServiceProperty(name, value)
+            }
+            else if (propType.equalsIgnoreCase("httplistener")) {
+                String oldVal = brokerProxy.getHTTPListenerProperty(name)
+
+                println("Setting HTTPListener property '${name}' from '${oldVal}' to '${value}'")
+                brokerProxy.setHTTPListenerProperty(name, value)
+            }
+            else if (propType.equalsIgnoreCase("securitycache")) {
+                String oldVal = brokerProxy.getSecurityCacheProperty(name)
+
+                println("Setting SecurityCache property '${name}' from '${oldVal}' to '${value}'")
+                brokerProxy.setSecurityCacheProperty(name, value)
+            }
+            else if (propType.equalsIgnoreCase("webadmin")) {
+                String fullName = "BrokerRegistry${delimiter}WebAdmin${delimiter}${name}"
+                String oldVal = brokerProxy.getRegistryProperty(fullName)
+                println("Setting WebAdmin property '${fullName}' from '${oldVal}' to '${value}'")
+                brokerProxy.setRegistryProperty(fullName, value)
+                println("Successfully set property value")
+            }
+            else {
+                throw new IllegalStateException("${propType} is an unsupported component type.")
+            }
+        }
+        catch (ConfigManagerProxyRequestFailureException ex) {
+            printBrokerResponses(ex)
+            throw ex
+        }
     }
 
     public void setExecutionGroupProperty(String name, String value) {
@@ -463,5 +493,17 @@ class IIBHelper {
         SimpleDateFormat dateFormat = new SimpleDateFormat("[MM/dd/yyyy HH:mm:ss]")
 
         return dateFormat.format(new Date())
+    }
+
+    private void printBrokerResponses(ConfigManagerProxyRequestFailureException ex) {
+        List<LogEntry> responses = ex.getResponseMessages()
+
+        println("Broker rejection errors during execution:")
+        for (LogEntry entry : responses) {
+            if (entry.isErrorMessage() && entry.getTimestamp() > startTime) {
+                println("[${entry.getTimestamp().toString()}] ${entry.getMessage()}"
+                    + " : ${entry.getDetail()}")
+            }
+        }
     }
 }
