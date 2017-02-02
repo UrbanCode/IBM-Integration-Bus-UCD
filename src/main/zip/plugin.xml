@@ -12,7 +12,7 @@
            xmlns:server="http://www.urbancode.com/PluginServerXMLSchema_v1"
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <header>
-    <identifier id="com.urbancode.air.plugin.WMBCMP" name="WebSphere Message Broker - CMP" version="23"/>
+    <identifier id="com.urbancode.air.plugin.WMBCMP" name="WebSphere Message Broker - CMP" version="24"/>
     <description>Integration for WebSphere Message Broker to deploy Broker Archives and start and stop Message Flows
                  using the CMP API. This plugin is compatible with both version 9 and 10 of IBM Integration Bus, and
                  is also compatible with versions 7 and 8 of WebSphere Message Broker.</description>
@@ -818,6 +818,13 @@
                      default-value="false"
                      description="Administration security authentication/authorization. This option is only available
                                   in IIB version 10."/>
+      </property>
+      <property name="deleteMissing">
+        <property-ui type="checkBox"
+                     label="Delete Missing Properties"
+                     default-value="false"
+                     description="This option will attempt to delete any properties that exist on the
+                                  configurable service that aren't referenced in the 'Properties' field."/>
       </property>
       <property name="integrationNodeName">
         <property-ui type="textBox"

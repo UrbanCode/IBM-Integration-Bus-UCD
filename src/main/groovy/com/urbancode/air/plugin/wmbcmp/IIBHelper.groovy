@@ -177,7 +177,12 @@ class IIBHelper {
         System.out.println("${getTimestamp()} Successfully deleted Configurable Service.")
     }
 
-    public void createOrUpdateConfigurableService(String servType, String servName, Map<String,String> propsMap) {
+    public void createOrUpdateConfigurableService(
+        String servType,
+        String servName,
+        Map<String,String> propsMap,
+        boolean deleteMissing)
+    {
         if (brokerProxy == null || bcp == null) {
             throw new IllegalStateException("Broker Proxy is uninitilized!")
         }
@@ -195,7 +200,7 @@ class IIBHelper {
                 errMsg.append("\n\tCurrent Type : ").append(service.getType())
                 throw new IllegalStateException(errMsg)
             }
-            updateConfigurableService(service, propsMap, servName, servType)
+            updateConfigurableService(service, propsMap, servName, servType, deleteMissing)
         }
     }
 
@@ -211,23 +216,34 @@ class IIBHelper {
         println("${getTimestamp()} Successfully created configurable service.")
     }
 
-    private void updateConfigurableService(ConfigurableService service, Map<String,String>propsMap, String servName, String servType) {
+    private void updateConfigurableService(
+        ConfigurableService service,
+        Map<String,String>propsMap,
+        String servName,
+        String servType,
+        boolean deleteMissing)
+    {
         println "${getTimestamp()} Updating configurable service '${servName}' of type '${servType}'"
-        def keysToDelete = []
-        service.getProperties().each { key,value ->
-            if (!propsMap.containsKey(key)) {
-                println "Deleting property no longer in property map : '${key}' : '${value}'"
-                keysToDelete << key
+
+        if (deleteMissing) {
+            def keysToDelete = []
+            service.getProperties().each { key,value ->
+                if (!propsMap.containsKey(key)) {
+                    println "Deleting property no longer in property map : '${key}' : '${value}'"
+                    keysToDelete << key
+                }
             }
+
+            service.deleteProperties(keysToDelete as String[])
+            println ("${getTimestamp()} Successfully removed all properties no longer in the property map.")
         }
 
-        println ("${getTimestamp()} Successfully updated configurable service.")
-
-        service.deleteProperties(keysToDelete as String[])
         propsMap.each { key, value ->
             println "Setting property '${key}' = '${value}'"
             service.setProperty(key, value)
         }
+
+        println ("${getTimestamp()} Successfully updated configurable service.")
     }
 
     public void startAllMsgFlows() {
@@ -251,8 +267,6 @@ class IIBHelper {
         if (brokerProxy == null || bcp == null) {
             throw new IllegalStateException("Broker Proxy is uninitilized!")
         }
-
-        setExecutionGroup(executionGroup)
 
         if (executionGroupProxy == null) {
             throw new IllegalStateException("Execution group proxy is null! Make sure it is configured correctly!")

@@ -448,4 +448,11 @@
   </migrate>
   <migrate to-version='23'>
   </migrate>
+  <migrate to-version='24'>
+    <migrate-command name="Create Or Update Configurable Service">
+      <migrate-properties>
+        <migrate-property name="deleteMissing" default="false"/>
+      </migrate-properties>
+    </migrate-command>
+  </migrate>
 </plugin-upgrade>

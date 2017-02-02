@@ -19,6 +19,7 @@ def servName = props['servName'];
 def servType = props['servType'];
 def propsString = props['props'];
 def properties = new HashMap<String,String>();
+def deleteMissing = Boolean.valueOf(props['deleteMissing']);
 propsString.split('\n').each {
     def parts = it.split('->', 2);
     if (parts.length != 2) {
@@ -33,7 +34,7 @@ propsString.split('\n').each {
 def helper = new IIBHelper(props)
 
 try {
-    helper.createOrUpdateConfigurableService(servType,servName,  properties);
+    helper.createOrUpdateConfigurableService(servType, servName, properties, deleteMissing);
 }
 catch (Exception e) {
     e.printStackTrace();

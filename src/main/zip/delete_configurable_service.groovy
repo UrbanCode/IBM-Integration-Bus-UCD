@@ -22,7 +22,6 @@ def helper = new IIBHelper(props)
 
 try {
     helper.deleteConfigurableService(servType,servName);
-    helper.deployBrokerConfig();
 }
 catch (Exception e) {
     e.printStackTrace();

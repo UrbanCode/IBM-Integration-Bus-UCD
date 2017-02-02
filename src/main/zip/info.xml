@@ -211,5 +211,9 @@ Added output property to specify completion code after deployment, added timesta
 Fixed APAR PI73557 Set Broker Properties is using a deprecated method which no longer works.
 Fixed APAR IT18861 Groovy classpath updated to include quotations.
     </release-note>
+    <release-note plugin-version="24">
+Fixed APAR PI75953 Set execution group proxy before stopping all message flows.
+Changed Update Configurable Service to configure if missing properties should be deleted.
+    </release-note>
   </release-notes>
 </pluginInfo>

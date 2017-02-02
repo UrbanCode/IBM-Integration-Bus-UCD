@@ -28,15 +28,16 @@ if(executionGroup != null && !executionGroup.trim().isEmpty()) {
 }
 
 try {
-    if (Boolean.valueOf(props['startStopMsgFlows'])) {
-        println "${helper.getTimestamp()} Stopping all Msg Flows"
-        helper.stopAllMsgFlows();
-    }
-
     props['barFileNames'].split('\n|,')*.trim().each { barFileName ->
         println "${helper.getTimestamp()} Deploying bar file ${barFileName}";
 
         for (String groupName : executionGroups) {
+            helper.setExecutionGroup(groupName);
+
+            if (Boolean.valueOf(props['startStopMsgFlows'])) {
+                println "${helper.getTimestamp()} Stopping all Msg Flows"
+                helper.stopAllMsgFlows();
+            }
             CompletionCodeType completionCode = helper.deployBrokerArchive(barFileName, groupName);
             apTool.setOutputProperty("completionCode", completionCode.toString())
 
