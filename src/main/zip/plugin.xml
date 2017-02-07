@@ -4,7 +4,7 @@
 - IBM UrbanCode Deploy
 - IBM UrbanCode Release
 - IBM AnthillPro
-- (c) Copyright IBM Corporation 2002, 2016. All Rights Reserved.
+- (c) Copyright IBM Corporation 2002, 2017. All Rights Reserved.
 -
 - U.S. Government Users Restricted Rights - Use, duplication or disclosure restricted by
 - GSA ADP Schedule Contract with IBM Corp.
@@ -12,7 +12,7 @@
            xmlns:server="http://www.urbancode.com/PluginServerXMLSchema_v1"
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <header>
-    <identifier id="com.urbancode.air.plugin.WMBCMP" name="WebSphere Message Broker - CMP" version="24"/>
+    <identifier id="com.urbancode.air.plugin.WMBCMP" name="WebSphere Message Broker - CMP" version="25"/>
     <description>Integration for WebSphere Message Broker to deploy Broker Archives and start and stop Message Flows
                  using the CMP API. This plugin is compatible with both version 9 and 10 of IBM Integration Bus, and
                  is also compatible with versions 7 and 8 of WebSphere Message Broker.</description>
@@ -24,12 +24,12 @@
       <property name="properties" required="true">
         <property-ui type="textAreaBox"
                      label="Properties"
-                     description="A new line separated list of properties to set in the format 
-                        'type:name=value'. Possible component types to specify for 'type' are 
-                        configurableservice, httplistener, securitycache, cachemanager, or webadmin. 
-                        The name is specified in the format 'objectName/propertyName'. For 
+                     description="A new line separated list of properties to set in the format
+                        'type:name=value'. Possible component types to specify for 'type' are
+                        configurableservice, httplistener, securitycache, cachemanager, or webadmin.
+                        The name is specified in the format 'objectName/propertyName'. For
                         configurable services the name must be in the format 'service/objectName/propertyName'."/>
- 
+
       </property>
       <property name="brokerHost">
         <property-ui type="textBox"
@@ -794,7 +794,7 @@
       <property name="props" required="true">
         <property-ui type="textAreaBox"
                      label="Properties"
-                     description="A new line separated list of properties to set in the format name=value"/>
+                     description="A new line separated list of properties to set in the format name->value or name=value"/>
       </property>
       <property name="brokerHost">
         <property-ui type="textBox"
@@ -1035,7 +1035,7 @@
   </step-type>
 
   <step-type name="Deploy">
-    <description>Deploy a Broker Archive. This step will set the output property 'completionCode', 
+    <description>Deploy a Broker Archive. This step will set the output property 'completionCode',
       representing the completion code returned from the broker during deployment.</description>
     <properties>
       <property name="barFileNames" required="true">
@@ -1057,7 +1057,7 @@
       <property name="timeout">
         <property-ui type="textBox"
                      label="Timeout"
-                     description="The timeout to wait for each bar file deployment result to come back 
+                     description="The timeout to wait for each bar file deployment result to come back
                                   as success in Milliseconds. Defaults to 60000"/>
       </property>
       <property name="startStopMsgFlows">
@@ -1475,6 +1475,20 @@
             <value label="Fast Fail">fastFail</value>
             <value label="Best Effort">bestEffort</value>
             <value label="Warn">warn</value>
+      </property>
+      <property name="mqsiprofile">
+        <property-ui type="textBox"
+                     label="MQSIPROFILE Executable"
+                     default-value="${p?:resource/WebSphere Message Broker/mqsiprofile}"
+                     description="The absolute path to the mqsiprofile executable on your IIB server. Specifying this
+                                  value will initialize your command environment. Only specify this path if your command
+                                  environment needs initializing."/>
+      </property>
+      <property name="shell">
+        <property-ui type="textBox"
+                     label="Shell"
+                     default-value="/bin/sh"
+                     description="Path to your shell executable file." hidden="true"/>
       </property>
     </properties>
     <post-processing><![CDATA[

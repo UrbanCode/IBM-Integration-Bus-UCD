@@ -4,7 +4,7 @@
  * IBM UrbanCode Deploy
  * IBM UrbanCode Release
  * IBM AnthillPro
- * (c) Copyright IBM Corporation 2002, 2016. All Rights Reserved.
+ * (c) Copyright IBM Corporation 2002, 2017. All Rights Reserved.
  *
  * U.S. Government Users Restricted Rights - Use, duplication or disclosure restricted by
  * GSA ADP Schedule Contract with IBM Corp.
@@ -145,7 +145,7 @@ if (mqsiprofile) {
         cmdArgs = [
             groovyExe,
             "-cp",
-            "\"${classpath}\"",
+            "${classpath}",
             argScript,
             args[1],
             args[2]
@@ -167,7 +167,7 @@ else {
     cmdArgs = [
         groovyExe,
         "-cp",
-        "\"${classpath}\"",
+        "${classpath}",
         argScript,
         this.args[1],
         this.args[2]

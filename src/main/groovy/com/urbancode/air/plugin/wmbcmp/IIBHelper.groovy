@@ -4,7 +4,7 @@
  * IBM UrbanCode Deploy
  * IBM UrbanCode Release
  * IBM AnthillPro
- * (c) Copyright IBM Corporation 2002, 2016. All Rights Reserved.
+ * (c) Copyright IBM Corporation 2002, 2017. All Rights Reserved.
  *
  * U.S. Government Users Restricted Rights - Use, duplication or disclosure restricted by
  * GSA ADP Schedule Contract with IBM Corp.
@@ -187,8 +187,9 @@ class IIBHelper {
             throw new IllegalStateException("Broker Proxy is uninitilized!")
         }
 
-        ConfigurableService service = brokerProxy.getConfigurableService(null, servName)
+        ConfigurableService service = brokerProxy.getConfigurableService("", servName)
         if (service == null) {
+            println "${getTimestamp()} Creating configurable service '${servName}'..."
             createConfigurableService(servType, servName, propsMap)
         }
         else {
@@ -207,6 +208,7 @@ class IIBHelper {
     private void createConfigurableService(String servType, String servName, Map<String,String>propsMap) {
         println "${getTimestamp()} Creating configurable service '${servName}' of type '${servType}'"
         brokerProxy.createConfigurableService(servType, servName)
+        // Note: https://developer.ibm.com/answers/questions/327647/examples-of-ibm-integration-api-creating-configura.html
         ConfigurableService service = brokerProxy.getConfigurableService(null, servName)
         propsMap.each { key, value ->
             println "${getTimestamp()} Setting property '${key}' = '${value}'"
@@ -373,8 +375,7 @@ class IIBHelper {
 
         String oldVal = executionGroupProxy.getRuntimeProperty(name)
         String executionGroup = executionGroupProxy.getRuntimeProperty("This/label")
-        println "${getTimestamp()} Setting property ${name} to ${value} from ${oldVal} on Execution Group "
-            + "${executionGroup}!"
+        println "${getTimestamp()} Setting property ${name} to ${value} from ${oldVal} on Execution Group " + "${executionGroup}!"
         executionGroupProxy.setRuntimeProperty(name, value)
         println("${getTimestamp()} Successfully set execution group property.")
     }
