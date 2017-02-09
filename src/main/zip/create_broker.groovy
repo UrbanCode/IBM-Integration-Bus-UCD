@@ -9,7 +9,7 @@
  */
 import com.urbancode.air.AirPluginTool
 import com.urbancode.air.ExitCodeException
-import com.urbancode.air.plugin.iib.helper.MQSIHelper
+import com.urbancode.air.plugin.wmbcmp.MQSIHelper
 
 MQSIHelper mqHelper
 AirPluginTool apTool = new AirPluginTool(this.args[0], this.args[1])

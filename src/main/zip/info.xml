@@ -219,6 +219,8 @@ Changed Update Configurable Service to configure if missing properties should be
 Fixed spacing error in IIBHelper.
 Added MQSI Profile and Shell properties to Override Bar Properties step.
 Removed manditory quotations to command lines calls.
+Error handling to createConfigurableService.
+Updated import path in Create, Delete, Start, and Stop Broker steps.
     </release-note>
   </release-notes>
 </pluginInfo>

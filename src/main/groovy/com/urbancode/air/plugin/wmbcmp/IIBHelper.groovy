@@ -187,29 +187,26 @@ class IIBHelper {
             throw new IllegalStateException("Broker Proxy is uninitilized!")
         }
 
-        ConfigurableService service = brokerProxy.getConfigurableService("", servName)
+        ConfigurableService service = brokerProxy.getConfigurableService(servType, servName)
         if (service == null) {
             println "${getTimestamp()} Creating configurable service '${servName}'..."
             createConfigurableService(servType, servName, propsMap)
         }
         else {
-            if (servType !=  service.getType()) {
-                StringBuilder errMsg = new StringBuilder()
-                errMsg.append("Cannot change the type of a configurable service.")
-                errMsg.append("\n\tService Name : ").append(servName)
-                errMsg.append("\n\tRequested Type : ").append(servType)
-                errMsg.append("\n\tCurrent Type : ").append(service.getType())
-                throw new IllegalStateException(errMsg)
-            }
             updateConfigurableService(service, propsMap, servName, servType, deleteMissing)
         }
     }
 
     private void createConfigurableService(String servType, String servName, Map<String,String>propsMap) {
         println "${getTimestamp()} Creating configurable service '${servName}' of type '${servType}'"
-        brokerProxy.createConfigurableService(servType, servName)
+        try {
+            brokerProxy.createConfigurableService(servType, servName)
+        } catch (ConfigManagerProxyRequestFailureException ex) {
+            printBrokerResponses(ex)
+            throw ex
+        }
         // Note: https://developer.ibm.com/answers/questions/327647/examples-of-ibm-integration-api-creating-configura.html
-        ConfigurableService service = brokerProxy.getConfigurableService(null, servName)
+        ConfigurableService service = brokerProxy.getConfigurableService(servType, servName)
         propsMap.each { key, value ->
             println "${getTimestamp()} Setting property '${key}' = '${value}'"
             service.setProperty(key, value)
@@ -520,5 +517,7 @@ class IIBHelper {
                     + " : ${entry.getDetail()}")
             }
         }
+        println ("")
+        println ("[Service Information] " + ex.getServiceInformation())
     }
 }
