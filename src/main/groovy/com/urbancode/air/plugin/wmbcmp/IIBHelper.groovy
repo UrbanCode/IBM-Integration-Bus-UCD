@@ -31,11 +31,10 @@ import java.util.regex.Pattern
 
 class IIBHelper {
     def logProxy
-    def timeout
     def executionGroups
     def version
     def brokerConnection
-    Integer syncTimeout
+    Integer timeout
     Date startTime
     boolean isDebugEnabled
     boolean isIncremental
@@ -58,8 +57,7 @@ class IIBHelper {
         version = integerPoint != -1 ? version.substring(0, integerPoint) : version
         def versionInt = version.toInteger()
 
-        timeout = Long.valueOf(props['timeout']?.trim()?:60000) // time to wait for a broker response
-        syncTimeout = Integer.valueOf(props['timeout']?.trim()?:-1) // time to wait for broker to update its config
+        timeout = Integer.valueOf(props['timeout']?.trim()?:-1) // time to wait for broker response
         isIncremental = !Boolean.valueOf(props['fullDeploy'])
 
         if (host && port) {
@@ -106,7 +104,7 @@ class IIBHelper {
             brokerProxy = brokerConnection.proxy
         }
 
-        brokerProxy.setSynchronous(syncTimeout)
+        brokerProxy.setSynchronous(timeout)
 
         startTime = new Date(System.currentTimeMillis())
         logProxy = brokerProxy.getLog()
@@ -163,8 +161,13 @@ class IIBHelper {
         }
 
         System.out.println("${getTimestamp()} Restarting execution group ${executionGroup}")
-        executionGroupProxy.stop()
-        executionGroupProxy.start()
+        try {
+            executionGroupProxy.stop()
+            executionGroupProxy.start()
+        } catch (ConfigManagerProxyRequestFailureException ex) {
+            printBrokerResponses(ex)
+            throw ex
+        }
         System.out.println("${getTimestamp()} Successfully restarted ${executionGroup}")
     }
 
@@ -271,8 +274,8 @@ class IIBHelper {
             throw new IllegalStateException("Execution group proxy is null! Make sure it is configured correctly!")
         }
 
-        println "${getTimestamp()} Using execution group: ${executionGroup} and timeout ${timeout}..."
-        DeployResult dr = executionGroupProxy.deploy(fileName, isIncremental, timeout)
+        println "${getTimestamp()} Using execution group: ${executionGroup} and waiting until a response is received..."
+        DeployResult dr = executionGroupProxy.deploy(fileName, isIncremental, AttributeConstants.DEPLOYRESULT_WAIT_INDEFINITELY)
         CompletionCodeType completionCode = dr.getCompletionCode()
 
         checkDeployResult(dr)
@@ -430,7 +433,7 @@ class IIBHelper {
 
         if ( flowsToDelete.size() > 0) {
             println "${getTimestamp()} Deleting "+flowsToDelete.size()+" deployed objects that are orphaned"
-            println "Using timeout ${timeout}"
+            println "Waiting until a response is received from the execution group..."
 
             // convert to DeployedObject [] to match deleteDeployedObjects method spec
             DeployedObject [] flowsToDeleteArray = new DeployedObject[flowsToDelete.size()]
@@ -441,7 +444,7 @@ class IIBHelper {
                 flowsToDeleteArray[count++] = flowsIterator.next()
             }
 
-            executionGroupProxy.deleteDeployedObjects (flowsToDeleteArray , timeout)
+            executionGroupProxy.deleteDeployedObjects (flowsToDeleteArray , AttributeConstants.DEPLOYRESULT_WAIT_INDEFINITELY)
             checkDeployResult()
         }
         else {

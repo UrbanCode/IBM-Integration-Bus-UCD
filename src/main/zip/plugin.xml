@@ -12,7 +12,7 @@
            xmlns:server="http://www.urbancode.com/PluginServerXMLSchema_v1"
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <header>
-    <identifier id="com.urbancode.air.plugin.WMBCMP" name="WebSphere Message Broker - CMP" version="25"/>
+    <identifier id="com.urbancode.air.plugin.WMBCMP" name="WebSphere Message Broker - CMP" version="26"/>
     <description>Integration for WebSphere Message Broker to deploy Broker Archives and start and stop Message Flows
                  using the CMP API. This plugin is compatible with both version 9 and 10 of IBM Integration Bus, and
                  is also compatible with versions 7 and 8 of WebSphere Message Broker.</description>
@@ -115,11 +115,20 @@
                                   Specifying this value will initialize your command environment. Only specify this
                                   path if your command environment needs initializing."/>
       </property>
+      <property name="timeout">
+        <property-ui type="textBox"
+                     label="Timeout"
+                     default-value="60000"
+                     description="The maximum time in milliseconds to wait for a response from WebSphere IIB. Increase if experiencing Timeout Exceptions.
+                                  Leave empty or set to -1 to wait indefinitely."
+                     hidden="true"/>
+      </property>
       <property name="shell">
         <property-ui type="textBox"
                      label="Shell"
                      default-value="/bin/sh"
-                     description="Path to your shell executable file." hidden="true"/>
+                     description="Path to your shell executable file."
+                     hidden="true"/>
       </property>
     </properties>
     <post-processing><![CDATA[
@@ -237,9 +246,10 @@
       <property name="timeout">
         <property-ui type="textBox"
                      label="Timeout"
-                     default-value=""
-                     description="The maximum time to wait for an execution group to be created in Milliseconds.
-                                  If left blank or set to -1, the process will wait indefinitely until execution group is created."/>
+                     default-value="60000"
+                     description="The maximum time in milliseconds to wait for a response from WebSphere IIB. Increase if experiencing Timeout Exceptions.
+                                  Leave empty or set to -1 to wait indefinitely."
+                     hidden="true"/>
       </property>
       <property name="shell">
         <property-ui type="textBox"
@@ -358,6 +368,14 @@
                      description="The absolute path to the mqsiprofile executable on your IIB server. Specifying this
                                   value will initialize your command environment. Only specify this
                                   path if your command environment needs initializing."/>
+      </property>
+      <property name="timeout">
+        <property-ui type="textBox"
+                     label="Timeout"
+                     default-value="60000"
+                     description="The maximum time in milliseconds to wait for a response from WebSphere IIB. Increase if experiencing Timeout Exceptions.
+                                  Leave empty or set to -1 to wait indefinitely."
+                     hidden="true"/>
       </property>
       <property name="shell">
         <property-ui type="textBox"
@@ -481,6 +499,14 @@
                      description="The absolute path to the mqsiprofile executable on your IIB server. Specifying this
                                   value will initialize your command environment. Only specify this path if your command
                                   environment needs initializing."/>
+      </property>
+      <property name="timeout">
+        <property-ui type="textBox"
+                     label="Timeout"
+                     default-value="60000"
+                     description="The maximum time in milliseconds to wait for a response from WebSphere IIB. Increase if experiencing Timeout Exceptions.
+                                  Leave empty or set to -1 to wait indefinitely."
+                     hidden="true"/>
       </property>
       <property name="shell">
         <property-ui type="textBox"
@@ -623,6 +649,14 @@
                                   value will initialize your command environment. Only specify this path if your command
                                   environment needs initializing."/>
       </property>
+      <property name="timeout">
+        <property-ui type="textBox"
+                     label="Timeout"
+                     default-value="60000"
+                     description="The maximum time in milliseconds to wait for a response from WebSphere IIB. Increase if experiencing Timeout Exceptions.
+                                  Leave empty or set to -1 to wait indefinitely."
+                     hidden="true"/>
+      </property>
       <property name="shell">
         <property-ui type="textBox"
                      label="Shell"
@@ -661,12 +695,6 @@
                      label="Execution Group"
                      default-value="${p?:resource/WebSphere Message Broker/executionGroup}"
                      description="Name of the Execution Group to Deploy to."/>
-      </property>
-      <property name="timeout">
-        <property-ui type="textBox"
-                     label="Timeout"
-                     description="The timeout to wait for each bar file deploy result to come back in Milliseconds.
-                                  Defaults to 60000"/>
       </property>
       <property name="brokerHost">
         <property-ui type="textBox"
@@ -751,6 +779,14 @@
                      description="The absolute path to the mqsiprofile executable on your IIB server. Specifying this
                                   value will initialize your command environment. Only specify this path if your command
                                   environment needs initializing."/>
+      </property>
+      <property name="timeout">
+        <property-ui type="textBox"
+                     label="Timeout"
+                     default-value="60000"
+                     description="The maximum time in milliseconds to wait for a response from WebSphere IIB. Increase if experiencing Timeout Exceptions.
+                                  Leave empty or set to -1 to wait indefinitely."
+                     hidden="true"/>
       </property>
       <property name="shell">
         <property-ui type="textBox"
@@ -887,6 +923,14 @@
                                   value will initialize your command environment. Only specify this path if your command
                                   environment needs initializing."/>
       </property>
+      <property name="timeout">
+        <property-ui type="textBox"
+                     label="Timeout"
+                     default-value="60000"
+                     description="The maximum time in milliseconds to wait for a response from WebSphere IIB. Increase if experiencing Timeout Exceptions.
+                                  Leave empty or set to -1 to wait indefinitely."
+                     hidden="true"/>
+      </property>
       <property name="shell">
         <property-ui type="textBox"
                      label="Shell"
@@ -1009,6 +1053,14 @@
                                   value will initialize your command environment. Only specify this path if your command
                                   environment needs initializing."/>
       </property>
+      <property name="timeout">
+        <property-ui type="textBox"
+                     label="Timeout"
+                     default-value="60000"
+                     description="The maximum time in milliseconds to wait for a response from WebSphere IIB. Increase if experiencing Timeout Exceptions.
+                                  Leave empty or set to -1 to wait indefinitely."
+                     hidden="true"/>
+      </property>
       <property name="shell">
         <property-ui type="textBox"
                      label="Shell"
@@ -1053,12 +1105,6 @@
         <property-ui type="checkBox"
                      label="Full Deploy"
                      description="If true empties Execution Group before Deploy."/>
-      </property>
-      <property name="timeout">
-        <property-ui type="textBox"
-                     label="Timeout"
-                     description="The timeout to wait for each bar file deployment result to come back
-                                  as success in Milliseconds. Defaults to 60000"/>
       </property>
       <property name="startStopMsgFlows">
         <property-ui type="checkBox"
@@ -1157,6 +1203,14 @@
                      description="A newline or comma separated list of environment variables to set for the deployment
                                   process. Each entry must be in the form 'VAR=VALUE' (i.e. java.library.path=/opt/mqm/java/lib64:
                                   /opt/mqm/java/lib)"/>
+      </property>
+      <property name="timeout">
+        <property-ui type="textBox"
+                     label="Timeout"
+                     default-value="60000"
+                     description="The maximum time in milliseconds to wait for a response from WebSphere IIB. Increase if experiencing Timeout Exceptions.
+                                  Leave empty or set to -1 to wait indefinitely."
+                     hidden="true"/>
       </property>
       <property name="shell">
         <property-ui type="textBox"
@@ -1280,6 +1334,14 @@
                                   value will initialize your command environment. Only specify this path if your
                                   command environment needs initializing."/>
       </property>
+      <property name="timeout">
+        <property-ui type="textBox"
+                     label="Timeout"
+                     default-value="60000"
+                     description="The maximum time in milliseconds to wait for a response from WebSphere IIB. Increase if experiencing Timeout Exceptions.
+                                  Leave empty or set to -1 to wait indefinitely."
+                     hidden="true"/>
+      </property>
       <property name="shell">
         <property-ui type="textBox"
                      label="Shell"
@@ -1402,6 +1464,14 @@
                                   value will initialize your command environment. Only specify this path if your command
                                   environment needs initializing."/>
       </property>
+      <property name="timeout">
+        <property-ui type="textBox"
+                     label="Timeout"
+                     default-value="60000"
+                     description="The maximum time in milliseconds to wait for a response from WebSphere IIB. Increase if experiencing Timeout Exceptions.
+                                  Leave empty or set to -1 to wait indefinitely."
+                     hidden="true"/>
+      </property>
       <property name="shell">
         <property-ui type="textBox"
                      label="Shell"
@@ -1483,6 +1553,14 @@
                      description="The absolute path to the mqsiprofile executable on your IIB server. Specifying this
                                   value will initialize your command environment. Only specify this path if your command
                                   environment needs initializing."/>
+      </property>
+      <property name="timeout">
+        <property-ui type="textBox"
+                     label="Timeout"
+                     default-value="60000"
+                     description="The maximum time in milliseconds to wait for a response from WebSphere IIB. Increase if experiencing Timeout Exceptions.
+                                  Leave empty or set to -1 to wait indefinitely."
+                     hidden="true"/>
       </property>
       <property name="shell">
         <property-ui type="textBox"

@@ -222,5 +222,9 @@ Removed manditory quotations to command lines calls.
 Error handling to createConfigurableService.
 Updated import path in Create, Delete, Start, and Stop Broker steps.
     </release-note>
+    <release-note plugin-version="26">
+Add or update the hidden timeout property to many steps.
+Error catching for the Restart Execution Groups step.
+    </release-note>
   </release-notes>
 </pluginInfo>
