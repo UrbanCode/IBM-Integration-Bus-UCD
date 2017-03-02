@@ -12,7 +12,7 @@
            xmlns:server="http://www.urbancode.com/PluginServerXMLSchema_v1"
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <header>
-    <identifier id="com.urbancode.air.plugin.WMBCMP" name="WebSphere Message Broker - CMP" version="26"/>
+    <identifier id="com.urbancode.air.plugin.WMBCMP" name="WebSphere Message Broker - CMP" version="27"/>
     <description>Integration for WebSphere Message Broker to deploy Broker Archives and start and stop Message Flows
                  using the CMP API. This plugin is compatible with both version 9 and 10 of IBM Integration Bus, and
                  is also compatible with versions 7 and 8 of WebSphere Message Broker.</description>
@@ -118,7 +118,7 @@
       <property name="timeout">
         <property-ui type="textBox"
                      label="Timeout"
-                     default-value="60000"
+                     default-value="120000"
                      description="The maximum time in milliseconds to wait for a response from WebSphere IIB. Increase if experiencing Timeout Exceptions.
                                   Leave empty or set to -1 to wait indefinitely."
                      hidden="true"/>
@@ -246,7 +246,7 @@
       <property name="timeout">
         <property-ui type="textBox"
                      label="Timeout"
-                     default-value="60000"
+                     default-value="120000"
                      description="The maximum time in milliseconds to wait for a response from WebSphere IIB. Increase if experiencing Timeout Exceptions.
                                   Leave empty or set to -1 to wait indefinitely."
                      hidden="true"/>
@@ -372,9 +372,11 @@
       <property name="timeout">
         <property-ui type="textBox"
                      label="Timeout"
-                     default-value="60000"
-                     description="The maximum time in milliseconds to wait for a response from WebSphere IIB. Increase if experiencing Timeout Exceptions.
-                                  Leave empty or set to -1 to wait indefinitely."
+                     default-value="120000"
+                     description="The maximum time in milliseconds to wait for a response from WebSphere IIB, and
+                                  the maximum amount of time to wait for the server to stop/start. Leave empty or use -1
+                                  to wait indefinitely. Increase if experiencing 'ConfigManagerProxyRequestTimoutException',
+                                  or if the execution group was unable to stop by the given time interval."
                      hidden="true"/>
       </property>
       <property name="shell">
@@ -503,7 +505,7 @@
       <property name="timeout">
         <property-ui type="textBox"
                      label="Timeout"
-                     default-value="60000"
+                     default-value="120000"
                      description="The maximum time in milliseconds to wait for a response from WebSphere IIB. Increase if experiencing Timeout Exceptions.
                                   Leave empty or set to -1 to wait indefinitely."
                      hidden="true"/>
@@ -652,7 +654,7 @@
       <property name="timeout">
         <property-ui type="textBox"
                      label="Timeout"
-                     default-value="60000"
+                     default-value="120000"
                      description="The maximum time in milliseconds to wait for a response from WebSphere IIB. Increase if experiencing Timeout Exceptions.
                                   Leave empty or set to -1 to wait indefinitely."
                      hidden="true"/>
@@ -783,7 +785,7 @@
       <property name="timeout">
         <property-ui type="textBox"
                      label="Timeout"
-                     default-value="60000"
+                     default-value="120000"
                      description="The maximum time in milliseconds to wait for a response from WebSphere IIB. Increase if experiencing Timeout Exceptions.
                                   Leave empty or set to -1 to wait indefinitely."
                      hidden="true"/>
@@ -926,7 +928,7 @@
       <property name="timeout">
         <property-ui type="textBox"
                      label="Timeout"
-                     default-value="60000"
+                     default-value="120000"
                      description="The maximum time in milliseconds to wait for a response from WebSphere IIB. Increase if experiencing Timeout Exceptions.
                                   Leave empty or set to -1 to wait indefinitely."
                      hidden="true"/>
@@ -1056,7 +1058,7 @@
       <property name="timeout">
         <property-ui type="textBox"
                      label="Timeout"
-                     default-value="60000"
+                     default-value="120000"
                      description="The maximum time in milliseconds to wait for a response from WebSphere IIB. Increase if experiencing Timeout Exceptions.
                                   Leave empty or set to -1 to wait indefinitely."
                      hidden="true"/>
@@ -1207,7 +1209,7 @@
       <property name="timeout">
         <property-ui type="textBox"
                      label="Timeout"
-                     default-value="60000"
+                     default-value="120000"
                      description="The maximum time in milliseconds to wait for a response from WebSphere IIB. Increase if experiencing Timeout Exceptions.
                                   Leave empty or set to -1 to wait indefinitely."
                      hidden="true"/>
@@ -1337,7 +1339,7 @@
       <property name="timeout">
         <property-ui type="textBox"
                      label="Timeout"
-                     default-value="60000"
+                     default-value="120000"
                      description="The maximum time in milliseconds to wait for a response from WebSphere IIB. Increase if experiencing Timeout Exceptions.
                                   Leave empty or set to -1 to wait indefinitely."
                      hidden="true"/>
@@ -1467,7 +1469,7 @@
       <property name="timeout">
         <property-ui type="textBox"
                      label="Timeout"
-                     default-value="60000"
+                     default-value="120000"
                      description="The maximum time in milliseconds to wait for a response from WebSphere IIB. Increase if experiencing Timeout Exceptions.
                                   Leave empty or set to -1 to wait indefinitely."
                      hidden="true"/>
@@ -1557,7 +1559,7 @@
       <property name="timeout">
         <property-ui type="textBox"
                      label="Timeout"
-                     default-value="60000"
+                     default-value="120000"
                      description="The maximum time in milliseconds to wait for a response from WebSphere IIB. Increase if experiencing Timeout Exceptions.
                                   Leave empty or set to -1 to wait indefinitely."
                      hidden="true"/>

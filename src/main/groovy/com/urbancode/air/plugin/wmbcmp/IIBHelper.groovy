@@ -160,15 +160,50 @@ class IIBHelper {
             throw new RuntimeException("${getTimestamp()} Execution group ${executionGroup} does not exist.")
         }
 
-        System.out.println("${getTimestamp()} Restarting execution group ${executionGroup}")
+        System.out.println("${getTimestamp()} Restarting execution group '${executionGroup}'.")
         try {
-            executionGroupProxy.stop()
-            executionGroupProxy.start()
+            if (executionGroupProxy.isRunning()) {
+                System.out.println("${getTimestamp()} Stopping execution group '${executionGroup}'...")
+                executionGroupProxy.stop()
+                int count = 0
+
+                // wait for server to fully stop
+                while (executionGroupProxy.isRunning() && (timeout == -1 || count < timeout)) {
+                    System.out.println("${getTimestamp()} Checking that '${executionGroup}' has stopped...")
+                    Thread.sleep(3000)
+                    count += 3000
+                }
+
+                if (timeout != -1 && count >= timeout) {
+                    throw new IllegalStateException("The execution group '${executionGroup}' was unable to stop within "
+                        + "the given timeout of '${timeout}' milliseconds.")
+                }
+
+                System.out.println("${getTimestamp()} Starting the execution group '${executionGroup}'...")
+                executionGroupProxy.start()
+
+                count = 0
+
+                // wait for server to start
+                while (!executionGroupProxy.isRunning() && (timeout == -1 || count < timeout)) {
+                    System.out.println("${getTimestamp()} Checking that '${executionGroup}' has started...")
+                    Thread.sleep(3000)
+                    count += 3000
+                }
+
+                if (timeout != -1 && count >= timeout) {
+                    throw new IllegalStateException("The execution group '${executionGroup}' was unable to start within "
+                        + "the given timeout of '${timeout}' milliseconds.")
+                }
+            }
+            else {
+                throw new IllegalStateException("The execution group '${executionGroup}' is not currently running.")
+            }
         } catch (ConfigManagerProxyRequestFailureException ex) {
             printBrokerResponses(ex)
             throw ex
         }
-        System.out.println("${getTimestamp()} Successfully restarted ${executionGroup}")
+        System.out.println("${getTimestamp()} Successfully restarted '${executionGroup}'.")
     }
 
     public void deleteConfigurableService(String servType, String servName) {

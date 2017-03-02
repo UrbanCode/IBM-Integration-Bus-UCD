@@ -16,7 +16,6 @@
 
  AirPluginTool apTool = new AirPluginTool(this.args[0], this.args[1])
  def props = apTool.getStepProperties()
-
  def helper = new IIBHelper(props)
 
  String executionGroup = props['executionGroup']

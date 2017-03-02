@@ -525,4 +525,66 @@
       </migrate-properties>
     </migrate-command>
   </migrate>
+  <migrate to-version='27'>
+    <migrate-command name="Set Broker Properties">
+      <migrate-properties>
+        <migrate-property name="timeout" default="120000"/>
+      </migrate-properties>
+    </migrate-command>
+      <migrate-command name="Create Execution Group">
+        <migrate-properties>
+          <migrate-property name="timeout" default="120000"/>
+        </migrate-properties>
+      </migrate-command>
+    <migrate-command name="Restart Execution Groups">
+      <migrate-properties>
+        <migrate-property name="timeout" default="120000"/>
+      </migrate-properties>
+    </migrate-command>
+    <migrate-command name="Set Execution Group Properties">
+      <migrate-properties>
+        <migrate-property name="timeout" default="120000"/>
+      </migrate-properties>
+    </migrate-command>
+    <migrate-command name="Set Message Flows Properties">
+      <migrate-properties>
+        <migrate-property name="timeout" default="120000"/>
+      </migrate-properties>
+    </migrate-command>
+    <migrate-command name="Delete Flows Using RegEx">
+      <migrate-properties>
+        <migrate-property name="timeout" default="120000"/>
+      </migrate-properties>
+    </migrate-command>
+    <migrate-command name="Create Or Update Configurable Service">
+      <migrate-properties>
+        <migrate-property name="timeout" default="120000"/>
+      </migrate-properties>
+    </migrate-command>
+    <migrate-command name="Delete Configurable Service">
+      <migrate-properties>
+        <migrate-property name="timeout" default="120000"/>
+      </migrate-properties>
+    </migrate-command>
+    <migrate-command name="Deploy">
+      <migrate-properties>
+        <migrate-property name="timeout" default="120000"/>
+      </migrate-properties>
+    </migrate-command>
+    <migrate-command name="Start Message Flows">
+      <migrate-properties>
+        <migrate-property name="timeout" default="120000"/>
+      </migrate-properties>
+    </migrate-command>
+    <migrate-command name="Stop Message Flows">
+      <migrate-properties>
+        <migrate-property name="timeout" default="120000"/>
+      </migrate-properties>
+    </migrate-command>
+    <migrate-command name="Override Bar Properties">
+      <migrate-properties>
+        <migrate-property name="timeout" default="120000"/>
+      </migrate-properties>
+    </migrate-command>
+  </migrate>
 </plugin-upgrade>
