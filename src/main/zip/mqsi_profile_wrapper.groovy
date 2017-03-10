@@ -19,6 +19,7 @@ import java.util.regex.Pattern
 
 final def apTool = new AirPluginTool(this.args[1], this.args[2])
 final def PLUGIN_HOME = System.getenv("PLUGIN_HOME")
+final def PLUGIN_LIB = PLUGIN_HOME + File.separator + "lib"
 final def isWindows = apTool.isWindows
 final def props = apTool.getStepProperties()
 
@@ -26,6 +27,10 @@ CommandHelper helper = new CommandHelper(new File('.').canonicalFile)
 def argScript = PLUGIN_HOME + File.separator + this.args[0]
 def jarPath = props['jarPath'].trim()
 def classpath = new StringBuilder(PLUGIN_HOME + File.separator + "classes")
+classpath.append(File.pathSeparator + PLUGIN_LIB + File.separator + "jettison-1.1.jar")
+classpath.append(File.pathSeparator + PLUGIN_LIB + File.separator + "CommonsUtil.jar")
+classpath.append(File.pathSeparator + PLUGIN_LIB + File.separator + "securedata.jar")
+classpath.append(File.pathSeparator + PLUGIN_LIB + File.separator + "commons-codec.jar")
 def mqsiprofile = props['mqsiprofile'] ? props['mqsiprofile'].trim() : ""
 def env = props['env']
 def groovyHome = System.getProperty("groovy.home")

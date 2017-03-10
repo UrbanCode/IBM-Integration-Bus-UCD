@@ -229,5 +229,8 @@ Error catching for the Restart Execution Groups step.
     <release-note plugin-version="27">
 Fixed APAR PI70440 Restart Execution Group step waits until the server has fully stopped before attempting to start.
     </release-note>
+    <release-note plugin-version="28">
+Encrypt plugin properties.
+    </release-note>
   </release-notes>
 </pluginInfo>
