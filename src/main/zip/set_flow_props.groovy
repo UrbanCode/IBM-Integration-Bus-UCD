@@ -67,7 +67,7 @@ try {
             props['properties'].split('\n').each { property ->
                 String name = property.split('=',2)[0]
                 String value = property.split('=',2)[1]
-                helper.setMsgFlowProperty(msgFlow, name, value)
+                helper.setMsgFlowProperty(msgFlow, name, value, executionGroup)
             }
         }
     }

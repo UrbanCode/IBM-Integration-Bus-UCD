@@ -69,11 +69,11 @@ try {
                 else {
                     throw new Exception("Deployment Result could not be obtained.")
                 }
-                throw new Exception("Failed deploying bar File ${barFileName} with completion code : "
-                    + "${completionCode.toString()}: ${message}")
+                throw new Exception("Failed deploying bar File ${barFileName} to execution group ${groupName}"
+                    + " with completion code : ${completionCode.toString()}: ${message}")
             }
             else {
-                println("${helper.getTimestamp()} ${barFileName} was successfully deployed to ${executionGroup}.")
+                println("${helper.getTimestamp()} ${barFileName} was successfully deployed to ${groupName}.")
             }
         }
     }

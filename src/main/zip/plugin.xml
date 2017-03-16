@@ -1090,7 +1090,7 @@
 
   <step-type name="Deploy">
     <description>Deploy a Broker Archive. This step will set the output property 'completionCode',
-      representing the completion code returned from the broker during deployment.</description>
+      representing the last completion code returned from the broker during deployment.</description>
     <properties>
       <property name="barFileNames" required="true">
         <property-ui type="textAreaBox"

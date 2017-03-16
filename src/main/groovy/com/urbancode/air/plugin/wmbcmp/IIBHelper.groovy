@@ -415,7 +415,7 @@ class IIBHelper {
         println("${getTimestamp()} Successfully set execution group property.")
     }
 
-    public void setMsgFlowProperty(String msgFlowName, String name, String value) {
+    public void setMsgFlowProperty(String msgFlowName, String name, String value, String executionGroup) {
         if (brokerProxy == null || bcp == null) {
             throw new IllegalStateException("Broker Proxy is uninitilized!")
         }
@@ -526,7 +526,7 @@ class IIBHelper {
         }
 
         if (brokerProxy) {
-            brokerProxy.disconnect()
+            brokerProxy.disconnectAll()
         }
     }
 
