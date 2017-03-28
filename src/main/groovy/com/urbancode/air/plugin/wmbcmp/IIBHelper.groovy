@@ -410,7 +410,8 @@ class IIBHelper {
 
         String oldVal = executionGroupProxy.getRuntimeProperty(name)
         String executionGroup = executionGroupProxy.getRuntimeProperty("This/label")
-        println "${getTimestamp()} Setting property ${name} to ${value} from ${oldVal} on Execution Group " + "${executionGroup}!"
+        println("${getTimestamp()} Setting property ${name} to ${value} from ${oldVal} on Execution Group "
+            + "${executionGroup}!")
         executionGroupProxy.setRuntimeProperty(name, value)
         println("${getTimestamp()} Successfully set execution group property.")
     }
@@ -430,8 +431,8 @@ class IIBHelper {
         }
 
         String oldVal = msgFlowProxy.getRuntimeProperty(name)
-        println "${getTimestamp()} Setting property ${name} to ${value} from ${oldVal} on Message Flow "
-            + "${msgFlowName} in Execution Group ${executionGroup}!"
+        println("${getTimestamp()} Setting property ${name} to ${value} from ${oldVal} on Message Flow "
+            + "${msgFlowName} in Execution Group ${executionGroup}!")
         msgFlowProxy.setRuntimeProperty(name, value)
         println("${getTimestamp()} Successfully set message flow property.")
     }
