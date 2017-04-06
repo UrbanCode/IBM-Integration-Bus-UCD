@@ -178,5 +178,7 @@ else {
         this.args[2]
     ]
 }
-
+if(apTool.getEncKey() != null) {
+    helper.addEnvironmentVariable("UCD_SECRET_VAR", apTool.getEncKey())
+}
 helper.runCommand(cmdArgs.join(' '), cmdArgs)

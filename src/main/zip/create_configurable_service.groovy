@@ -9,12 +9,13 @@
 * U.S. Government Users Restricted Rights - Use, duplication or disclosure restricted by
 * GSA ADP Schedule Contract with IBM Corp.
 */
-import com.urbancode.air.plugin.wmbcmp.*;
-import com.urbancode.air.plugin.*;
+import com.urbancode.air.plugin.AirPluginTool;
+import com.urbancode.air.plugin.wmbcmp.IIBHelper;
 
 File workDir = new File('.');
 
-Properties props = PropertiesHelper.getProperties(new File(args[0]));
+AirPluginTool apTool = new AirPluginTool(this.args[0], this.args[1])
+def props = apTool.getStepProperties(System.getenv("UCD_SECRET_VAR"))
 def servName = props['servName'];
 def servType = props['servType'];
 def propsString = props['props'];

@@ -232,5 +232,8 @@ Fixed APAR PI70440 Restart Execution Group step waits until the server has fully
     <release-note plugin-version="28">
 Encrypt plugin properties.
     </release-note>
+    <release-note plugin-version="29">
+Fixes APAR PI79634 Additional plugin decryption updates.
+    </release-note>
   </release-notes>
 </pluginInfo>

@@ -10,14 +10,14 @@
  * U.S. Government Users Restricted Rights - Use, duplication or disclosure restricted by
  * GSA ADP Schedule Contract with IBM Corp.
  */
+ import com.urbancode.air.FileSet
 import com.urbancode.air.plugin.wmbcmp.BarHelper
-import com.urbancode.air.plugin.PropertiesHelper
-import com.urbancode.air.FileSet
 
 File workDir = new File('.')
 BarHelper helper
 
-Properties props = PropertiesHelper.getProperties(new File(args[0]))
+AirPluginTool apTool = new AirPluginTool(this.args[0], this.args[1])
+def props = apTool.getStepProperties(System.getenv("UCD_SECRET_VAR"))
 def includes = props['includes']
 def excludes = props['excludes']
 
