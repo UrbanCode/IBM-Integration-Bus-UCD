@@ -1,38 +1,33 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!--
-- Licensed Materials - Property of IBM Corp.
-- IBM UrbanCode Build
-- IBM UrbanCode Deploy
-- IBM UrbanCode Release
-- IBM AnthillPro
-- (c) Copyright IBM Corporation 2002, 2013. All Rights Reserved.
--
-- U.S. Government Users Restricted Rights - Use, duplication or disclosure restricted by
-- GSA ADP Schedule Contract with IBM Corp.
+    © Copyright IBM Corporation 2013, 2017.
+    This is licensed under the following license.
+    The Eclipse Public 1.0 License (http://www.eclipse.org/legal/epl-v10.html)
+    U.S. Government Users Restricted Rights:  Use, duplication or disclosure restricted by GSA ADP Schedule Contract with IBM Corp.
 -->
 <project name="WebSphereMessageBroker-CMP" default="all" basedir="."
     xmlns:codestation="antlib:com.urbancode.codestation2.client">
-    
+
     <property environment="env"/>
     <property file=".build.properties"/>
-    
+
     <defaultexcludes add="**/.ahs.*"/>
     <defaultexcludes add="**/*.bom"/>
 
     <!-- AHP settings -->
     <property name="ahp.branch" value="air" />
     <property name="ahp.project.name" value="${ant.project.name}" />
-    
+
     <!-- =================================================== -->
     <!-- PROJECT STRUCTURE                                   -->
     <!-- =================================================== -->
-    
+
     <property name="lib.dir"           location="lib" />
-    
+
     <!-- =================================================== -->
     <!-- MACROS                                              -->
     <!-- =================================================== -->
-    
+
     <macrodef name="emptyDir" description="Ensure that the target directory exists and is empty">
         <attribute name="dir"/>
         <attribute name="excludes" default=""/>
@@ -41,7 +36,7 @@
             <delete dir="@{dir}" includes="*/**" excludes="@{excludes}" includeemptydirs="true" defaultexcludes="false"/>
         </sequential>
     </macrodef>
-  
+
     <!-- =================================================== -->
     <!-- TARGETS                                             -->
     <!-- =================================================== -->

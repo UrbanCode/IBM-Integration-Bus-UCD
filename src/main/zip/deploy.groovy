@@ -1,14 +1,9 @@
-/*
-* Licensed Materials - Property of IBM Corp.
-* IBM UrbanCode Build
-* IBM UrbanCode Deploy
-* IBM UrbanCode Release
-* IBM AnthillPro
-* (c) Copyright IBM Corporation 2002, 2017. All Rights Reserved.
-*
-* U.S. Government Users Restricted Rights - Use, duplication or disclosure restricted by
-* GSA ADP Schedule Contract with IBM Corp.
-*/
+/**
+ * © Copyright IBM Corporation 2013, 2017.
+ * This is licensed under the following license.
+ * The Eclipse Public 1.0 License (http://www.eclipse.org/legal/epl-v10.html)
+ * U.S. Government Users Restricted Rights:  Use, duplication or disclosure restricted by GSA ADP Schedule Contract with IBM Corp.
+ */
 import com.urbancode.air.AirPluginTool;
 import com.urbancode.air.plugin.wmbcmp.IIBHelper;
 import com.ibm.broker.config.proxy.CompletionCodeType;
