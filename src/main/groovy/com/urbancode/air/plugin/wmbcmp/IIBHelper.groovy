@@ -36,6 +36,7 @@ class IIBHelper {
     BrokerConnectionParameters bcp
     BrokerProxy brokerProxy
     ExecutionGroupProxy executionGroupProxy
+    Integer TEN_SECONDS = 10000
 
     public IIBHelper(Properties props) {
         def host = props['brokerHost']
@@ -305,10 +306,18 @@ class IIBHelper {
         }
 
         println "${getTimestamp()} Using execution group: ${executionGroup} and waiting until a response is received..."
-        DeployResult dr = executionGroupProxy.deploy(fileName, isIncremental, AttributeConstants.DEPLOYRESULT_WAIT_INDEFINITELY)
+        DeployResult dr = executionGroupProxy.deploy(fileName, isIncremental, timeout >= 0 ? Math.ceil(timeout/2) : 3600000)
         CompletionCodeType completionCode = dr.getCompletionCode()
-
         checkDeployResult(dr)
+
+        def count = 1;
+        // Divide the rest of the timeout in 10 second increments and round up
+        def maxCount = Math.ceil(timeout / 2 / TEN_SECONDS)
+        while (completionCode == CompletionCodeType.submitted && count <= maxCount) {
+            println "Retry #${count++}: Received '${completionCode.toString()}' completion code."
+            sleep(TEN_SECONDS)
+            completionCode = dr.getCompletionCode()
+        }
         return completionCode
     }
 
