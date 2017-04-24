@@ -235,7 +235,6 @@ The following changes have been made to the Deploy step:
     It will now use the Timeout variable to determine its wait period.
     Halfway through the set Timeout, the step will check if the Bar file has been deployed.
     If a Success/Failure completion code has not been returned, it will query for a new result every 10 seconds until a success/failure response has been received or the Timeout has been reached.
-
     </release-note>
   </release-notes>
 </pluginInfo>

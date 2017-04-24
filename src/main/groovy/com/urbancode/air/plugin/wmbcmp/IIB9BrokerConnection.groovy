@@ -5,6 +5,8 @@
  * U.S. Government Users Restricted Rights:  Use, duplication or disclosure restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
+package com.urbancode.air.plugin.wmbcmp
+
 import com.ibm.broker.config.proxy.BrokerProxy
 import com.ibm.broker.config.proxy.ConfigManagerProxyLoggedException
 
