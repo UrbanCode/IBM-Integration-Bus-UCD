@@ -306,7 +306,7 @@ class IIBHelper {
         }
 
         println "${getTimestamp()} Using execution group: ${executionGroup} and waiting until a response is received..."
-        DeployResult dr = executionGroupProxy.deploy(fileName, isIncremental, timeout >= 0 ? Math.ceil(timeout/2) : 3600000)
+        DeployResult dr = executionGroupProxy.deploy(fileName, isIncremental, timeout >= 0 ? (long)Math.ceil(timeout/2) : 3600000)
         CompletionCodeType completionCode = dr.getCompletionCode()
         checkDeployResult(dr)
 
