@@ -531,7 +531,7 @@ class IIBHelper {
         }
 
         if (brokerProxy) {
-            brokerProxy.disconnectAll()
+            brokerProxy.disconnect()
         }
     }
 
