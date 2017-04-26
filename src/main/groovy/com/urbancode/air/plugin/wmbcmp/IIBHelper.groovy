@@ -306,13 +306,13 @@ class IIBHelper {
         }
 
         println "${getTimestamp()} Using execution group: ${executionGroup} and waiting until a response is received..."
-        DeployResult dr = executionGroupProxy.deploy(fileName, isIncremental, timeout >= 0 ? (long)Math.ceil(timeout/2) : 3600000)
+        DeployResult dr = executionGroupProxy.deploy(fileName, isIncremental, timeout >= 0 ? (long)timeout : 3600000)
         CompletionCodeType completionCode = dr.getCompletionCode()
         checkDeployResult(dr)
 
         def count = 1;
         // Divide the rest of the timeout in 10 second increments and round up
-        def maxCount = Math.ceil(timeout / 2 / TEN_SECONDS)
+        def maxCount = Math.ceil(timeout / TEN_SECONDS)
         while (completionCode == CompletionCodeType.submitted && count <= maxCount) {
             println "Retry #${count++}: Received '${completionCode.toString()}' completion code."
             sleep(TEN_SECONDS)
