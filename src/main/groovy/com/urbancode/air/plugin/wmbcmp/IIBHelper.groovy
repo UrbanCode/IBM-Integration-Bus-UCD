@@ -53,7 +53,8 @@ class IIBHelper {
         version = integerPoint != -1 ? version.substring(0, integerPoint) : version
         def versionInt = version.toInteger()
 
-        timeout = Integer.valueOf(props['timeout']?.trim()?:-1) // time to wait for broker response
+        Integer tempTimeout = Integer.valueOf(props['timeout']?.trim())
+        timeout = tempTimeout > -1 ? tempTimeout : -1) // time to wait for broker response
         isIncremental = !Boolean.valueOf(props['fullDeploy'])
 
         if (host && port) {
@@ -306,15 +307,17 @@ class IIBHelper {
         }
 
         println "${getTimestamp()} Using execution group: ${executionGroup} and waiting until a response is received..."
-        DeployResult dr = executionGroupProxy.deploy(fileName, isIncremental, timeout >= 0 ? (long)timeout : 3600000)
+        DeployResult dr = executionGroupProxy.deploy(fileName, isIncremental, timeout > -1 ? (long)timeout : 3600000)
         CompletionCodeType completionCode = dr.getCompletionCode()
         checkDeployResult(dr)
 
-        def count = 1;
+        def count = 0;
         // Divide the rest of the timeout in 10 second increments and round up
         def maxCount = Math.ceil(timeout / TEN_SECONDS)
-        while (completionCode == CompletionCodeType.submitted && count <= maxCount) {
-            println "Retry #${count++}: Received '${completionCode.toString()}' completion code."
+        while ((completionCode == CompletionCodeType.submitted ||
+                completionCode == CompletionCodeType.pending ||
+                completionCode == CompletionCodeType.initiated) && count < maxCount) {
+            println "Retry #${++count}: Received '${completionCode.toString()}' completion code."
             sleep(TEN_SECONDS)
             completionCode = dr.getCompletionCode()
         }
