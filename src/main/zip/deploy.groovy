@@ -83,6 +83,6 @@ catch (Exception e) {
     throw e;
 }
 finally {
-    apTool.storeOutputProperties()
+    apTool.setOutputProperties(System.getenv("UCD_SECRET_VAR"))
     helper.cleanUp();
 }
