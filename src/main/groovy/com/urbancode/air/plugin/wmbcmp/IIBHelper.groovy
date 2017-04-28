@@ -54,7 +54,7 @@ class IIBHelper {
         def versionInt = version.toInteger()
 
         Integer tempTimeout = Integer.valueOf(props['timeout']?.trim())
-        timeout = tempTimeout > -1 ? tempTimeout : -1) // time to wait for broker response
+        timeout = tempTimeout > -1 ? tempTimeout : -1 // time to wait for broker response
         isIncremental = !Boolean.valueOf(props['fullDeploy'])
 
         if (host && port) {
