@@ -5,7 +5,7 @@
  * U.S. Government Users Restricted Rights:  Use, duplication or disclosure restricted by GSA ADP Schedule Contract with IBM Corp.
  */
 
-import com.urbancode.air.plugin.AirPluginTool;
+import com.urbancode.air.AirPluginTool;
 import com.urbancode.air.plugin.wmbcmp.IIBHelper;
 
 File workDir = new File('.');
