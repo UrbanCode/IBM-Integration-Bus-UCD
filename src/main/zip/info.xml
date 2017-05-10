@@ -230,5 +230,8 @@ Encrypt plugin properties.
     <release-note plugin-version="29">
 Fixes APAR PI79634 Additional plugin decryption updates.
     </release-note>
+    <release-note plugin-version="30">
+Fixes APAR PI81397 Plug-in failing to import libraries.
+    </release-note>
   </release-notes>
 </pluginInfo>
