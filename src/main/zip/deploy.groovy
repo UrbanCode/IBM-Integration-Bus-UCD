@@ -38,8 +38,9 @@ try {
 
             if (completionCode != CompletionCodeType.success) {
                 println("${helper.getTimestamp()} The broker has returned an unsuccessful deployment result.")
-                String message = ""
+                println("[Possible Solution] View the IBM Integration Bus System Logs to discover the reason of the failed deployment.")
 
+                String message = ""
                 if (completionCode == CompletionCodeType.failure) {
                     message = "The deployment operation has failed."
                 }
