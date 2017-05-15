@@ -588,4 +588,6 @@
   </migrate>
   <migrate to-version="30">
   </migrate>
+  <migrate to-version="31">
+  </migrate>
 </plugin-upgrade>
