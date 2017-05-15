@@ -233,5 +233,9 @@ Fixes APAR PI79634 Additional plugin decryption updates.
     <release-note plugin-version="30">
 Fixes APAR PI81397 Plug-in failing to import libraries.
     </release-note>
+	<release-note plugin-version="31">
+Fixes APAR PI81623 Deployments failing in IIB 9 and lower.	
+	</release-note>
+	
   </release-notes>
 </pluginInfo>
