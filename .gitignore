@@ -17,3 +17,7 @@ plugin-build.xml
 /ecbin
 /bin/
 i18n-scraper.groovy
+IBM-Integration-Bus-UCD.iml
+gradlew
+gradlew.bat
+/gradle/

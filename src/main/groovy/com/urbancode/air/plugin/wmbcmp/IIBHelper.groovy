@@ -28,6 +28,7 @@ class IIBHelper {
     def logProxy
     def executionGroups
     def version
+	def versionInt
     def brokerConnection
     Integer timeout
     Date startTime
@@ -50,7 +51,7 @@ class IIBHelper {
         version = props['version']
         def integerPoint = version.indexOf('.') // point between integer and digits after the decimal point
         version = integerPoint != -1 ? version.substring(0, integerPoint) : version
-        def versionInt = version.toInteger()
+        versionInt = version.toInteger()
 
         timeout = Integer.valueOf(props['timeout']?.trim()?:-1) // time to wait for broker response
         isIncremental = !Boolean.valueOf(props['fullDeploy'])
