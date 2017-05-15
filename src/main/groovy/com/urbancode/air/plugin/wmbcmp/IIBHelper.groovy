@@ -524,9 +524,9 @@ class IIBHelper {
         if (brokerProxy && (versionInt < 10)) {
             brokerProxy.disconnect()
         }
-		else if (brokerProxy) {
-		brokerProxy.disconnectAll()
-		}
+    	else if (brokerProxy) {
+	    brokerProxy.disconnectAll()
+	}
     }
 
     public void setExecutionGroup(String groupName) {
