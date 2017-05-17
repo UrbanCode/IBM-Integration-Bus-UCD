@@ -535,8 +535,8 @@ class IIBHelper {
             executionGroupProxy = brokerProxy.getExecutionGroupByName(groupName)
 
             if (executionGroupProxy == null) {
-                throw new IllegalStateException("Execution group ${groupName} doesn't exist. Please make sure it's "
-                    + "name is spelled correctly and that it exists under the specified broker.")
+                throw new IllegalStateException("Execution group ${groupName} does not exist. Please make sure its " +
+			"name is spelled correctly and that it exists under the specified broker.")
             }
         }
         else {
