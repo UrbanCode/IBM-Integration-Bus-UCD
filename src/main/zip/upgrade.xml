@@ -590,4 +590,6 @@
   </migrate>
   <migrate to-version="31">
   </migrate>
+  <migrate to-version="32">
+  </migrate>
 </plugin-upgrade>

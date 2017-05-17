@@ -236,6 +236,9 @@ Fixes APAR PI81397 Plug-in failing to import libraries.
 	<release-note plugin-version="31">
 Fixes APAR PI81623 Deployments failing in IIB 9 and lower.	
 	</release-note>
+    <release-note plugin-version="32">
+Provide proper error output when execution group doesn't exist.
+    </release-note>
 	
   </release-notes>
 </pluginInfo>

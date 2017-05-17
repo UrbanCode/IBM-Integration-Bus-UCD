@@ -533,6 +533,11 @@ class IIBHelper {
     public void setExecutionGroup(String groupName) {
         if (groupName) {
             executionGroupProxy = brokerProxy.getExecutionGroupByName(groupName)
+
+            if (executionGroupProxy == null) {
+                throw new IllegalStateException("Execution group ${groupName} doesn't exist. Please make sure it's "
+                    + "name is spelled correctly and that it exists under the specified broker.")
+            }
         }
         else {
             throw new IllegalStateException("Execution group field specified with blank or null name.")
