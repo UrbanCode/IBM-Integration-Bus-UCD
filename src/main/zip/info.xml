@@ -240,6 +240,8 @@ Fixes APAR PI81623 Deployments failing in IIB 9 and lower.
 Provide proper error output when execution group doesn't exist.
 Fixes APAR PI80814 The Deploy and Delete Flow using RegEx steps use the timeout instead of DEPLOYRESULT_WAIT_INDEFINITELY.
     </release-note>
-
+    <release-note plugin-version="33">
+Change default property values to be consistent across all steps.
+    </release-note>
   </release-notes>
 </pluginInfo>
