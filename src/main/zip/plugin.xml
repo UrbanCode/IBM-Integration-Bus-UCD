@@ -117,7 +117,7 @@
                      label="Timeout"
                      default-value="120000"
                      description="The maximum time in milliseconds to wait for a response from WebSphere IIB. Increase if experiencing Timeout Exceptions.
-                                  Leave empty or set to -1 to wait indefinitely."
+                                  Leave empty or set to -1 to wait indefinitely. Note: Setting the timeout as -1 may cause the step to hang."
                      hidden="true"/>
       </property>
       <property name="shell">
@@ -245,7 +245,7 @@
                      label="Timeout"
                      default-value="120000"
                      description="The maximum time in milliseconds to wait for a response from WebSphere IIB. Increase if experiencing Timeout Exceptions.
-                                  Leave empty or set to -1 to wait indefinitely."
+                                  Leave empty or set to -1 to wait indefinitely. Note: Setting the timeout as -1 may cause the step to hang."
                      hidden="true"/>
       </property>
       <property name="shell">
@@ -372,7 +372,8 @@
                      default-value="120000"
                      description="The maximum time in milliseconds to wait for a response from WebSphere IIB, and
                                   the maximum amount of time to wait for the server to stop/start. Leave empty or use -1
-                                  to wait indefinitely. Increase if experiencing 'ConfigManagerProxyRequestTimoutException',
+                                  to wait indefinitely. Note: Setting the timeout as -1 may cause the step to hang.
+                                  Increase if experiencing 'ConfigManagerProxyRequestTimoutException',
                                   or if the execution group was unable to stop by the given time interval."
                      hidden="true"/>
       </property>
@@ -504,7 +505,7 @@
                      label="Timeout"
                      default-value="120000"
                      description="The maximum time in milliseconds to wait for a response from WebSphere IIB. Increase if experiencing Timeout Exceptions.
-                                  Leave empty or set to -1 to wait indefinitely."
+                                  Leave empty or set to -1 to wait indefinitely. Note: Setting the timeout as -1 may cause the step to hang."
                      hidden="true"/>
       </property>
       <property name="shell">
@@ -653,7 +654,7 @@
                      label="Timeout"
                      default-value="120000"
                      description="The maximum time in milliseconds to wait for a response from WebSphere IIB. Increase if experiencing Timeout Exceptions.
-                                  Leave empty or set to -1 to wait indefinitely."
+                                  Leave empty or set to -1 to wait indefinitely. Note: Setting the timeout as -1 may cause the step to hang."
                      hidden="true"/>
       </property>
       <property name="shell">
@@ -784,7 +785,7 @@
                      label="Timeout"
                      default-value="120000"
                      description="The maximum time in milliseconds to wait for a response from WebSphere IIB. Increase if experiencing Timeout Exceptions.
-                                  Leave empty or set to -1 to wait indefinitely."
+                                  Leave empty or set to -1 to wait indefinitely. Note: Setting the timeout as -1 may cause the step to hang."
                      hidden="true"/>
       </property>
       <property name="shell">
@@ -927,7 +928,7 @@
                      label="Timeout"
                      default-value="120000"
                      description="The maximum time in milliseconds to wait for a response from WebSphere IIB. Increase if experiencing Timeout Exceptions.
-                                  Leave empty or set to -1 to wait indefinitely."
+                                  Leave empty or set to -1 to wait indefinitely. Note: Setting the timeout as -1 may cause the step to hang."
                      hidden="true"/>
       </property>
       <property name="shell">
@@ -1057,7 +1058,7 @@
                      label="Timeout"
                      default-value="120000"
                      description="The maximum time in milliseconds to wait for a response from WebSphere IIB. Increase if experiencing Timeout Exceptions.
-                                  Leave empty or set to -1 to wait indefinitely."
+                                  Leave empty or set to -1 to wait indefinitely. Note: Setting the timeout as -1 may cause the step to hang."
                      hidden="true"/>
       </property>
       <property name="shell">
@@ -1208,7 +1209,7 @@
                      label="Timeout"
                      default-value="120000"
                      description="The maximum time in milliseconds to wait for a response from WebSphere IIB. Increase if experiencing Timeout Exceptions.
-                                  Leave empty or set to -1 to wait indefinitely."
+                                  Leave empty or set to -1 to wait indefinitely. Note: Setting the timeout as -1 may cause the step to hang."
                      hidden="true"/>
       </property>
       <property name="shell">
@@ -1338,7 +1339,7 @@
                      label="Timeout"
                      default-value="120000"
                      description="The maximum time in milliseconds to wait for a response from WebSphere IIB. Increase if experiencing Timeout Exceptions.
-                                  Leave empty or set to -1 to wait indefinitely."
+                                  Leave empty or set to -1 to wait indefinitely. Note: Setting the timeout as -1 may cause the step to hang."
                      hidden="true"/>
       </property>
       <property name="shell">
@@ -1468,7 +1469,7 @@
                      label="Timeout"
                      default-value="120000"
                      description="The maximum time in milliseconds to wait for a response from WebSphere IIB. Increase if experiencing Timeout Exceptions.
-                                  Leave empty or set to -1 to wait indefinitely."
+                                  Leave empty or set to -1 to wait indefinitely. Note: Setting the timeout as -1 may cause the step to hang."
                      hidden="true"/>
       </property>
       <property name="shell">
@@ -1558,7 +1559,7 @@
                      label="Timeout"
                      default-value="120000"
                      description="The maximum time in milliseconds to wait for a response from WebSphere IIB. Increase if experiencing Timeout Exceptions.
-                                  Leave empty or set to -1 to wait indefinitely."
+                                  Leave empty or set to -1 to wait indefinitely. Note: Setting the timeout as -1 may cause the step to hang."
                      hidden="true"/>
       </property>
       <property name="shell">

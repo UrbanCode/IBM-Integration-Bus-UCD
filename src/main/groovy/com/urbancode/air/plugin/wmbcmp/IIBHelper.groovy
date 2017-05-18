@@ -305,8 +305,9 @@ class IIBHelper {
             throw new IllegalStateException("Execution group proxy is null! Make sure it is configured correctly!")
         }
 
-        println "${getTimestamp()} Using execution group: ${executionGroup} and waiting until a response is received..."
-        DeployResult dr = executionGroupProxy.deploy(fileName, isIncremental, AttributeConstants.DEPLOYRESULT_WAIT_INDEFINITELY)
+        println "${getTimestamp()} Using execution group: ${executionGroup} and waiting with a timeout " +
+            "of ${timeout} or until a response is received from the execution group..."
+        DeployResult dr = executionGroupProxy.deploy(fileName, isIncremental, timeout)
         CompletionCodeType completionCode = dr.getCompletionCode()
 
         checkDeployResult(dr)
@@ -465,7 +466,7 @@ class IIBHelper {
 
         if ( flowsToDelete.size() > 0) {
             println "${getTimestamp()} Deleting "+flowsToDelete.size()+" deployed objects that are orphaned"
-            println "Waiting until a response is received from the execution group..."
+            println "Waiting with a timeout of ${timeout} or until a response is received from the execution group..."
 
             // convert to DeployedObject [] to match deleteDeployedObjects method spec
             DeployedObject [] flowsToDeleteArray = new DeployedObject[flowsToDelete.size()]
@@ -476,7 +477,7 @@ class IIBHelper {
                 flowsToDeleteArray[count++] = flowsIterator.next()
             }
 
-            executionGroupProxy.deleteDeployedObjects (flowsToDeleteArray , AttributeConstants.DEPLOYRESULT_WAIT_INDEFINITELY)
+            executionGroupProxy.deleteDeployedObjects (flowsToDeleteArray, timeout)
             checkDeployResult()
         }
         else {
@@ -536,7 +537,11 @@ class IIBHelper {
 
             if (executionGroupProxy == null) {
                 throw new IllegalStateException("Execution group ${groupName} does not exist. Please make sure its " +
+<<<<<<< HEAD
 			"name is spelled correctly and that it exists under the specified broker.")
+=======
+			             "name is spelled correctly and that it exists under the specified broker.")
+>>>>>>> air
             }
         }
         else {
