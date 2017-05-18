@@ -592,4 +592,154 @@
   </migrate>
   <migrate to-version="32">
   </migrate>
+  <migrate to-version="33">
+    <migrate-command name="Set Broker Properties">
+      <migrate-properties>
+        <migrate-property name="brokerHost" default="${p?:resource/iib.ip}"/>
+        <migrate-property name="port" default="${p?:resource/iib.port}"/>
+        <migrate-property name="integrationNodeName" default="${p:resource/iib.brokerName}"/>
+        <migrate-property name="channel" default="${p:?resource/iib.channel"/>
+        <migrate-property name="queueManager" default="${p:?resource/iib.queueManager}"/>
+        <migrate-property name="version" default="${p:resource/iib.version"/>
+        <migrate-property name="jarPath" default="${p:resource/iib.jarPath}"/>
+        <migrate-property name="mqsiprofile" default="${p:resource/iib.mqsiprofile}"/>
+      </migrate-properties>
+    </migrate-command>
+    <migrate-command name="Create Execution Group">
+      <migrate-properties>
+        <migrate-property name="executionGroup" default="${p?:resource/iib.executionGroup}"/>
+        <migrate-property name="brokerHost" default="${p?:resource/iib.ip}"/>
+        <migrate-property name="port" default="${p?:resource/iib.port}"/>
+        <migrate-property name="integrationNodeName" default="${p:resource/iib.brokerName}"/>
+        <migrate-property name="channel" default="${p:?resource/iib.channel"/>
+        <migrate-property name="queueManager" default="${p:?resource/iib.queueManager}"/>
+        <migrate-property name="version" default="${p:resource/iib.version"/>
+        <migrate-property name="jarPath" default="${p:resource/iib.jarPath}"/>
+        <migrate-property name="mqsiprofile" default="${p:resource/iib.mqsiprofile}"/>
+      </migrate-properties>
+    </migrate-command>
+    <migrate-command name="Restart Execution Groups">
+      <migrate-properties>
+        <migrate-property name="executionGroup" default="${p?:resource/iib.executionGroup}"/>
+        <migrate-property name="brokerHost" default="${p?:resource/iib.ip}"/>
+        <migrate-property name="port" default="${p?:resource/iib.port}"/>
+        <migrate-property name="integrationNodeName" default="${p:resource/iib.brokerName}"/>
+        <migrate-property name="channel" default="${p:?resource/iib.channel"/>
+        <migrate-property name="queueManager" default="${p:?resource/iib.queueManager}"/>
+        <migrate-property name="version" default="${p:resource/iib.version"/>
+        <migrate-property name="jarPath" default="${p:resource/iib.jarPath}"/>
+        <migrate-property name="mqsiprofile" default="${p:resource/iib.mqsiprofile}"/>
+      </migrate-properties>
+    </migrate-command>
+    <migrate-command name="Set Execution Group Properties">
+      <migrate-properties>
+        <migrate-property name="executionGroup" default="${p?:resource/iib.executionGroup}"/>
+        <migrate-property name="brokerHost" default="${p?:resource/iib.ip}"/>
+        <migrate-property name="port" default="${p?:resource/iib.port}"/>
+        <migrate-property name="integrationNodeName" default="${p:resource/iib.brokerName}"/>
+        <migrate-property name="channel" default="${p:?resource/iib.channel"/>
+        <migrate-property name="queueManager" default="${p:?resource/iib.queueManager}"/>
+        <migrate-property name="version" default="${p:resource/iib.version"/>
+        <migrate-property name="jarPath" default="${p:resource/iib.jarPath}"/>
+        <migrate-property name="mqsiprofile" default="${p:resource/iib.mqsiprofile}"/>
+      </migrate-properties>
+    </migrate-command>
+    <migrate-command name="Set Message Flows Properties">
+      <migrate-properties>
+        <migrate-property name="executionGroup" default="${p?:resource/iib.executionGroup}"/>
+        <migrate-property name="brokerHost" default="${p?:resource/iib.ip}"/>
+        <migrate-property name="port" default="${p?:resource/iib.port}"/>
+        <migrate-property name="integrationNodeName" default="${p:resource/iib.brokerName}"/>
+        <migrate-property name="channel" default="${p:?resource/iib.channel"/>
+        <migrate-property name="queueManager" default="${p:?resource/iib.queueManager}"/>
+        <migrate-property name="version" default="${p:resource/iib.version"/>
+        <migrate-property name="jarPath" default="${p:resource/iib.jarPath}"/>
+        <migrate-property name="mqsiprofile" default="${p:resource/iib.mqsiprofile}"/>
+      </migrate-properties>
+    </migrate-command>
+    <migrate-command name="Delete Flows Using RegEx">
+      <migrate-properties>
+        <migrate-property name="executionGroup" default="${p?:resource/iib.executionGroup}"/>
+        <migrate-property name="brokerHost" default="${p?:resource/iib.ip}"/>
+        <migrate-property name="port" default="${p?:resource/iib.port}"/>
+        <migrate-property name="integrationNodeName" default="${p:resource/iib.brokerName}"/>
+        <migrate-property name="channel" default="${p:?resource/iib.channel"/>
+        <migrate-property name="queueManager" default="${p:?resource/iib.queueManager}"/>
+        <migrate-property name="version" default="${p:resource/iib.version"/>
+        <migrate-property name="jarPath" default="${p:resource/iib.jarPath}"/>
+        <migrate-property name="mqsiprofile" default="${p:resource/iib.mqsiprofile}"/>
+      </migrate-properties>
+    </migrate-command>
+    <migrate-command name="Create Or Update Configurable Service">
+      <migrate-properties>
+        <migrate-property name="brokerHost" default="${p?:resource/iib.ip}"/>
+        <migrate-property name="port" default="${p?:resource/iib.port}"/>
+        <migrate-property name="integrationNodeName" default="${p:resource/iib.brokerName}"/>
+        <migrate-property name="channel" default="${p:?resource/iib.channel"/>
+        <migrate-property name="queueManager" default="${p:?resource/iib.queueManager}"/>
+        <migrate-property name="version" default="${p:resource/iib.version"/>
+        <migrate-property name="jarPath" default="${p:resource/iib.jarPath}"/>
+        <migrate-property name="mqsiprofile" default="${p:resource/iib.mqsiprofile}"/>
+      </migrate-properties>
+    </migrate-command>
+    <migrate-command name="Delete Configurable Service">
+      <migrate-properties>
+        <migrate-property name="brokerHost" default="${p?:resource/iib.ip}"/>
+        <migrate-property name="port" default="${p?:resource/iib.port}"/>
+        <migrate-property name="integrationNodeName" default="${p:resource/iib.brokerName}"/>
+        <migrate-property name="channel" default="${p:?resource/iib.channel"/>
+        <migrate-property name="queueManager" default="${p:?resource/iib.queueManager}"/>
+        <migrate-property name="version" default="${p:resource/iib.version"/>
+        <migrate-property name="jarPath" default="${p:resource/iib.jarPath}"/>
+        <migrate-property name="mqsiprofile" default="${p:resource/iib.mqsiprofile}"/>
+      </migrate-properties>
+    </migrate-command>
+    <migrate-command name="Deploy">
+      <migrate-properties>
+        <migrate-property name="executionGroup" default="${p?:resource/iib.executionGroup}"/>
+        <migrate-property name="brokerHost" default="${p?:resource/iib.ip}"/>
+        <migrate-property name="port" default="${p?:resource/iib.port}"/>
+        <migrate-property name="integrationNodeName" default="${p:resource/iib.brokerName}"/>
+        <migrate-property name="channel" default="${p:?resource/iib.channel"/>
+        <migrate-property name="queueManager" default="${p:?resource/iib.queueManager}"/>
+        <migrate-property name="version" default="${p:resource/iib.version"/>
+        <migrate-property name="jarPath" default="${p:resource/iib.jarPath}"/>
+        <migrate-property name="mqsiprofile" default="${p:resource/iib.mqsiprofile}"/>
+        <migrate-property name="env" default="${p:resource/iib.environment}"/>
+      </migrate-properties>
+    </migrate-command>
+    <migrate-command name="Start Message Flows">
+      <migrate-properties>
+        <migrate-property name="executionGroup" default="${p?:resource/iib.executionGroup}"/>
+        <migrate-property name="brokerHost" default="${p?:resource/iib.ip}"/>
+        <migrate-property name="port" default="${p?:resource/iib.port}"/>
+        <migrate-property name="integrationNodeName" default="${p:resource/iib.brokerName}"/>
+        <migrate-property name="channel" default="${p:?resource/iib.channel"/>
+        <migrate-property name="queueManager" default="${p:?resource/iib.queueManager}"/>
+        <migrate-property name="version" default="${p:resource/iib.version"/>
+        <migrate-property name="jarPath" default="${p:resource/iib.jarPath}"/>
+        <migrate-property name="mqsiprofile" default="${p:resource/iib.mqsiprofile}"/>
+      </migrate-properties>
+    </migrate-command>
+    <migrate-command name="Stop Message Flows">
+      <migrate-properties>
+        <migrate-property name="executionGroup" default="${p?:resource/iib.executionGroup}"/>
+        <migrate-property name="brokerHost" default="${p?:resource/iib.ip}"/>
+        <migrate-property name="port" default="${p?:resource/iib.port}"/>
+        <migrate-property name="integrationNodeName" default="${p:resource/iib.brokerName}"/>
+        <migrate-property name="channel" default="${p:?resource/iib.channel"/>
+        <migrate-property name="queueManager" default="${p:?resource/iib.queueManager}"/>
+        <migrate-property name="version" default="${p:resource/iib.version"/>
+        <migrate-property name="jarPath" default="${p:resource/iib.jarPath}"/>
+        <migrate-property name="mqsiprofile" default="${p:resource/iib.mqsiprofile}"/>
+      </migrate-properties>
+    </migrate-command>
+    <migrate-command name="Override Bar Properties">
+      <migrate-properties>
+        <migrate-property name="version" default="${p:resource/iib.version"/>
+        <migrate-property name="jarPath" default="${p:resource/iib.jarPath}"/>
+        <migrate-property name="mqsiprofile" default="${p:resource/iib.mqsiprofile}"/>
+      </migrate-properties>
+    </migrate-command>
+  </migrate>
 </plugin-upgrade>

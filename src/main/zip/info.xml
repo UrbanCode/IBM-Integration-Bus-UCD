@@ -239,6 +239,9 @@ Fixes APAR PI81623 Deployments failing in IIB 9 and lower.
     <release-note plugin-version="32">
 Provide proper error output when execution group doesn't exist.
     </release-note>
+    <release-note plugin-version="33">
+Change default property values to be consistent across all steps.
+    </release-note>
 	
   </release-notes>
 </pluginInfo>
