@@ -537,11 +537,7 @@ class IIBHelper {
 
             if (executionGroupProxy == null) {
                 throw new IllegalStateException("Execution group ${groupName} does not exist. Please make sure its " +
-<<<<<<< HEAD
-			"name is spelled correctly and that it exists under the specified broker.")
-=======
 			             "name is spelled correctly and that it exists under the specified broker.")
->>>>>>> air
             }
         }
         else {
