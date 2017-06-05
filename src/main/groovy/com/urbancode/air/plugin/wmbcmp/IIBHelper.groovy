@@ -123,9 +123,7 @@ class IIBHelper {
             throw new IllegalStateException("Broker Proxy is uninitilized!")
         }
 
-        setExecutionGroup(executionGroup)
-
-        if (executionGroupProxy == null) {
+        if (!getExecutionGroup(executionGroup)) {
             System.out.println("${getTimestamp()} Execution group ${executionGroup} does not exist."
                     + " Attempting to create...")
 
@@ -526,14 +524,18 @@ class IIBHelper {
         if (brokerProxy && (versionInt < 10)) {
             brokerProxy.disconnect()
         }
-    	else if (brokerProxy) {
-	    brokerProxy.disconnectAll()
-	}
+        else if (brokerProxy) {
+           brokerProxy.disconnectAll()
+        }
+    }
+
+    private ExecutionGroupProxy getExecutionGroup(String groupName) {
+        return brokerProxy.getExecutionGroupByName(groupName)
     }
 
     public void setExecutionGroup(String groupName) {
         if (groupName) {
-            executionGroupProxy = brokerProxy.getExecutionGroupByName(groupName)
+            executionGroupProxy = getExecutionGroup(groupName)
 
             if (executionGroupProxy == null) {
                 throw new IllegalStateException("Execution group ${groupName} does not exist. Please make sure its " +

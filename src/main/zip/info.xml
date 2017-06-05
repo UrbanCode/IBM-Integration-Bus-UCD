@@ -243,5 +243,8 @@ Fixes APAR PI80814 The Deploy and Delete Flow using RegEx steps use the timeout 
     <release-note plugin-version="33">
 Change default property values to be consistent across all steps.
     </release-note>
+    <release-note plugin-version="34">
+Fixes APAR PI82566 Create Execution Group will successfully create an execution group if it does not exist.
+    </release-note>
   </release-notes>
 </pluginInfo>
