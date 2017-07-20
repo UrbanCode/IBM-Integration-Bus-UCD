@@ -521,12 +521,7 @@ class IIBHelper {
             BrokerProxy.disableAdministrationAPITracing()
         }
 
-        if (brokerProxy && (versionInt < 10)) {
-            brokerProxy.disconnect()
-        }
-        else if (brokerProxy) {
-           brokerProxy.disconnectAll()
-        }
+        brokerProxy.disconnect()
     }
 
     private ExecutionGroupProxy getExecutionGroup(String groupName) {
