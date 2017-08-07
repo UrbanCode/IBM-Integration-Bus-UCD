@@ -7,8 +7,8 @@
 
 import org.apache.commons.lang.StringUtils
 
-import com.urbancode.air.AirPluginTool;
-import com.urbancode.air.CommandHelper;
+import com.urbancode.air.AirPluginTool
+import com.urbancode.air.CommandHelper
 
 import java.util.regex.Pattern
 
@@ -34,7 +34,14 @@ def version = props['version'] ? props['version'].trim() : ""
 def cmdArgs
 
 if (env) {
-    env = env.split("\n|,")
+    File envFile = new File(env)
+
+    if (envFile.isFile()) {
+        env = envFile.getText("UTF-8")
+        println("[Ok] File specified to configure environment properties.")
+    }
+
+    env = env.split("\n")
 
     for (def envArg : env) {
         if(envArg.trim() && envArg.contains('=')) {
@@ -173,7 +180,9 @@ else {
         this.args[2]
     ]
 }
-if(apTool.getEncKey() != null) {
+
+if (apTool.getEncKey() != null) {
     helper.addEnvironmentVariable("UCD_SECRET_VAR", apTool.getEncKey())
 }
+
 helper.runCommand(cmdArgs.join(' '), cmdArgs)

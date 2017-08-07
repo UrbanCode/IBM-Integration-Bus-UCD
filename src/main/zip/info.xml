@@ -246,5 +246,9 @@ Change default property values to be consistent across all steps.
     <release-note plugin-version="34">
 Fixes APAR PI82566 Create Execution Group will successfully create an execution group if it does not exist.
     </release-note>
+    <release-note plugin-version="35">
+Added functionality to set environment variables from a file in the Deploy step.
+Altered the 'Environment Variables' field to allow commas in environment property values in the Deploy step.
+    </release-note>
   </release-notes>
 </pluginInfo>

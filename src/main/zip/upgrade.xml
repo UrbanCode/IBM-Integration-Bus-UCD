@@ -744,4 +744,6 @@
   </migrate>
   <migrate to-version="34">
   </migrate>
+  <migrate to-version="35">
+  </migrate>
 </plugin-upgrade>
