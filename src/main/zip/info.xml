@@ -249,7 +249,7 @@ Fixes APAR PI82566 Create Execution Group will successfully create an execution 
     <release-note plugin-version="35">
 RFE 100083 Added functionality to set environment variables from a file in the Deploy step.
 Altered the 'Environment Variables' field to allow environment property values to contain commas in the Deploy step.
-Commas can no longer be used as delimiters.
+Commas can no longer be used as delimiters for Environment Variables in the Deploy step.
     </release-note>
   </release-notes>
 </pluginInfo>
