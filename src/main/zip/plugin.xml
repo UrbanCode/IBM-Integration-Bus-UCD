@@ -9,7 +9,7 @@
            xmlns:server="http://www.urbancode.com/PluginServerXMLSchema_v1"
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <header>
-    <identifier id="com.urbancode.air.plugin.WMBCMP" name="WebSphere Message Broker - CMP" version="34"/>
+    <identifier id="com.urbancode.air.plugin.WMBCMP" name="WebSphere Message Broker - CMP" version="35"/>
     <description>Integration for WebSphere Message Broker to deploy Broker Archives and start and stop Message Flows
                  using the CMP API. This plugin is compatible with both version 9 and 10 of IBM Integration Bus, and
                  is also compatible with versions 7 and 8 of WebSphere Message Broker.</description>
@@ -1200,8 +1200,8 @@
         <property-ui type="textAreaBox"
                      label="Environment Variables"
                      default-value="${p?:resource/iib.environment}"
-                     description="A newline or comma separated list of environment variables to set for the deployment
-                                  process. Each entry must be in the form 'VAR=VALUE' (i.e. java.library.path=/opt/mqm/java/lib64:
+                     description="A file or list containing property entries, with each entry delimited by newlines.
+                                  Entries must be in the form 'VAR=VALUE' (i.e. java.library.path=/opt/mqm/java/lib64:
                                   /opt/mqm/java/lib)"/>
       </property>
       <property name="timeout">
