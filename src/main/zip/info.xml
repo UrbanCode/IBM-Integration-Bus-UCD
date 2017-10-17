@@ -251,5 +251,9 @@ RFE 100083 Added functionality to set environment variables from a file in the D
 Altered the 'Environment Variables' field to allow environment property values to contain commas in the Deploy step.
 Commas can no longer be used as delimiters for Environment Variables in the Deploy step.
     </release-note>
+    <release-note plugin-version="36">
+Renamed Set Broker Properties step to Set Integration Node Properties.
+Added the 'Environment Variables' field to allow environment property values to all non-Integration Node step.
+    </release-note>
   </release-notes>
 </pluginInfo>

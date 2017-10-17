@@ -82,9 +82,6 @@ class IIBHelper {
 
             bcp = new LocalBrokerConnectionParameters(integrationNodeName)
             brokerProxy = BrokerProxy.getInstance(bcp)
-
-            def properties = BrokerProxy.getProperties()
-            properties.toString()
         }
         else {
             throw new IllegalStateException("Must specify either an 'Integration Node Name' or an 'IP' and 'Port'.")
@@ -407,7 +404,13 @@ class IIBHelper {
         String executionGroup = executionGroupProxy.getRuntimeProperty("This/label")
         println("${getTimestamp()} Setting property ${name} to ${value} from ${oldVal} on Execution Group "
             + "${executionGroup}!")
-        executionGroupProxy.setRuntimeProperty(name, value)
+        try {
+            executionGroupProxy.setRuntimeProperty(name, value)
+        }
+        catch (ConfigManagerProxyRequestFailureException ex) {
+            printBrokerResponses(ex)
+            throw ex
+        }
         println("${getTimestamp()} Successfully set execution group property.")
     }
 
