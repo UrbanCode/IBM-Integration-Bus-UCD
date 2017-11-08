@@ -17,6 +17,7 @@ import com.ibm.broker.config.proxy.DeployResult
 import com.ibm.broker.config.proxy.ExecutionGroupProxy
 import com.ibm.broker.config.proxy.LocalBrokerConnectionParameters
 import com.ibm.broker.config.proxy.LogEntry
+import com.ibm.broker.config.proxy.LogProxy
 import com.ibm.broker.config.proxy.MessageFlowProxy
 import com.urbancode.air.ExitCodeException
 import com.urbancode.air.plugin.wmbcmp.IIB9BrokerConnection
@@ -25,49 +26,62 @@ import java.text.SimpleDateFormat
 import java.util.regex.Pattern
 
 class IIBHelper {
-    def logProxy
-    def executionGroups
-    def version
-	def versionInt
-    def brokerConnection
-    Integer timeout
-    Date startTime
-    boolean isDebugEnabled
-    boolean isIncremental
-    BrokerConnectionParameters bcp
+    LogProxy logProxy
     BrokerProxy brokerProxy
     ExecutionGroupProxy executionGroupProxy
+    boolean isDebugEnabled // Used for cleanup
 
-    public IIBHelper(Properties props) {
+    public IIBHelper (
+        BrokerProxy brokerProxy,
+        ExecutionGroupProxy executionGroupProxy,
+        LogProxy logProxy,
+        boolean isDebugEnabled)
+    {
+        this.brokerProxy = brokerProxy
+        this.executionGroupProxy = executionGroupProxy
+        this.logProxy = logProxy
+        this.isDebugEnabled = isDebugEnabled
+    }
+
+    public static IIBHelper createInstance(Properties props) {
+        // Global fields that can be mocked for unit testing
+        BrokerProxy brokerProxy
+        ExecutionGroupProxy executionGroupProxy
+        LogProxy logProxy
+        boolean isDebugEnabled
+
+        // Local fields
+        BrokerConnectionParameters bcp
         def host = props['brokerHost']
-        def port
         def integrationNodeName = props['integrationNodeName']
+        String version = props['version']
+        boolean isIncremental = !Boolean.valueOf(props['fullDeploy'])
+        int timeout = Integer.valueOf(props['timeout']?.trim()?:-1) // time to wait for broker configuration changes
+        int versionInt
+        def port
+        def brokerConnection
 
         if (props['port']) {
             port = Integer.valueOf(props['port'])
         }
 
-        // strip excess decimal points
-        version = props['version']
+        // strip excess decimal points from version
         def integerPoint = version.indexOf('.') // point between integer and digits after the decimal point
         version = integerPoint != -1 ? version.substring(0, integerPoint) : version
         versionInt = version.toInteger()
 
-        timeout = Integer.valueOf(props['timeout']?.trim()?:-1) // time to wait for broker response
-        isIncremental = !Boolean.valueOf(props['fullDeploy'])
-
         if (host && port) {
-            //iib9 remote broker connection
+            // iib9 remote broker connection
             if (versionInt < 10) {
-                    //user determined by queue manager
+                    // user determined by queue manager
                     def channel = props['channel']
                     def queueManager = props['queueManager']
                     brokerConnection = new IIB9BrokerConnection(host, port, queueManager, channel)
                     bcp = brokerConnection.connection
             }
-            //iib10 remote connection settings
+            // iib10 remote connection settings
             else {
-                //iib10 allows explicit identification of user for remote connection
+                // iib10 allows explicit identification of user for remote connection
                 def user = props['username']
                 def password = props['password']
                 def useSSL = Boolean.valueOf(props['useSSL'])
@@ -76,7 +90,7 @@ class IIBHelper {
                 bcp = brokerConnection.connection
             }
         }
-        //local broker connection, regardless of iib version
+        // local broker connection, regardless of iib version
         else if (integrationNodeName) {
             println("${getTimestamp()} Establishing connection with a local broker...")
 
@@ -102,12 +116,13 @@ class IIBHelper {
 
         brokerProxy.setSynchronous(timeout)
 
-        startTime = new Date(System.currentTimeMillis())
         logProxy = brokerProxy.getLog()
+
+        return new IIBHelper(brokerProxy, executionGroupProxy, logProxy, isDebugEnabled)
     }
 
     public void stopAllMsgFlows() {
-        if (brokerProxy == null || bcp == null) {
+        if (brokerProxy == null) {
             throw new IllegalStateException("Broker Proxy is uninitialized!")
         }
 
@@ -119,7 +134,7 @@ class IIBHelper {
     }
 
     public void createExecutionGroupIfNeccessary(String executionGroup) {
-        if (brokerProxy == null || bcp == null) {
+        if (brokerProxy == null) {
             throw new IllegalStateException("Broker Proxy is uninitilized!")
         }
 
@@ -147,7 +162,7 @@ class IIBHelper {
         }
     }
 
-    public void restartExecutionGroup(String executionGroup) {
+    public void restartExecutionGroup(String executionGroup, int timeout) {
         setExecutionGroup(executionGroup)
 
         if (executionGroupProxy == null) {
@@ -201,7 +216,7 @@ class IIBHelper {
     }
 
     public void deleteConfigurableService(String servType, String servName) {
-        if (brokerProxy == null || bcp == null) {
+        if (brokerProxy == null) {
             throw new IllegalStateException("Broker Proxy is uninitilized!")
         }
         System.out.println("${getTimestamp()} Deleting Configurable Service '${servName}' of type '${servType}'")
@@ -215,7 +230,7 @@ class IIBHelper {
         Map<String,String> propsMap,
         boolean deleteMissing)
     {
-        if (brokerProxy == null || bcp == null) {
+        if (brokerProxy == null) {
             throw new IllegalStateException("Broker Proxy is uninitilized!")
         }
 
@@ -278,7 +293,7 @@ class IIBHelper {
     }
 
     public void startAllMsgFlows() {
-        if (brokerProxy == null || bcp == null) {
+        if (brokerProxy == null) {
             throw new IllegalStateException("Broker Proxy is uninitilized!")
         }
 
@@ -294,8 +309,13 @@ class IIBHelper {
      * @param fileName the name of the BAR file to deploy
      * @return the completion code returned by the broker
      */
-    public CompletionCodeType deployBrokerArchive(String fileName, String executionGroup) {
-        if (brokerProxy == null || bcp == null) {
+    public CompletionCodeType deployBrokerArchive(
+        String fileName,
+        String executionGroup,
+        boolean isIncremental,
+        int timeout)
+    {
+        if (brokerProxy == null) {
             throw new IllegalStateException("Broker Proxy is uninitilized!")
         }
 
@@ -303,17 +323,19 @@ class IIBHelper {
             throw new IllegalStateException("Execution group proxy is null! Make sure it is configured correctly!")
         }
 
+        Date startTime = new Date(System.currentTimeMillis())
+
         println "${getTimestamp()} Using execution group: ${executionGroup} and waiting with a timeout " +
             "of ${timeout} or until a response is received from the execution group..."
         DeployResult dr = executionGroupProxy.deploy(fileName, isIncremental, timeout)
         CompletionCodeType completionCode = dr.getCompletionCode()
 
-        checkDeployResult(dr)
+        checkDeployResult(dr, startTime)
         return completionCode
     }
 
     public void startMsgFlow(String msgFlowName) {
-        if (brokerProxy == null || bcp == null) {
+        if (brokerProxy == null) {
             throw new IllegalStateException("Broker Proxy is uninitilized!")
         }
 
@@ -329,7 +351,7 @@ class IIBHelper {
     }
 
     public void stopMsgFlow(String msgFlowName) {
-        if (brokerProxy == null || bcp == null) {
+        if (brokerProxy == null) {
             throw new IllegalStateException("Broker Proxy is uninitilized!")
         }
 
@@ -346,7 +368,7 @@ class IIBHelper {
     }
 
     public void setBrokerProperty(String name, String value, String propType) {
-        if (brokerProxy == null || bcp == null) {
+        if (brokerProxy == null) {
             throw new IllegalStateException("Broker Proxy is uninitilized!")
         }
 
@@ -395,7 +417,7 @@ class IIBHelper {
     }
 
     public void setExecutionGroupProperty(String name, String value) {
-        if (brokerProxy == null || bcp == null) {
+        if (brokerProxy == null) {
             throw new IllegalStateException("Broker Proxy is uninitilized!")
         }
 
@@ -412,7 +434,7 @@ class IIBHelper {
     }
 
     public void setMsgFlowProperty(String msgFlowName, String name, String value, String executionGroup) {
-        if (brokerProxy == null || bcp == null) {
+        if (brokerProxy == null) {
             throw new IllegalStateException("Broker Proxy is uninitilized!")
         }
 
@@ -432,8 +454,8 @@ class IIBHelper {
         println("${getTimestamp()} Successfully set message flow property.")
     }
 
-    public void deleteMessageFlowsMatchingRegex(String regex) {
-        if (brokerProxy == null || bcp == null) {
+    public void deleteMessageFlowsMatchingRegex(String regex, boolean deleteLibs, int timeout) {
+        if (brokerProxy == null) {
             throw new IllegalStateException("Broker Proxy is uninitilized!")
         }
 
@@ -448,23 +470,34 @@ class IIBHelper {
         Set<DeployedObject> flowsToDelete = new HashSet<DeployedObject>()
 
         // Get an unfiltered enumeration of all message flows in this execution group
-        Enumeration<DeployedObject> allDeployedObjectsInThisEG = executionGroupProxy.getDeployedObjects()
+        Enumeration<DeployedObject> allDeployedObjectsInThisEG
+
+        allDeployedObjectsInThisEG = executionGroupProxy.getDeployedObjects()
+
         while (allDeployedObjectsInThisEG.hasMoreElements()) {
             DeployedObject thisDeployedObject = allDeployedObjectsInThisEG.nextElement()
             String barFileUsed = thisDeployedObject.getBARFileName()
-            System.out.print(thisDeployedObject.getFullName() +" was deployed with BAR file ")
-            System.out.print(barFileUsed)
+            System.out.println("[OK] ${thisDeployedObject.getFullName()} was deployed with BAR file ${barFileUsed}.")
             if ( (barFileUsed != null) && (p.matcher(barFileUsed).matches()) ){
-                System.out.println(". Regex matched, adding flow for deletion...")
+                if (!deleteLibs
+                    && executionGroupProxy.getLibraryByName(thisDeployedObject.getFullName()) != null)
+                {
+                    println("[Action] Omitting library ${thisDeployedObject.getFullName()} from deletion.")
+                    continue
+                }
+
+                System.out.println("[Action] Adding ${thisDeployedObject.getFullName()} for deletion...")
                 flowsToDelete.add((Object)thisDeployedObject)
             } else {
-                System.out.println(". Regex not matched, skipping...")
+                System.out.println("[OK] Regex not matched, skipping...")
             }
         }
 
         if ( flowsToDelete.size() > 0) {
-            println "${getTimestamp()} Deleting "+flowsToDelete.size()+" deployed objects that are orphaned"
-            println "Waiting with a timeout of ${timeout} or until a response is received from the execution group..."
+            println "[Action] ${getTimestamp()} Deleting "+flowsToDelete.size()+" deployed objects that are orphaned"
+            println "[OK] Waiting with a timeout of ${timeout} or until a response is received from the execution group..."
+
+            Date startTime = new Date(System.currentTimeMillis())
 
             // convert to DeployedObject [] to match deleteDeployedObjects method spec
             DeployedObject [] flowsToDeleteArray = new DeployedObject[flowsToDelete.size()]
@@ -476,7 +509,7 @@ class IIBHelper {
             }
 
             executionGroupProxy.deleteDeployedObjects (flowsToDeleteArray, timeout)
-            checkDeployResult()
+            checkDeployResult(startTime)
         }
         else {
             System.out.println("No orphaned flows to delete")
@@ -484,11 +517,11 @@ class IIBHelper {
 
     }
 
-    public void checkDeployResult() {
-        checkDeployResult(null)
+    public void checkDeployResult(def startTime) {
+        checkDeployResult(null, startTime)
     }
 
-    public void checkDeployResult(def deployResult) {
+    public void checkDeployResult(def deployResult, def startTime) {
         Enumeration logEntries = null
 
         if (deployResult) {
@@ -542,7 +575,7 @@ class IIBHelper {
         }
     }
 
-    public String getTimestamp() {
+    public static String getTimestamp() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("[MM/dd/yyyy HH:mm:ss]")
 
         return dateFormat.format(new Date())

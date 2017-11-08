@@ -11,7 +11,7 @@
 
  AirPluginTool apTool = new AirPluginTool(this.args[0], this.args[1])
  def props = apTool.getStepProperties(System.getenv("UCD_SECRET_VAR"))
- def helper = new IIBHelper(props)
+ def helper = IIBHelper.createInstance(props)
 
  String executionGroup = props['executionGroup']
  def executionGroups

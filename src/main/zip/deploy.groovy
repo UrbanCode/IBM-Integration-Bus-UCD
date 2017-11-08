@@ -8,12 +8,11 @@ import com.urbancode.air.AirPluginTool;
 import com.urbancode.air.plugin.wmbcmp.IIBHelper;
 import com.ibm.broker.config.proxy.CompletionCodeType;
 
-
 File workDir = new File('.')
 
 AirPluginTool apTool = new AirPluginTool(this.args[0], this.args[1])
 def props = apTool.getStepProperties(System.getenv("UCD_SECRET_VAR"))
-def helper = new IIBHelper(props)
+def helper = IIBHelper.createInstance(props)
 
 String executionGroup = props['executionGroup']
 def executionGroups
@@ -21,6 +20,9 @@ if(executionGroup != null && !executionGroup.trim().isEmpty()) {
     executionGroups = executionGroup.split('\n|,')*.trim()
     executionGroups -= [null, ""] // remove empty and null entries
 }
+
+boolean isIncremental = !Boolean.valueOf(props['fullDeploy'])
+int timeout = Integer.valueOf(props['timeout']?.trim()?:-1)
 
 try {
     props['barFileNames'].split('\n|,')*.trim().each { barFileName ->
@@ -33,7 +35,13 @@ try {
                 println "${helper.getTimestamp()} Stopping all Msg Flows"
                 helper.stopAllMsgFlows();
             }
-            CompletionCodeType completionCode = helper.deployBrokerArchive(barFileName, groupName);
+
+            CompletionCodeType completionCode = helper.deployBrokerArchive(
+                barFileName,
+                groupName,
+                isIncremental,
+                timeout);
+
             apTool.setOutputProperty("completionCode", completionCode.toString())
 
             if (completionCode != CompletionCodeType.success) {

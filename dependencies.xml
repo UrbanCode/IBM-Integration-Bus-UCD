@@ -72,7 +72,7 @@
       </delivery>
     </dependency>
 
-    <!-- ############################################################ -->
+<!-- ############################################################ -->
     <!-- TEST                                                         -->
     <!-- ############################################################ -->
 
@@ -105,6 +105,30 @@
       <cs-project name="JUnit"/>
       <criteria status="success"/>
       <delivery artifact-set="Default">
+        <directory>lib/test</directory>
+      </delivery>
+    </dependency>
+
+    <dependency>
+      <cs-project name="spock-core"/>
+      <criteria stamp="2.4-rc4"/>
+      <delivery artifact-set="lib">
+        <directory>lib/test</directory>
+      </delivery>
+    </dependency>
+
+    <dependency>
+      <cs-project name="CGLib"/>
+      <criteria stamp="3.2.5"/>
+      <delivery artifact-set="Library">
+        <directory>lib/test</directory>
+      </delivery>
+    </dependency>
+
+    <dependency>
+      <cs-project name="Objenesis"/>
+      <criteria stamp="2.2"/>
+      <delivery artifact-set="Library">
         <directory>lib/test</directory>
       </delivery>
     </dependency>
@@ -146,6 +170,7 @@
       <criteria status="success"/>
       <delivery artifact-set="Library">
         <directory>lib</directory>
+        <directory>lib/test</directory>
       </delivery>
     </dependency>
 
@@ -161,9 +186,8 @@
       <cs-project name="Jakarta Commons Lang"/>
       <criteria status="success"/>
       <delivery artifact-set="Default">
-        <directory>lib/test</directory>
-        <directory>lib/build</directory>
         <directory>lib</directory>
+        <directory>lib/test</directory>
       </delivery>
     </dependency>
 
@@ -172,6 +196,15 @@
       <criteria status="success"/>
       <delivery artifact-set="Default">
         <directory>lib</directory>
+        <directory>lib/test</directory>
+      </delivery>
+    </dependency>
+
+    <dependency>
+      <cs-project name="Hamcrest"/>
+      <criteria status="success"/>
+      <delivery artifact-set="Library">
+        <directory>lib/test</directory>
       </delivery>
     </dependency>
 

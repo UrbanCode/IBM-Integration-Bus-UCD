@@ -12,19 +12,21 @@ File workDir = new File('.');
 AirPluginTool apTool = new AirPluginTool(this.args[0], this.args[1])
 def props = apTool.getStepProperties(System.getenv("UCD_SECRET_VAR"))
 
-def helper = new IIBHelper(props)
+def helper = IIBHelper.createInstance(props)
 
 def executionGroup = props['executionGroup']
 
 try {
     helper.setExecutionGroup(executionGroup)
-    String regex = props['regex'];
-    println "Deleting message flows that have been deployed via BAR files matching regex: ${regex}";
-    helper.deleteMessageFlowsMatchingRegex(regex);
+    String regex = props['regex']
+    boolean deleteLibs = Boolean.valueOf(props['deleteLibs'])
+    int timeout = Integer.valueOf(props['timeout']?.trim()?:-1)
+    println "Deleting contents that have been deployed via BAR files matching regex: ${regex}"
+    helper.deleteMessageFlowsMatchingRegex(regex, deleteLibs, timeout)
 }
 catch (Exception e) {
-    e.printStackTrace();
-    throw e;
+    e.printStackTrace()
+    throw e
 }
 finally {
     helper.cleanUp()
