@@ -18,13 +18,14 @@ def executionGroup = props['executionGroup']
 
 try {
     helper.setExecutionGroup(executionGroup)
-    String regex = props['regex'];
-    println "Deleting message flows that have been deployed via BAR files matching regex: ${regex}";
-    helper.deleteMessageFlowsMatchingRegex(regex);
+    String regex = props['regex']
+    boolean deleteSharedLibs = Boolean.valueOf(props['deleteSharedLibs'])
+    println "Deleting contents that have been deployed via BAR files matching regex: ${regex}"
+    helper.deleteMessageFlowsMatchingRegex(regex, deleteSharedLibs)
 }
 catch (Exception e) {
-    e.printStackTrace();
-    throw e;
+    e.printStackTrace()
+    throw e
 }
 finally {
     helper.cleanUp()

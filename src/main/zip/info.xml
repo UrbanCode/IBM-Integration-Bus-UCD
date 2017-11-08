@@ -251,5 +251,8 @@ RFE 100083 Added functionality to set environment variables from a file in the D
 Altered the 'Environment Variables' field to allow environment property values to contain commas in the Deploy step.
 Commas can no longer be used as delimiters for Environment Variables in the Deploy step.
     </release-note>
+    <release-note plugin-version="36">
+RFE 106783 Added the 'Delete Shared Libraries' field to the 'Delete Flows Using RegEx' step to allow omitting shared libraries.
+    </release-note>
   </release-notes>
 </pluginInfo>

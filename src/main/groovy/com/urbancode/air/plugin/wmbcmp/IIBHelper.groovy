@@ -432,7 +432,7 @@ class IIBHelper {
         println("${getTimestamp()} Successfully set message flow property.")
     }
 
-    public void deleteMessageFlowsMatchingRegex(String regex) {
+    public void deleteMessageFlowsMatchingRegex(String regex, boolean deleteSharedLibs) {
         if (brokerProxy == null || bcp == null) {
             throw new IllegalStateException("Broker Proxy is uninitilized!")
         }
@@ -448,23 +448,32 @@ class IIBHelper {
         Set<DeployedObject> flowsToDelete = new HashSet<DeployedObject>()
 
         // Get an unfiltered enumeration of all message flows in this execution group
-        Enumeration<DeployedObject> allDeployedObjectsInThisEG = executionGroupProxy.getDeployedObjects()
+        Enumeration<DeployedObject> allDeployedObjectsInThisEG
+
+        allDeployedObjectsInThisEG = executionGroupProxy.getDeployedObjects()
+
         while (allDeployedObjectsInThisEG.hasMoreElements()) {
             DeployedObject thisDeployedObject = allDeployedObjectsInThisEG.nextElement()
             String barFileUsed = thisDeployedObject.getBARFileName()
-            System.out.print(thisDeployedObject.getFullName() +" was deployed with BAR file ")
-            System.out.print(barFileUsed)
+            System.out.println("[OK] ${thisDeployedObject.getFullName()} was deployed with BAR file ${barFileUsed}.")
             if ( (barFileUsed != null) && (p.matcher(barFileUsed).matches()) ){
-                System.out.println(". Regex matched, adding flow for deletion...")
+                if (!deleteSharedLibs
+                    && executionGroupProxy.getSharedLibraryByName(thisDeployedObject.getFullName()) != null)
+                {
+                    println("[Action] Omitting shared library ${thisDeployedObject.getFullName()} from deletion.")
+                    continue
+                }
+
+                System.out.println("[Action] Adding ${thisDeployedObject.getFullName()} for deletion...")
                 flowsToDelete.add((Object)thisDeployedObject)
             } else {
-                System.out.println(". Regex not matched, skipping...")
+                System.out.println("[OK] Regex not matched, skipping...")
             }
         }
 
         if ( flowsToDelete.size() > 0) {
-            println "${getTimestamp()} Deleting "+flowsToDelete.size()+" deployed objects that are orphaned"
-            println "Waiting with a timeout of ${timeout} or until a response is received from the execution group..."
+            println "[Action] ${getTimestamp()} Deleting "+flowsToDelete.size()+" deployed objects that are orphaned"
+            println "[OK] Waiting with a timeout of ${timeout} or until a response is received from the execution group..."
 
             // convert to DeployedObject [] to match deleteDeployedObjects method spec
             DeployedObject [] flowsToDeleteArray = new DeployedObject[flowsToDelete.size()]

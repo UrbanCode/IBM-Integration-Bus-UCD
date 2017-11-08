@@ -746,4 +746,11 @@
   </migrate>
   <migrate to-version="35">
   </migrate>
+  <migrate to-version="36">
+    <migrate-command name="Delete BAR File Contents" old="Delete Flows Using RegEx">
+      <migrate-properties>
+        <migrate-property name="deleteSharedLibs" default="false"/>
+      </migrate-properties>
+    </migrate-command>
+  </migrate>
 </plugin-upgrade>
