@@ -9,14 +9,14 @@
            xmlns:server="http://www.urbancode.com/PluginServerXMLSchema_v1"
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <header>
-    <identifier id="com.urbancode.air.plugin.WMBCMP" name="WebSphere Message Broker - CMP" version="36"/>
+    <identifier id="com.urbancode.air.plugin.WMBCMP" name="WebSphere Message Broker - CMP" version="37"/>
     <description>Integration for WebSphere Message Broker to deploy Broker Archives and start and stop Message Flows
                  using the CMP API. This plugin is compatible with both version 9 and 10 of IBM Integration Bus, and
                  is also compatible with versions 7 and 8 of WebSphere Message Broker.</description>
     <tag>Middleware/Enterprise Service Bus/WebSphere Message Broker</tag>
   </header>
-  <step-type name="Set Broker Properties">
-    <description>Set Runtime Properties for the broker.</description>
+  <step-type name="Set Integration Node Properties">
+    <description>Set Runtime Properties for the Integration Node (broker).</description>
     <properties>
       <property name="properties" required="true">
         <property-ui type="textAreaBox"
@@ -55,7 +55,7 @@
         <property-ui type="textBox"
                      label="Integration Node Name"
                      default-value="${p?:resource/iib.brokerName}"
-                     description="Name of Integration Node. You must specify either an 'IP' and 'Port' to connect to a
+                     description="Name of Integration Node (broker). You must specify either an 'IP' and 'Port' to connect to a
                                   remote broker or an 'Integration Node Name' to connect to a local broker."/>
       </property>
       <property name="channel">
@@ -111,6 +111,14 @@
                      description="The absolute path to the mqsiprofile executable on your IIB server.
                                   Specifying this value will initialize your command environment. Only specify this
                                   path if your command environment needs initializing."/>
+      </property>
+      <property name="env">
+        <property-ui type="textAreaBox"
+                     label="Environment Variables"
+                     default-value="${p?:resource/iib.environment}"
+                     description="A file or list containing property entries, with each entry delimited by newlines.
+                                  Entries must be in the form 'VAR=VALUE' (i.e. java.library.path=/opt/mqm/java/lib64:
+                                  /opt/mqm/java/lib). Implemented to support z/OS using an ENVFILE."/>
       </property>
       <property name="timeout">
         <property-ui type="textBox"
@@ -240,6 +248,14 @@
                                   value will initialize your command environment. Only specify this path if your command
                                   environment needs initializing."/>
       </property>
+      <property name="env">
+        <property-ui type="textAreaBox"
+                     label="Environment Variables"
+                     default-value="${p?:resource/iib.environment}"
+                     description="A file or list containing property entries, with each entry delimited by newlines.
+                                  Entries must be in the form 'VAR=VALUE' (i.e. java.library.path=/opt/mqm/java/lib64:
+                                  /opt/mqm/java/lib). Implemented to support z/OS using an ENVFILE."/>
+      </property>
       <property name="timeout">
         <property-ui type="textBox"
                      label="Timeout"
@@ -365,6 +381,14 @@
                      description="The absolute path to the mqsiprofile executable on your IIB server. Specifying this
                                   value will initialize your command environment. Only specify this
                                   path if your command environment needs initializing."/>
+      </property>
+      <property name="env">
+        <property-ui type="textAreaBox"
+                     label="Environment Variables"
+                     default-value="${p?:resource/iib.environment}"
+                     description="A file or list containing property entries, with each entry delimited by newlines.
+                                  Entries must be in the form 'VAR=VALUE' (i.e. java.library.path=/opt/mqm/java/lib64:
+                                  /opt/mqm/java/lib). Implemented to support z/OS using an ENVFILE."/>
       </property>
       <property name="timeout">
         <property-ui type="textBox"
@@ -499,6 +523,14 @@
                      description="The absolute path to the mqsiprofile executable on your IIB server. Specifying this
                                   value will initialize your command environment. Only specify this path if your command
                                   environment needs initializing."/>
+      </property>
+      <property name="env">
+        <property-ui type="textAreaBox"
+                     label="Environment Variables"
+                     default-value="${p?:resource/iib.environment}"
+                     description="A file or list containing property entries, with each entry delimited by newlines.
+                                  Entries must be in the form 'VAR=VALUE' (i.e. java.library.path=/opt/mqm/java/lib64:
+                                  /opt/mqm/java/lib). Implemented to support z/OS using an ENVFILE."/>
       </property>
       <property name="timeout">
         <property-ui type="textBox"
@@ -649,6 +681,14 @@
                                   value will initialize your command environment. Only specify this path if your command
                                   environment needs initializing."/>
       </property>
+      <property name="env">
+        <property-ui type="textAreaBox"
+                     label="Environment Variables"
+                     default-value="${p?:resource/iib.environment}"
+                     description="A file or list containing property entries, with each entry delimited by newlines.
+                                  Entries must be in the form 'VAR=VALUE' (i.e. java.library.path=/opt/mqm/java/lib64:
+                                  /opt/mqm/java/lib). Implemented to support z/OS using an ENVFILE."/>
+      </property>
       <property name="timeout">
         <property-ui type="textBox"
                      label="Timeout"
@@ -785,6 +825,14 @@
                      description="The absolute path to the mqsiprofile executable on your IIB server. Specifying this
                                   value will initialize your command environment. Only specify this path if your command
                                   environment needs initializing."/>
+      </property>
+      <property name="env">
+        <property-ui type="textAreaBox"
+                     label="Environment Variables"
+                     default-value="${p?:resource/iib.environment}"
+                     description="A file or list containing property entries, with each entry delimited by newlines.
+                                  Entries must be in the form 'VAR=VALUE' (i.e. java.library.path=/opt/mqm/java/lib64:
+                                  /opt/mqm/java/lib). Implemented to support z/OS using an ENVFILE."/>
       </property>
       <property name="timeout">
         <property-ui type="textBox"
@@ -929,6 +977,14 @@
                                   value will initialize your command environment. Only specify this path if your command
                                   environment needs initializing."/>
       </property>
+      <property name="env">
+        <property-ui type="textAreaBox"
+                     label="Environment Variables"
+                     default-value="${p?:resource/iib.environment}"
+                     description="A file or list containing property entries, with each entry delimited by newlines.
+                                  Entries must be in the form 'VAR=VALUE' (i.e. java.library.path=/opt/mqm/java/lib64:
+                                  /opt/mqm/java/lib). Implemented to support z/OS using an ENVFILE."/>
+      </property>
       <property name="timeout">
         <property-ui type="textBox"
                      label="Timeout"
@@ -1058,6 +1114,14 @@
                      description="The absolute path to the mqsiprofile executable on your IIB server. Specifying this
                                   value will initialize your command environment. Only specify this path if your command
                                   environment needs initializing."/>
+      </property>
+      <property name="env">
+        <property-ui type="textAreaBox"
+                     label="Environment Variables"
+                     default-value="${p?:resource/iib.environment}"
+                     description="A file or list containing property entries, with each entry delimited by newlines.
+                                  Entries must be in the form 'VAR=VALUE' (i.e. java.library.path=/opt/mqm/java/lib64:
+                                  /opt/mqm/java/lib). Implemented to support z/OS using an ENVFILE."/>
       </property>
       <property name="timeout">
         <property-ui type="textBox"
@@ -1208,7 +1272,7 @@
                      default-value="${p?:resource/iib.environment}"
                      description="A file or list containing property entries, with each entry delimited by newlines.
                                   Entries must be in the form 'VAR=VALUE' (i.e. java.library.path=/opt/mqm/java/lib64:
-                                  /opt/mqm/java/lib)"/>
+                                  /opt/mqm/java/lib). Implemented to support z/OS using an ENVFILE."/>
       </property>
       <property name="timeout">
         <property-ui type="textBox"
@@ -1340,6 +1404,14 @@
                                   value will initialize your command environment. Only specify this path if your
                                   command environment needs initializing."/>
       </property>
+      <property name="env">
+        <property-ui type="textAreaBox"
+                     label="Environment Variables"
+                     default-value="${p?:resource/iib.environment}"
+                     description="A file or list containing property entries, with each entry delimited by newlines.
+                                  Entries must be in the form 'VAR=VALUE' (i.e. java.library.path=/opt/mqm/java/lib64:
+                                  /opt/mqm/java/lib). Implemented to support z/OS using an ENVFILE."/>
+      </property>
       <property name="timeout">
         <property-ui type="textBox"
                      label="Timeout"
@@ -1470,6 +1542,14 @@
                                   value will initialize your command environment. Only specify this path if your command
                                   environment needs initializing."/>
       </property>
+      <property name="env">
+        <property-ui type="textAreaBox"
+                     label="Environment Variables"
+                     default-value="${p?:resource/iib.environment}"
+                     description="A file or list containing property entries, with each entry delimited by newlines.
+                                  Entries must be in the form 'VAR=VALUE' (i.e. java.library.path=/opt/mqm/java/lib64:
+                                  /opt/mqm/java/lib). Implemented to support z/OS using an ENVFILE."/>
+      </property>
       <property name="timeout">
         <property-ui type="textBox"
                      label="Timeout"
@@ -1559,6 +1639,14 @@
                      description="The absolute path to the mqsiprofile executable on your IIB server. Specifying this
                                   value will initialize your command environment. Only specify this path if your command
                                   environment needs initializing."/>
+      </property>
+      <property name="env">
+        <property-ui type="textAreaBox"
+                     label="Environment Variables"
+                     default-value="${p?:resource/iib.environment}"
+                     description="A file or list containing property entries, with each entry delimited by newlines.
+                                  Entries must be in the form 'VAR=VALUE' (i.e. java.library.path=/opt/mqm/java/lib64:
+                                  /opt/mqm/java/lib). Implemented to support z/OS using an ENVFILE."/>
       </property>
       <property name="timeout">
         <property-ui type="textBox"

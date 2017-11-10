@@ -31,6 +31,13 @@ class IIBHelper {
     ExecutionGroupProxy executionGroupProxy
     boolean isDebugEnabled // Used for cleanup
 
+    /**
+     * Overloaded constructor to allow mocking for unit tests
+     * @param brokerProxy
+     * @param executionGroupProxy
+     * @param logProxy
+     * @param isDebugEnabled
+     */
     public IIBHelper (
         BrokerProxy brokerProxy,
         ExecutionGroupProxy executionGroupProxy,
@@ -43,13 +50,7 @@ class IIBHelper {
         this.isDebugEnabled = isDebugEnabled
     }
 
-    public static IIBHelper createInstance(Properties props) {
-        // Global fields that can be mocked for unit testing
-        BrokerProxy brokerProxy
-        ExecutionGroupProxy executionGroupProxy
-        LogProxy logProxy
-        boolean isDebugEnabled
-
+    public IIBHelper (Properties props) {
         // Local fields
         BrokerConnectionParameters bcp
         def host = props['brokerHost']
@@ -96,9 +97,6 @@ class IIBHelper {
 
             bcp = new LocalBrokerConnectionParameters(integrationNodeName)
             brokerProxy = BrokerProxy.getInstance(bcp)
-
-            def properties = BrokerProxy.getProperties()
-            properties.toString()
         }
         else {
             throw new IllegalStateException("Must specify either an 'Integration Node Name' or an 'IP' and 'Port'.")
@@ -117,8 +115,6 @@ class IIBHelper {
         brokerProxy.setSynchronous(timeout)
 
         logProxy = brokerProxy.getLog()
-
-        return new IIBHelper(brokerProxy, executionGroupProxy, logProxy, isDebugEnabled)
     }
 
     public void stopAllMsgFlows() {
@@ -429,7 +425,13 @@ class IIBHelper {
         String executionGroup = executionGroupProxy.getRuntimeProperty("This/label")
         println("${getTimestamp()} Setting property ${name} to ${value} from ${oldVal} on Execution Group "
             + "${executionGroup}!")
-        executionGroupProxy.setRuntimeProperty(name, value)
+        try {
+            executionGroupProxy.setRuntimeProperty(name, value)
+        }
+        catch (ConfigManagerProxyRequestFailureException ex) {
+            printBrokerResponses(ex)
+            throw ex
+        }
         println("${getTimestamp()} Successfully set execution group property.")
     }
 
@@ -483,11 +485,11 @@ class IIBHelper {
                     && executionGroupProxy.getLibraryByName(thisDeployedObject.getFullName()) != null)
                 {
                     println("[Action] Omitting library ${thisDeployedObject.getFullName()} from deletion.")
-                    continue
                 }
-
-                System.out.println("[Action] Adding ${thisDeployedObject.getFullName()} for deletion...")
-                flowsToDelete.add((Object)thisDeployedObject)
+                else {
+                    System.out.println("[Action] Adding ${thisDeployedObject.getFullName()} for deletion...")
+                    flowsToDelete.add((Object)thisDeployedObject)
+                }
             } else {
                 System.out.println("[OK] Regex not matched, skipping...")
             }

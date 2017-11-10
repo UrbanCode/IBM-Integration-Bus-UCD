@@ -27,7 +27,7 @@ propsString.split('\n').each {
     }
 }
 
-def helper = IIBHelper.createInstance(props)
+def helper = new IIBHelper(props)
 
 try {
     helper.createOrUpdateConfigurableService(servType, servName, properties, deleteMissing);

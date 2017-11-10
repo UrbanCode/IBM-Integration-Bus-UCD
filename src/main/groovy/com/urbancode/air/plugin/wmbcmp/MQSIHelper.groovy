@@ -169,17 +169,16 @@ class MQSIHelper {
      * @param args
      */
     private void runMQCommand(def msg, def command, def args) {
-        def cmdArgs
+        def cmdArgs = []
         def mqsiprofile = createMQCommand("mqsiprofile", ".cmd")
 
         if (!isWindows) {
             def argString = ""
-
-            for(def arg : args) {
-                argString += "${arg} "
+            for (def arg : args) {
+                argString += " ${arg}"
             }
 
-            cmdArgs = ["/bin/bash", "-c", "source ${mqsiprofile}; ${command} ${argString}"]
+            cmdArgs = ["/bin/bash", "-c", "source ${mqsiprofile}; ${command}${argString}"]
         }
         else {
             cmdArgs = [mqsiprofile, "&", command]

@@ -15,7 +15,7 @@ def props = apTool.getStepProperties(System.getenv("UCD_SECRET_VAR"))
 def servName = props['servName'];
 def servType = props['servType'];
 
-def helper = IIBHelper.createInstance(props)
+def helper = new IIBHelper(props)
 
 try {
     helper.deleteConfigurableService(servType,servName);

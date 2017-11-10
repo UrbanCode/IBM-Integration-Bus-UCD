@@ -745,8 +745,70 @@
   <migrate to-version="34">
   </migrate>
   <migrate to-version="35">
+    <migrate-command name="Deploy">
+      <migrate-properties>
+        <migrate-property name="env" default="${p?:resource/iib.environment}"/>
+      </migrate-properties>
+    </migrate-command>
   </migrate>
   <migrate to-version="36">
+    <migrate-command name="Set Integration Node Properties" old="Set Broker Properties">
+      <migrate-properties>
+        <migrate-property name="env" default="${p?:resource/iib.environment}"/>
+      </migrate-properties>
+    </migrate-command>
+    <migrate-command name="Create Execution Group">
+      <migrate-properties>
+        <migrate-property name="env" default="${p?:resource/iib.environment}"/>
+      </migrate-properties>
+    </migrate-command>
+    <migrate-command name="Restart Execution Groups">
+      <migrate-properties>
+        <migrate-property name="env" default="${p?:resource/iib.environment}"/>
+      </migrate-properties>
+    </migrate-command>
+    <migrate-command name="Set Execution Group Properties">
+      <migrate-properties>
+        <migrate-property name="env" default="${p?:resource/iib.environment}"/>
+      </migrate-properties>
+    </migrate-command>
+    <migrate-command name="Set Message Flows Properties">
+      <migrate-properties>
+        <migrate-property name="env" default="${p?:resource/iib.environment}"/>
+      </migrate-properties>
+    </migrate-command>
+    <migrate-command name="Delete Flows Using RegEx">
+      <migrate-properties>
+        <migrate-property name="env" default="${p?:resource/iib.environment}"/>
+      </migrate-properties>
+    </migrate-command>
+    <migrate-command name="Create Or Update Configurable Service">
+      <migrate-properties>
+        <migrate-property name="env" default="${p?:resource/iib.environment}"/>
+      </migrate-properties>
+    </migrate-command>
+    <migrate-command name="Delete Configurable Service">
+      <migrate-properties>
+        <migrate-property name="env" default="${p?:resource/iib.environment}"/>
+      </migrate-properties>
+    </migrate-command>
+    <migrate-command name="Start Message Flows">
+      <migrate-properties>
+        <migrate-property name="env" default="${p?:resource/iib.environment}"/>
+      </migrate-properties>
+    </migrate-command>
+    <migrate-command name="Stop Message Flows">
+      <migrate-properties>
+        <migrate-property name="env" default="${p?:resource/iib.environment}"/>
+      </migrate-properties>
+    </migrate-command>
+    <migrate-command name="Override Bar Properties">
+      <migrate-properties>
+        <migrate-property name="env" default="${p?:resource/iib.environment}"/>
+      </migrate-properties>
+    </migrate-command>
+  </migrate>
+  <migrate to-version="37">
     <migrate-command name="Delete BAR File Contents" old="Delete Flows Using RegEx">
       <migrate-properties>
         <migrate-property name="deleteLibs" default="false"/>

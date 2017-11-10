@@ -11,8 +11,9 @@
 
  AirPluginTool apTool = new AirPluginTool(this.args[0], this.args[1])
  def props = apTool.getStepProperties(System.getenv("UCD_SECRET_VAR"))
- def helper = IIBHelper.createInstance(props)
+ def helper = new IIBHelper(props)
 
+ int timeout = Integer.valueOf(props['timeout']?.trim()?:-1)
  String executionGroup = props['executionGroup']
  def executionGroups
  if(executionGroup != null && !executionGroup.trim().isEmpty()) {
@@ -22,7 +23,7 @@
 
  try {
      for (String groupName : executionGroups) {
-         helper.restartExecutionGroup(groupName);
+         helper.restartExecutionGroup(groupName, timeout);
      }
  }
  catch (Exception e) {
