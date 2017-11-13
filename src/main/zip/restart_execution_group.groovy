@@ -13,6 +13,7 @@
  def props = apTool.getStepProperties(System.getenv("UCD_SECRET_VAR"))
  def helper = new IIBHelper(props)
 
+ int timeout = Integer.valueOf(props['timeout']?.trim()?:-1)
  String executionGroup = props['executionGroup']
  def executionGroups
  if(executionGroup != null && !executionGroup.trim().isEmpty()) {
@@ -22,7 +23,7 @@
 
  try {
      for (String groupName : executionGroups) {
-         helper.restartExecutionGroup(groupName);
+         helper.restartExecutionGroup(groupName, timeout);
      }
  }
  catch (Exception e) {

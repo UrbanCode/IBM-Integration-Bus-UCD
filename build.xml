@@ -36,6 +36,22 @@
             <delete dir="@{dir}" includes="*/**" excludes="@{excludes}" includeemptydirs="true" defaultexcludes="false"/>
         </sequential>
     </macrodef>
+	
+    <property name="lib.dir"                        location="lib"/>
+    <property name="dist.dir"                       location="dist"/>
+    <property name="src.dir"                        location="src"/>
+    <property name="build.dir"                      location="build"/>
+    <property name="build.classes.dir"              location="${build.dir}/classes"/>
+    <property name="src.test.java.dir"              location="${src.dir}/test/java"/>
+    <property name="src.test.groovy.dir"            location="${src.dir}/test/groovy"/>
+    <property name="lib.test.dir"                   location="${lib.dir}/test"/>
+    <property name="lib.build.dir"                  location="${lib.dir}/build"/>
+    <property name="dist.test.dir"                  location="${dist.dir}/test"/>
+    <property name="build.test.dir"                 location="${build.dir}/test"/>
+    <property name="build.test.groovy.dir"          location="${build.dir}/test/groovy"/>
+    <property name="build.test.groovy.classes.dir"  location="${build.test.groovy.dir}/classes"/>
+    <property name="build.test.groovy.data.dir"     location="${build.test.groovy.dir}/data"/>
+    <property name="build.test.classes.dir"         location="${build.test.dir}/classes"/>
 
     <!-- =================================================== -->
     <!-- TARGETS                                             -->
@@ -71,12 +87,112 @@
     <!-- TEST TARGETS                                        -->
     <!-- =================================================== -->
 
-    <target name="run-tests" depends="resolve" unless="tests.no">
-      <ant antfile="plugin-build.xml" target="run-tests" inheritall="true"/>
+    <path id="classpath">
+      <fileset dir="${lib.dir}">
+        <include name="*.jar"/>
+      </fileset>
+    </path>
+
+    <path id="classpath.build">
+      <fileset dir="${lib.build.dir}">
+        <include name="*.jar"/>
+      </fileset>
+      <path refid="classpath"/>
+    </path>
+
+    <path id="classpath.test">
+      <fileset dir="${lib.test.dir}">
+        <include name="*.jar"/>
+      </fileset>
+      <pathelement location="${build.main.classes.dir}"/>
+      <pathelement location="${build.test.classes.dir}"/>
+      <pathelement location="${lib.build.classes.dir}"/>
+
+      <path refid="classpath.build"/>
+    </path>
+
+    <path id="classpath.groovyc">
+       <path><fileset dir="${lib.dir}/plugin" includes="*.jar" erroronmissingdir="false"/></path>
+       <path refid="classpath.test"/>
+       <pathelement location="${build.dir}/tmp"/>
+    </path>
+
+    
+    <path id="compile.classpath">
+        <fileset dir="${lib.dir}" includes="**/*.jar" />
+    </path>
+
+    <path id="classpath.groovyc.classes">
+       <path><fileset dir="${build.classes.dir}" includes="*.class" erroronmissingdir="false"/></path>
+       <path refid="classpath.groovyc"/>
+       <pathelement location="${build.dir}/classes"/>
+    </path>
+
+    <path id="classpath.groovyc.test">
+       <path refid="classpath.groovyc.classes"/>
+       <pathelement location="${build.test.groovy.classes.dir}"/>
+    </path>
+	
+    <target name="taskdef" unless="taskdef.no">
+      <path id="taskdefpath">
+        <fileset dir="${lib.dir}" includes="*.jar"/>
+        <fileset dir="${lib.dir}/build" includes="*.jar"/>
+      </path>
+
+      <taskdef name="groovy"  classname="org.codehaus.groovy.ant.Groovy" classpathref="taskdefpath" />
+      <taskdef name="groovyc" classname="org.codehaus.groovy.ant.Groovyc" classpathref="taskdefpath" />
+
+      <!--
+      <taskdef name="air_validate_plugin"
+                 classname="com.urbancode.air.plugin.ant.ValidateTask"
+                 classpathref="taskdefpath"/>
+                 -->
+      <taskdef uri="antlib:com.urbancode.air.plugin.ant"
+                  resource="com/urbancode/air/plugin/ant/antlib.xml"
+                  classpathref="taskdefpath"/>
+    </target>
+	
+    <target name="check-groovy-tests" depends="taskdef">
+      <available file="${src.test.groovy.dir}" property="src.test.groovy.exists"/>
     </target>
 
-    <target name="run-single-test" depends="resolve" unless="tests.no">
-      <ant antfile="plugin-build.xml" target="run-single-test" inheritall="true"/>
+    <target name="compile-groovy-tests" depends="taskdef, check-groovy-tests, compile-groovy" if="${src.test.groovy.exists}">
+      <mkdir dir="${build.test.groovy.classes.dir}"/>
+      <groovyc srcdir="${src.test.groovy.dir}" destdir="${build.test.groovy.classes.dir}">
+        <classpath refid="classpath.groovyc.test"/>
+      </groovyc>
+    </target>
+
+    <target name="run-groovy-tests" depends="compile-groovy, compile-groovy-tests" unless="tests.no" description="Run tests" if="${src.test.groovy.exists}">
+      <mkdir dir="${build.test.groovy.data.dir}"/>
+      <mkdir dir="${build.test.groovy.classes.dir}"/>
+      <mkdir dir="${dist.test.dir}"/>
+      <junit printsummary="on" haltonfailure="no" haltonerror="no" fork="yes" showoutput="false" failureproperty="tests.failed">
+        <jvmarg value="-Dcom.urbancode.winapi.WinAPI.dllPath=${lib.test.dir}/native/windows/x64/WinAPI.dll"/>
+        <classpath refid="classpath.groovyc.test"/>
+        <formatter type="brief" usefile="false"/>
+        <formatter type="xml"/>
+        <batchtest todir="${build.test.groovy.data.dir}">
+          <fileset dir="${build.test.groovy.classes.dir}">
+            <include name="**/*Test.class"/>
+          </fileset>
+        </batchtest>
+      </junit>
+      <junitreport todir="${dist.test.dir}">
+        <fileset dir="${build.test.groovy.data.dir}">
+          <include name="TEST-*.xml"/>
+        </fileset>
+        <report format="frames" todir="${dist.test.dir}"/>
+      </junitreport>
+
+      <fail message="JUnit Tests Failed" if="tests.failed" />
+    </target>
+
+    <target name="compile-groovy" depends="taskdef" description="compile all the groovy classes from src">
+     <mkdir dir="${build.classes.dir}"/>
+     <groovyc srcdir="${src.dir}" destdir="${build.classes.dir}" classpathref="compile.classpath">
+      <javac debug="on" />
+     </groovyc>
     </target>
 
 </project>

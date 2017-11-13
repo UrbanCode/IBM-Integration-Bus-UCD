@@ -9,11 +9,10 @@
            xmlns:server="http://www.urbancode.com/PluginServerXMLSchema_v1"
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <header>
-    <identifier id="com.urbancode.air.plugin.WMBCMP" name="WebSphere Message Broker - CMP" version="36"/>
-    <description>Integration for IBM Integration Bus (IIB), formally WebSphere Message Broker, to deploy Broker Archives
-                 and start and stop Message Flows using the CMP API. This plugin is compatible with
-                 both version 9 and 10 of IBM Integration Bus, and is also compatible with versions 7
-                 and 8 of WebSphere Message Broker.</description>
+    <identifier id="com.urbancode.air.plugin.WMBCMP" name="WebSphere Message Broker - CMP" version="37"/>
+    <description>Integration for WebSphere Message Broker to deploy Broker Archives and start and stop Message Flows
+                 using the CMP API. This plugin is compatible with both version 9 and 10 of IBM Integration Bus, and
+                 is also compatible with versions 7 and 8 of WebSphere Message Broker.</description>
     <tag>Middleware/Enterprise Service Bus/WebSphere Message Broker</tag>
   </header>
   <step-type name="Set Integration Node Properties">
@@ -722,14 +721,20 @@
       <arg file="${PLUGIN_OUTPUT_PROPS}"/>
     </command>
   </step-type>
-   <step-type name="Delete Flows Using RegEx">
-    <description>Delete WMB flows that have been deployed using a BAR file matching the given regular expression.
-                 Useful for deploying into shared execution groups.</description>
+   <step-type name="Delete BAR File Contents">
+    <description>Delete all contents that have been deployed using a BAR file name that matches the 
+                given regular expression. Useful for deploying into shared execution groups.</description>
     <properties>
       <property name="regex" required="true">
         <property-ui type="textBox"
                      label="RegEx"
                      description="Java compliant regular expression for matching the BAR file name of deployed flows."/>
+      </property>
+      <property name="deleteLibs">
+        <property-ui type="checkBox"
+                     label="Delete Libraries"
+                     description="Check this box to delete any libraries that have been deployed 
+                        to the execution group using the BAR file."/>
       </property>
       <property name="executionGroup" required="true">
         <property-ui type="textBox"

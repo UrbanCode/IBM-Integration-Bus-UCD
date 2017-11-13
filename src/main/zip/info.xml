@@ -255,5 +255,8 @@ Commas can no longer be used as delimiters for Environment Variables in the Depl
 Renamed Set Broker Properties step to Set Integration Node Properties.
 Added the 'Environment Variables' field to allow environment property values to all non-Integration Node step.
     </release-note>
+    <release-note plugin-version="37">
+RFE 106783 Added the 'Delete Libraries' field to the 'Delete Flows Using RegEx' step to allow omitting libraries.
+    </release-note>
   </release-notes>
 </pluginInfo>
