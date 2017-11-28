@@ -258,5 +258,8 @@ Added the 'Environment Variables' field to allow environment property values to 
     <release-note plugin-version="37">
 RFE 106783 Added the 'Delete Libraries' field to the 'Delete Flows Using RegEx' step to allow omitting libraries.
     </release-note>
+    <release-note plugin-version="38">
+Fixes APAR PI90752 Sourcing an environment properties file now uses the default JVM character encoding.
+    </release-note>
   </release-notes>
 </pluginInfo>
