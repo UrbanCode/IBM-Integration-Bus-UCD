@@ -10,6 +10,7 @@ import org.apache.commons.lang.StringUtils
 import com.urbancode.air.AirPluginTool
 import com.urbancode.air.CommandHelper
 
+import java.nio.charset.Charset
 import java.util.regex.Pattern
 
 final def apTool = new AirPluginTool(this.args[1], this.args[2])
@@ -37,7 +38,8 @@ if (env) {
     File envFile = new File(env)
 
     if (envFile.isFile()) {
-        env = envFile.getText("UTF-8")
+        Charset defaultCharset = Charset.defaultCharset() // default charset of the JVM
+        env = envFile.getText(defaultCharset.toString())
         println("[Ok] File specified to configure environment properties.")
     }
 

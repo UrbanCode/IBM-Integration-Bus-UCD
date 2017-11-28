@@ -817,4 +817,6 @@
   </migrate>
   <migrate to-version="38">
   </migrate>
+  <migrate to-version="39">
+  </migrate>
 </plugin-upgrade>

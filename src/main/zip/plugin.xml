@@ -9,7 +9,7 @@
            xmlns:server="http://www.urbancode.com/PluginServerXMLSchema_v1"
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <header>
-    <identifier id="com.urbancode.air.plugin.WMBCMP" name="WebSphere Message Broker - CMP" version="38"/>
+    <identifier id="com.urbancode.air.plugin.WMBCMP" name="WebSphere Message Broker - CMP" version="39"/>
     <description>Integration for WebSphere Message Broker to deploy Broker Archives and start and stop Message Flows
                  using the CMP API. This plugin is compatible with both version 9 and 10 of IBM Integration Bus, and
                  is also compatible with versions 7 and 8 of WebSphere Message Broker.</description>
@@ -874,7 +874,7 @@
       <property name="deleteLibs">
         <property-ui type="checkBox"
                      label="Delete Libraries"
-                     description="Check this box to delete any libraries that have been deployed
+                     description="Check this box to delete any libraries that have been deployed 
                         to the execution group using the BAR file."/>
       </property>
       <property name="executionGroup" required="true">
