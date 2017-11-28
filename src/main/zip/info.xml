@@ -259,6 +259,9 @@ Added the 'Environment Variables' field to allow environment property values to 
 RFE 106783 Added the 'Delete Libraries' field to the 'Delete Flows Using RegEx' step to allow omitting libraries.
     </release-note>
     <release-note plugin-version="38">
+RFE 113408 Added the 'Does Execution Group Exist" step to enable better logic for execution group creation and deployment.
+    </release-note>
+    <release-note plugin-version="39">
 Fixes APAR PI90752 Sourcing an environment properties file now uses the default JVM character encoding.
     </release-note>
   </release-notes>
