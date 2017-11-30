@@ -290,7 +290,7 @@
   </step-type>
 
   <step-type name="Does Execution Group Exist">
-    <description>Sets output property with true or false based on the existence of the specified Execution Group.</description>
+    <description>Sets an output property named 'exists' with true or false based on the existence of the specified Execution Group.</description>
     <properties>
       <property name="executionGroup" required="true">
         <property-ui type="textBox"
