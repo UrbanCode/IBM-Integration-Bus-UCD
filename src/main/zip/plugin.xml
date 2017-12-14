@@ -109,8 +109,9 @@
                      label="MQSIPROFILE Executable"
                      default-value="${p?:resource/iib.mqsiprofile}"
                      description="The absolute path to the mqsiprofile executable on your IIB server.
-                                  Specifying this value will initialize your command environment. Only specify this
-                                  path if your command environment needs initializing."/>
+                                  Specifying this value will initialize your command environment. This
+                                  value is required if your command environment is not initialized on
+                                  startup through a script such as `.bashrc`."/>
       </property>
       <property name="env">
         <property-ui type="textAreaBox"
@@ -244,9 +245,10 @@
         <property-ui type="textBox"
                      label="MQSIPROFILE Executable"
                      default-value="${p?:resource/iib.mqsiprofile}"
-                     description="The absolute path to the mqsiprofile executable on your IIB server. Specifying this
-                                  value will initialize your command environment. Only specify this path if your command
-                                  environment needs initializing."/>
+                     description="The absolute path to the mqsiprofile executable on your IIB server.
+                                  Specifying this value will initialize your command environment. This
+                                  value is required if your command environment is not initialized on
+                                  startup through a script such as `.bashrc`."/>
       </property>
       <property name="env">
         <property-ui type="textAreaBox"
@@ -385,9 +387,10 @@
         <property-ui type="textBox"
                      label="MQSIPROFILE Executable"
                      default-value="${p?:resource/iib.mqsiprofile}"
-                     description="The absolute path to the mqsiprofile executable on your IIB server. Specifying this
-                                  value will initialize your command environment. Only specify this path if your command
-                                  environment needs initializing."/>
+                     description="The absolute path to the mqsiprofile executable on your IIB server.
+                                  Specifying this value will initialize your command environment. This
+                                  value is required if your command environment is not initialized on
+                                  startup through a script such as `.bashrc`."/>
       </property>
       <property name="env">
         <property-ui type="textAreaBox"
@@ -519,9 +522,10 @@
         <property-ui type="textBox"
                      label="MQSIPROFILE Executable"
                      default-value="${p?:resource/iib.mqsiprofile}"
-                     description="The absolute path to the mqsiprofile executable on your IIB server. Specifying this
-                                  value will initialize your command environment. Only specify this
-                                  path if your command environment needs initializing."/>
+                     description="The absolute path to the mqsiprofile executable on your IIB server.
+                                  Specifying this value will initialize your command environment. This
+                                  value is required if your command environment is not initialized on
+                                  startup through a script such as `.bashrc`."/>
       </property>
       <property name="env">
         <property-ui type="textAreaBox"
@@ -661,9 +665,10 @@
         <property-ui type="textBox"
                      label="MQSIPROFILE Executable"
                      default-value="${p?:resource/iib.mqsiprofile}"
-                     description="The absolute path to the mqsiprofile executable on your IIB server. Specifying this
-                                  value will initialize your command environment. Only specify this path if your command
-                                  environment needs initializing."/>
+                     description="The absolute path to the mqsiprofile executable on your IIB server.
+                                  Specifying this value will initialize your command environment. This
+                                  value is required if your command environment is not initialized on
+                                  startup through a script such as `.bashrc`."/>
       </property>
       <property name="env">
         <property-ui type="textAreaBox"
@@ -818,9 +823,10 @@
         <property-ui type="textBox"
                      label="MQSIPROFILE Executable"
                      default-value="${p?:resource/iib.mqsiprofile}"
-                     description="The absolute path to the mqsiprofile executable on your IIB server. Specifying this
-                                  value will initialize your command environment. Only specify this path if your command
-                                  environment needs initializing."/>
+                     description="The absolute path to the mqsiprofile executable on your IIB server.
+                                  Specifying this value will initialize your command environment. This
+                                  value is required if your command environment is not initialized on
+                                  startup through a script such as `.bashrc`."/>
       </property>
       <property name="env">
         <property-ui type="textAreaBox"
@@ -874,7 +880,7 @@
       <property name="deleteLibs">
         <property-ui type="checkBox"
                      label="Delete Libraries"
-                     description="Check this box to delete any libraries that have been deployed 
+                     description="Check this box to delete any libraries that have been deployed
                         to the execution group using the BAR file."/>
       </property>
       <property name="executionGroup" required="true">
@@ -963,9 +969,10 @@
         <property-ui type="textBox"
                      label="MQSIPROFILE Executable"
                      default-value="${p?:resource/iib.mqsiprofile}"
-                     description="The absolute path to the mqsiprofile executable on your IIB server. Specifying this
-                                  value will initialize your command environment. Only specify this path if your command
-                                  environment needs initializing."/>
+                     description="The absolute path to the mqsiprofile executable on your IIB server.
+                                  Specifying this value will initialize your command environment. This
+                                  value is required if your command environment is not initialized on
+                                  startup through a script such as `.bashrc`."/>
       </property>
       <property name="env">
         <property-ui type="textAreaBox"
@@ -1114,9 +1121,10 @@
         <property-ui type="textBox"
                      label="MQSIPROFILE Executable"
                      default-value="${p?:resource/iib.mqsiprofile}"
-                     description="The absolute path to the mqsiprofile executable on your IIB server. Specifying this
-                                  value will initialize your command environment. Only specify this path if your command
-                                  environment needs initializing."/>
+                     description="The absolute path to the mqsiprofile executable on your IIB server.
+                                  Specifying this value will initialize your command environment. This
+                                  value is required if your command environment is not initialized on
+                                  startup through a script such as `.bashrc`."/>
       </property>
       <property name="env">
         <property-ui type="textAreaBox"
@@ -1252,9 +1260,10 @@
         <property-ui type="textBox"
                      label="MQSIPROFILE Executable"
                      default-value="${p?:resource/iib.mqsiprofile}"
-                     description="The absolute path to the mqsiprofile executable on your IIB server. Specifying this
-                                  value will initialize your command environment. Only specify this path if your command
-                                  environment needs initializing."/>
+                     description="The absolute path to the mqsiprofile executable on your IIB server.
+                                  Specifying this value will initialize your command environment. This
+                                  value is required if your command environment is not initialized on
+                                  startup through a script such as `.bashrc`."/>
       </property>
       <property name="env">
         <property-ui type="textAreaBox"
@@ -1403,9 +1412,10 @@
         <property-ui type="textBox"
                      label="MQSIPROFILE Executable"
                      default-value="${p?:resource/iib.mqsiprofile}"
-                     description="The absolute path to the mqsiprofile executable on your IIB server. Specifying this
-                                  value will initialize your command environment. Only specify this path if your command
-                                  environment needs initializing."/>
+                     description="The absolute path to the mqsiprofile executable on your IIB server.
+                                  Specifying this value will initialize your command environment. This
+                                  value is required if your command environment is not initialized on
+                                  startup through a script such as `.bashrc`."/>
       </property>
       <property name="env">
         <property-ui type="textAreaBox"
@@ -1541,9 +1551,10 @@
         <property-ui type="textBox"
                      label="MQSIPROFILE Executable"
                      default-value="${p?:resource/iib.mqsiprofile}"
-                     description="The absolute path to the mqsiprofile executable on your IIB server. Specifying this
-                                  value will initialize your command environment. Only specify this path if your
-                                  command environment needs initializing."/>
+                     description="The absolute path to the mqsiprofile executable on your IIB server.
+                                  Specifying this value will initialize your command environment. This
+                                  value is required if your command environment is not initialized on
+                                  startup through a script such as `.bashrc`."/>
       </property>
       <property name="env">
         <property-ui type="textAreaBox"
@@ -1679,9 +1690,10 @@
         <property-ui type="textBox"
                      label="MQSIPROFILE Executable"
                      default-value="${p?:resource/iib.mqsiprofile}"
-                     description="The absolute path to the mqsiprofile executable on your IIB server. Specifying this
-                                  value will initialize your command environment. Only specify this path if your command
-                                  environment needs initializing."/>
+                     description="The absolute path to the mqsiprofile executable on your IIB server.
+                                  Specifying this value will initialize your command environment. This
+                                  value is required if your command environment is not initialized on
+                                  startup through a script such as `.bashrc`."/>
       </property>
       <property name="env">
         <property-ui type="textAreaBox"
@@ -1777,9 +1789,10 @@
         <property-ui type="textBox"
                      label="MQSIPROFILE Executable"
                      default-value="${p?:resource/iib.mqsiprofile}"
-                     description="The absolute path to the mqsiprofile executable on your IIB server. Specifying this
-                                  value will initialize your command environment. Only specify this path if your command
-                                  environment needs initializing."/>
+                     description="The absolute path to the mqsiprofile executable on your IIB server.
+                                  Specifying this value will initialize your command environment. This
+                                  value is required if your command environment is not initialized on
+                                  startup through a script such as `.bashrc`."/>
       </property>
       <property name="env">
         <property-ui type="textAreaBox"
