@@ -9,7 +9,7 @@
            xmlns:server="http://www.urbancode.com/PluginServerXMLSchema_v1"
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <header>
-    <identifier id="com.urbancode.air.plugin.WMBCMP" name="WebSphere Message Broker - CMP" version="39"/>
+    <identifier id="com.urbancode.air.plugin.WMBCMP" name="WebSphere Message Broker - CMP" version="40"/>
     <description>Integration for WebSphere Message Broker to deploy Broker Archives and start and stop Message Flows
                  using the CMP API. This plugin is compatible with both version 9 and 10 of IBM Integration Bus, and
                  is also compatible with versions 7 and 8 of WebSphere Message Broker.</description>
@@ -1010,6 +1010,156 @@
       <arg path="classes:lib/commons-lang.jar:lib/securedata.jar:lib/jettison-1.1.jar:lib/commons-codec.jar:lib/CommonsUtil.jar"/>
       <arg file="mqsi_profile_wrapper.groovy"/>
       <arg value="delete_flows_using_regex.groovy"/>
+      <arg file="${PLUGIN_INPUT_PROPS}"/>
+      <arg file="${PLUGIN_OUTPUT_PROPS}"/>
+    </command>
+  </step-type>
+
+   <step-type name="Delete Applications">
+    <description>Delete an application or multiple applications deployed to an execution group 
+                by name.</description>
+    <properties>
+      <property name="appNames" required="true">
+        <property-ui type="textAreaBox"
+                     label="Application Names"
+                     description="A list of IIB application names split by newlines or commas."/>
+      </property>
+      <property name="failFast" >
+        <property-ui type="checkBox"
+                     label="Fail On Missing Application"
+                     default-value="false"
+                     description="Select this checkbox to fail immediately if any specified 
+                        applications do not exist on the execution group. Otherwise, the step will 
+                        only fail if none of the applications exist on the execution group."/>
+      </property>
+      <property name="executionGroup" required="true">
+        <property-ui type="textBox"
+                     label="Execution Group"
+                     default-value="${p?:resource/iib.executionGroup}"
+                     description="Name of the Execution Group where the applications exist."/>
+      </property>
+      <property name="brokerHost">
+        <property-ui type="textBox"
+                     label="IP"
+                     default-value="${p?:resource/iib.ip}"
+                     description="The ip address of the target server for a remote connection. You must specify
+                                  either an 'IP' and 'Port' to connect to a remote broker or an 'Integration Node Name'
+                                  to connect to a local broker."/>
+      </property>
+      <property name="port">
+        <property-ui type="textBox"
+                     label="Port"
+                     default-value="${p?:resource/iib.port}"
+                     description="The port of the target server for a remote connection.You must specify either an 'IP'
+                                  and 'Port' to connect to a remote broker or an 'Integration Node Name' to connect to
+                                  a local broker."/>
+      </property>
+      <property name="useSSL">
+        <property-ui type="checkBox"
+                     label="Use SSL"
+                     default-value="false"
+                     description="Administration security authentication/authorization. This option is only available
+                                  in IIB version 10."/>
+      </property>
+      <property name="integrationNodeName">
+        <property-ui type="textBox"
+                     label="Integration Node Name"
+                     default-value="${p?:resource/iib.brokerName}"
+                     description="Name of Integration Node. You must specify either an 'IP' and 'Port' to connect to a
+                                  remote broker or an 'Integration Node Name' to connect to a local broker."/>
+      </property>
+      <property name="channel">
+        <property-ui type="textBox"
+                     label="Channel"
+                     default-value="${p?:resource/iib.channel}"
+                     description="The name of the channel to use. Must be defined on the queue manager. Specify this
+                                  value if you are using below version 10 of IIB."/>
+      </property>
+      <property name="queueManager">
+        <property-ui type="textBox"
+                     label="Queue Manager"
+                     default-value="${p?:resource/iib.queueManager}"
+                     description="The WebSphere MQ Queue Manager which the broker is using. Specify this value if you
+                                  are using below version 10 of IIB."/>
+      </property>
+      <property name="username">
+        <property-ui type="textBox"
+                     label="Username"
+                     description="Username for secure authentication. Explicit user authentication only available with
+                                  IIB 10."/>
+      </property>
+      <property name="password">
+        <property-ui type="secureBox"
+                     label="Password"
+                     description="Password for secure authentication. Explicit user authentication only available with
+                                  IIB 10."/>
+      </property>
+      <property name="debugFile">
+        <property-ui type="textBox"
+                     label="Trace File"
+                     description="The file to use for trace logging. If not set trace logging will be disabled."/>
+      </property>
+      <property name="version" required="true">
+        <property-ui type="textBox"
+                     label="IBM Integration Bus Version"
+                     default-value="${p:resource/iib.version}"
+                     description="Enter the version of the installed IBM Integration Bus. This determines which API will
+                                  be required. For example: 10.0.0.1"/>
+      </property>
+      <property name="jarPath" required="true">
+        <property-ui type="textBox"
+                     label="Jar Path"
+                     default-value="${p:resource/iib.jarPath}"
+                     description="Specify either a directory to recursively search from which contains all required
+                                  jars, or specify each individual jar path split by your file systems path separator.
+                                  For a list of required jar files please view the plugin documentation."/>
+      </property>
+      <property name="mqsiprofile">
+        <property-ui type="textBox"
+                     label="MQSIPROFILE Executable"
+                     default-value="${p?:resource/iib.mqsiprofile}"
+                     description="The absolute path to the mqsiprofile executable on your IIB server.
+                                  Specifying this value will initialize your command environment. This
+                                  value is required if your command environment is not initialized on
+                                  startup through a script such as `.bashrc`."/>
+      </property>
+      <property name="env">
+        <property-ui type="textAreaBox"
+                     label="Environment Variables"
+                     default-value="${p?:resource/iib.environment}"
+                     description="A file or list containing property entries, with each entry delimited by newlines.
+                                  Entries must be in the form 'VAR=VALUE' (i.e. java.library.path=/opt/mqm/java/lib64:
+                                  /opt/mqm/java/lib). Implemented to support z/OS using an ENVFILE."/>
+      </property>
+      <property name="timeout">
+        <property-ui type="textBox"
+                     label="Timeout"
+                     default-value="120000"
+                     description="The maximum time in milliseconds to wait for a response from WebSphere IIB. Increase if experiencing Timeout Exceptions.
+                                  Leave empty or set to -1 to wait indefinitely. Note: Setting the timeout as -1 may cause the step to hang."
+                     hidden="true"/>
+      </property>
+      <property name="shell">
+        <property-ui type="textBox"
+                     label="Shell"
+                     default-value="/bin/sh"
+                     description="Path to your shell executable file." 
+                     hidden="true"/>
+      </property>
+    </properties>
+    <post-processing><![CDATA[
+ if (properties.get("exitCode") != 0) {
+ properties.put(new java.lang.String("Status"), new java.lang.String("Failure"));
+ }
+ else {
+ properties.put("Status", "Success");
+ }
+ ]]></post-processing>
+    <command program="${GROOVY_HOME}/bin/groovy">
+      <arg value="-cp"/>
+      <arg path="classes:lib/commons-lang.jar:lib/securedata.jar:lib/jettison-1.1.jar:lib/commons-codec.jar:lib/CommonsUtil.jar"/>
+      <arg file="mqsi_profile_wrapper.groovy"/>
+      <arg value="delete_apps.groovy"/>
       <arg file="${PLUGIN_INPUT_PROPS}"/>
       <arg file="${PLUGIN_OUTPUT_PROPS}"/>
     </command>
