@@ -6,6 +6,7 @@
  */
 package com.urbancode.air.plugin.wmbcmp
 
+import com.ibm.broker.config.proxy.ApplicationProxy
 import com.ibm.broker.config.proxy.AttributeConstants
 import com.ibm.broker.config.proxy.BrokerConnectionParameters
 import com.ibm.broker.config.proxy.BrokerProxy
@@ -517,6 +518,40 @@ class IIBHelper {
             System.out.println("No orphaned flows to delete")
         }
 
+    }
+
+    public void deleteApplications(List<String> appNames, String executionGroup, int timeout, boolean failFast) {
+        def fullAppNames = []
+
+        for (appName in appNames) {
+            println("[Action] ${getTimestamp()} Searching for application with name ${appName}...")
+            ApplicationProxy appProxy = executionGroupProxy.getApplicationByName(appName)
+
+            if (appProxy != null) {
+                fullAppNames << appProxy.getFullName()
+            }
+            else {
+                if (failFast) {
+                    throw new RuntimeException("Application: ${appName} isn't currently deployed to the execution "
+                        + "group: ${executionGroup}.")
+                }
+                else {
+                    println("[Warning] Application: ${appName} isn't currently deployed to the execution group: "
+                        + "${executionGroup}.")
+                }
+            }
+        }
+
+        if (fullAppNames) {
+            println("[Action] ${getTimestamp()} Deleting application(s): ${fullAppNames.join(',')}")
+            Date startTime = new Date(System.currentTimeMillis())
+            DeployResult dr = executionGroupProxy.deleteDeployedObjectsByName(fullAppNames, timeout)
+            checkDeployResult(dr, startTime)
+            println("[OK] ${getTimestamp()} Successfully removed applications.")
+        }
+        else {
+            throw new RuntimeException("None of the specified applications exist on the execution group: ${executionGroup}.")
+        }
     }
 
     public void checkDeployResult(def startTime) {
