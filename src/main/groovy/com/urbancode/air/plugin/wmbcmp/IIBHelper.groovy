@@ -73,6 +73,7 @@ class IIBHelper {
         versionInt = version.toInteger()
 
         if (host && port) {
+            println("${getTimestamp()} Establishing connection with a remote broker...")
             // iib9 remote broker connection
             if (versionInt < 10) {
                     // user determined by queue manager
@@ -102,6 +103,8 @@ class IIBHelper {
         else {
             throw new IllegalStateException("Must specify either an 'Integration Node Name' or an 'IP' and 'Port'.")
         }
+
+        println("${getTimestamp()} Broker connection successful.")
 
         if (props['debugFile']) {
             isDebugEnabled = true
@@ -327,6 +330,8 @@ class IIBHelper {
         DeployResult dr = executionGroupProxy.deploy(fileName, isIncremental, timeout)
         CompletionCodeType completionCode = dr.getCompletionCode()
 
+        println("${getTimestamp()} Received deployment result from broker with a completion code: ${completionCode.toString()}.")
+
         checkDeployResult(dr, startTime)
         return completionCode
     }
@@ -512,6 +517,9 @@ class IIBHelper {
             }
 
             executionGroupProxy.deleteDeployedObjects (flowsToDeleteArray, timeout)
+
+            println("${getTimestamp()} Deployment requested, waiting for result...")
+
             checkDeployResult(startTime)
         }
         else {
@@ -562,6 +570,7 @@ class IIBHelper {
         Enumeration logEntries = null
 
         if (deployResult) {
+            println("${getTimestamp()} Acquiring all deployment messages associated with this deployment...")
             logEntries = deployResult.getDeployResponses()
         }
         else {
@@ -570,6 +579,7 @@ class IIBHelper {
 
         def errors = []
 
+        println("${getTimestamp()} Checking deployment messages for errors...")
         while (logEntries.hasMoreElements()) {
             LogEntry logEntry = logEntries.nextElement()
             if (logEntry.isErrorMessage() && logEntry.getTimestamp() > startTime) {
@@ -584,14 +594,18 @@ class IIBHelper {
             }
             throw new Exception("Error during deployment")
         }
+
+        println("${getTimestamp()} No errors found during the deployment.")
     }
 
     public void cleanUp() {
+        println("${getTimestamp()} Disconnecting from the broker...")
         if (isDebugEnabled) {
             BrokerProxy.disableAdministrationAPITracing()
         }
 
         brokerProxy.disconnect()
+        println("${getTimestamp()} Successfully disconnected from broker.")
     }
 
     private ExecutionGroupProxy getExecutionGroup(String groupName) {
