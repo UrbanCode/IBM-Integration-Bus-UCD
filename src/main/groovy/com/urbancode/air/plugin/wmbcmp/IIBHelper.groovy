@@ -23,7 +23,7 @@ import com.ibm.broker.config.proxy.MessageFlowProxy
 import com.urbancode.air.ExitCodeException
 import com.urbancode.air.plugin.wmbcmp.IIB9BrokerConnection
 import com.urbancode.air.plugin.wmbcmp.IIB10BrokerConnection
-import java.text.SimpleDateFormat
+import com.urbancode.air.plugin.wmbcmp.LogHelper
 import java.util.regex.Pattern
 
 class IIBHelper {
@@ -73,7 +73,7 @@ class IIBHelper {
         versionInt = version.toInteger()
 
         if (host && port) {
-            println("${getTimestamp()} Establishing connection with a remote broker...")
+            println("${LogHelper.getTimestamp()} Establishing connection with a remote broker...")
             // iib9 remote broker connection
             if (versionInt < 10) {
                     // user determined by queue manager
@@ -95,7 +95,7 @@ class IIBHelper {
         }
         // local broker connection, regardless of iib version
         else if (integrationNodeName) {
-            println("${getTimestamp()} Establishing connection with a local broker...")
+            println("${LogHelper.getTimestamp()} Establishing connection with a local broker...")
 
             bcp = new LocalBrokerConnectionParameters(integrationNodeName)
             brokerProxy = BrokerProxy.getInstance(bcp)
@@ -104,7 +104,7 @@ class IIBHelper {
             throw new IllegalStateException("Must specify either an 'Integration Node Name' or an 'IP' and 'Port'.")
         }
 
-        println("${getTimestamp()} Broker connection successful.")
+        println("${LogHelper.getTimestamp()} Broker connection successful.")
 
         if (props['debugFile']) {
             isDebugEnabled = true
@@ -139,7 +139,7 @@ class IIBHelper {
         }
 
         if (!getExecutionGroup(executionGroup)) {
-            System.out.println("${getTimestamp()} Execution group ${executionGroup} does not exist."
+            System.out.println("${LogHelper.getTimestamp()} Execution group ${executionGroup} does not exist."
                     + " Attempting to create...")
 
             try {
@@ -154,10 +154,10 @@ class IIBHelper {
                 throw new RuntimeException("Could not create execution group with"
                 + " name ${name}")
             }
-            System.out.println("${getTimestamp()} Execution group ${executionGroup} created.")
+            System.out.println("${LogHelper.getTimestamp()} Execution group ${executionGroup} created.")
         }
         else {
-            System.out.println("${getTimestamp()} Execution group ${executionGroup} exists."
+            System.out.println("${LogHelper.getTimestamp()} Execution group ${executionGroup} exists."
                     + " Skipping create...")
         }
     }
@@ -166,19 +166,19 @@ class IIBHelper {
         setExecutionGroup(executionGroup)
 
         if (executionGroupProxy == null) {
-            throw new RuntimeException("${getTimestamp()} Execution group ${executionGroup} does not exist.")
+            throw new RuntimeException("${LogHelper.getTimestamp()} Execution group ${executionGroup} does not exist.")
         }
 
-        System.out.println("${getTimestamp()} Restarting execution group '${executionGroup}'.")
+        System.out.println("${LogHelper.getTimestamp()} Restarting execution group '${executionGroup}'.")
         try {
             if (executionGroupProxy.isRunning()) {
-                System.out.println("${getTimestamp()} Stopping execution group '${executionGroup}'...")
+                System.out.println("${LogHelper.getTimestamp()} Stopping execution group '${executionGroup}'...")
                 executionGroupProxy.stop()
                 int count = 0
 
                 // wait for server to fully stop
                 while (executionGroupProxy.isRunning() && (timeout == -1 || count < timeout)) {
-                    System.out.println("${getTimestamp()} Checking that '${executionGroup}' has stopped...")
+                    System.out.println("${LogHelper.getTimestamp()} Checking that '${executionGroup}' has stopped...")
                     Thread.sleep(3000)
                     count += 3000
                 }
@@ -188,14 +188,14 @@ class IIBHelper {
                         + "the given timeout of '${timeout}' milliseconds.")
                 }
 
-                System.out.println("${getTimestamp()} Starting the execution group '${executionGroup}'...")
+                System.out.println("${LogHelper.getTimestamp()} Starting the execution group '${executionGroup}'...")
                 executionGroupProxy.start()
 
                 count = 0
 
                 // wait for server to start
                 while (!executionGroupProxy.isRunning() && (timeout == -1 || count < timeout)) {
-                    System.out.println("${getTimestamp()} Checking that '${executionGroup}' has started...")
+                    System.out.println("${LogHelper.getTimestamp()} Checking that '${executionGroup}' has started...")
                     Thread.sleep(3000)
                     count += 3000
                 }
@@ -212,16 +212,16 @@ class IIBHelper {
             printBrokerResponses(ex)
             throw ex
         }
-        System.out.println("${getTimestamp()} Successfully restarted '${executionGroup}'.")
+        System.out.println("${LogHelper.getTimestamp()} Successfully restarted '${executionGroup}'.")
     }
 
     public void deleteConfigurableService(String servType, String servName) {
         if (brokerProxy == null) {
             throw new IllegalStateException("Broker Proxy is uninitilized!")
         }
-        System.out.println("${getTimestamp()} Deleting Configurable Service '${servName}' of type '${servType}'")
+        System.out.println("${LogHelper.getTimestamp()} Deleting Configurable Service '${servName}' of type '${servType}'")
         brokerProxy.deleteConfigurableService(servType, servName)
-        System.out.println("${getTimestamp()} Successfully deleted Configurable Service.")
+        System.out.println("${LogHelper.getTimestamp()} Successfully deleted Configurable Service.")
     }
 
     public void createOrUpdateConfigurableService(
@@ -236,7 +236,7 @@ class IIBHelper {
 
         ConfigurableService service = brokerProxy.getConfigurableService(servType, servName)
         if (service == null) {
-            println "${getTimestamp()} Creating configurable service '${servName}'..."
+            println "${LogHelper.getTimestamp()} Creating configurable service '${servName}'..."
             createConfigurableService(servType, servName, propsMap)
         }
         else {
@@ -245,7 +245,7 @@ class IIBHelper {
     }
 
     private void createConfigurableService(String servType, String servName, Map<String,String>propsMap) {
-        println "${getTimestamp()} Creating configurable service '${servName}' of type '${servType}'"
+        println "${LogHelper.getTimestamp()} Creating configurable service '${servName}' of type '${servType}'"
         try {
             brokerProxy.createConfigurableService(servType, servName)
         } catch (ConfigManagerProxyRequestFailureException ex) {
@@ -255,11 +255,11 @@ class IIBHelper {
         // Note: https://developer.ibm.com/answers/questions/327647/examples-of-ibm-integration-api-creating-configura.html
         ConfigurableService service = brokerProxy.getConfigurableService(servType, servName)
         propsMap.each { key, value ->
-            println "${getTimestamp()} Setting property '${key}' = '${value}'"
+            println "${LogHelper.getTimestamp()} Setting property '${key}' = '${value}'"
             service.setProperty(key, value)
         }
 
-        println("${getTimestamp()} Successfully created configurable service.")
+        println("${LogHelper.getTimestamp()} Successfully created configurable service.")
     }
 
     private void updateConfigurableService(
@@ -269,7 +269,7 @@ class IIBHelper {
         String servType,
         boolean deleteMissing)
     {
-        println "${getTimestamp()} Updating configurable service '${servName}' of type '${servType}'"
+        println "${LogHelper.getTimestamp()} Updating configurable service '${servName}' of type '${servType}'"
 
         if (deleteMissing) {
             def keysToDelete = []
@@ -281,7 +281,7 @@ class IIBHelper {
             }
 
             service.deleteProperties(keysToDelete as String[])
-            println ("${getTimestamp()} Successfully removed all properties no longer in the property map.")
+            println ("${LogHelper.getTimestamp()} Successfully removed all properties no longer in the property map.")
         }
 
         propsMap.each { key, value ->
@@ -289,7 +289,7 @@ class IIBHelper {
             service.setProperty(key, value)
         }
 
-        println ("${getTimestamp()} Successfully updated configurable service.")
+        println ("${LogHelper.getTimestamp()} Successfully updated configurable service.")
     }
 
     public void startAllMsgFlows() {
@@ -325,12 +325,14 @@ class IIBHelper {
 
         Date startTime = new Date(System.currentTimeMillis())
 
-        println "${getTimestamp()} Using execution group: ${executionGroup} and waiting with a timeout " +
+        println "${LogHelper.getTimestamp()} Using execution group: ${executionGroup} and waiting with a timeout " +
             "of ${timeout} or until a response is received from the execution group..."
+        LogHelper.outputCpuUsage();
         DeployResult dr = executionGroupProxy.deploy(fileName, isIncremental, timeout)
         CompletionCodeType completionCode = dr.getCompletionCode()
 
-        println("${getTimestamp()} Received deployment result from broker with a completion code: ${completionCode.toString()}.")
+        println("${LogHelper.getTimestamp()} Received deployment result from broker with a completion code: ${completionCode.toString()}.")
+        LogHelper.outputCpuUsage();
 
         checkDeployResult(dr, startTime)
         return completionCode
@@ -429,7 +431,7 @@ class IIBHelper {
 
         String oldVal = executionGroupProxy.getRuntimeProperty(name)
         String executionGroup = executionGroupProxy.getRuntimeProperty("This/label")
-        println("${getTimestamp()} Setting property ${name} to ${value} from ${oldVal} on Execution Group "
+        println("${LogHelper.getTimestamp()} Setting property ${name} to ${value} from ${oldVal} on Execution Group "
             + "${executionGroup}!")
         try {
             executionGroupProxy.setRuntimeProperty(name, value)
@@ -438,7 +440,7 @@ class IIBHelper {
             printBrokerResponses(ex)
             throw ex
         }
-        println("${getTimestamp()} Successfully set execution group property.")
+        println("${LogHelper.getTimestamp()} Successfully set execution group property.")
     }
 
     public void setMsgFlowProperty(String msgFlowName, String name, String value, String executionGroup) {
@@ -456,10 +458,10 @@ class IIBHelper {
         }
 
         String oldVal = msgFlowProxy.getRuntimeProperty(name)
-        println("${getTimestamp()} Setting property ${name} to ${value} from ${oldVal} on Message Flow "
+        println("${LogHelper.getTimestamp()} Setting property ${name} to ${value} from ${oldVal} on Message Flow "
             + "${msgFlowName} in Execution Group ${executionGroup}!")
         msgFlowProxy.setRuntimeProperty(name, value)
-        println("${getTimestamp()} Successfully set message flow property.")
+        println("${LogHelper.getTimestamp()} Successfully set message flow property.")
     }
 
     public void deleteMessageFlowsMatchingRegex(String regex, boolean deleteLibs, int timeout) {
@@ -502,7 +504,7 @@ class IIBHelper {
         }
 
         if ( flowsToDelete.size() > 0) {
-            println "[Action] ${getTimestamp()} Deleting "+flowsToDelete.size()+" deployed objects that are orphaned"
+            println "[Action] ${LogHelper.getTimestamp()} Deleting "+flowsToDelete.size()+" deployed objects that are orphaned"
             println "[OK] Waiting with a timeout of ${timeout} or until a response is received from the execution group..."
 
             Date startTime = new Date(System.currentTimeMillis())
@@ -518,7 +520,7 @@ class IIBHelper {
 
             executionGroupProxy.deleteDeployedObjects (flowsToDeleteArray, timeout)
 
-            println("${getTimestamp()} Deployment requested, waiting for result...")
+            println("${LogHelper.getTimestamp()} Deployment requested, waiting for result...")
 
             checkDeployResult(startTime)
         }
@@ -532,7 +534,7 @@ class IIBHelper {
         def fullAppNames = []
 
         for (appName in appNames) {
-            println("[Action] ${getTimestamp()} Searching for application with name ${appName}...")
+            println("[Action] ${LogHelper.getTimestamp()} Searching for application with name ${appName}...")
             ApplicationProxy appProxy = executionGroupProxy.getApplicationByName(appName)
 
             if (appProxy != null) {
@@ -551,11 +553,11 @@ class IIBHelper {
         }
 
         if (fullAppNames) {
-            println("[Action] ${getTimestamp()} Deleting application(s): ${fullAppNames.join(',')}")
+            println("[Action] ${LogHelper.getTimestamp()} Deleting application(s): ${fullAppNames.join(',')}")
             Date startTime = new Date(System.currentTimeMillis())
             DeployResult dr = executionGroupProxy.deleteDeployedObjectsByName(fullAppNames, timeout)
             checkDeployResult(dr, startTime)
-            println("[OK] ${getTimestamp()} Successfully removed applications.")
+            println("[OK] ${LogHelper.getTimestamp()} Successfully removed applications.")
         }
         else {
             throw new RuntimeException("None of the specified applications exist on the execution group: ${executionGroup}.")
@@ -570,7 +572,7 @@ class IIBHelper {
         Enumeration logEntries = null
 
         if (deployResult) {
-            println("${getTimestamp()} Acquiring all deployment messages associated with this deployment...")
+            println("${LogHelper.getTimestamp()} Acquiring all deployment messages associated with this deployment...")
             logEntries = deployResult.getDeployResponses()
         }
         else {
@@ -579,10 +581,11 @@ class IIBHelper {
 
         def errors = []
 
-        println("${getTimestamp()} Checking deployment messages for errors...")
+        println("${LogHelper.getTimestamp()} Checking deployment messages for errors...")
+        LogHelper.outputCpuUsage();
         while (logEntries.hasMoreElements()) {
             LogEntry logEntry = logEntries.nextElement()
-            if (logEntry.isErrorMessage() && logEntry.getTimestamp() > startTime) {
+            if (logEntry.isErrorMessage() && logEntry.LogHelper.getTimestamp() > startTime) {
                 errors << logEntry.getTimestamp().toString() + " - " + logEntry.getMessage() +
                         " : " + logEntry.getDetail()
             }
@@ -595,17 +598,20 @@ class IIBHelper {
             throw new Exception("Error during deployment")
         }
 
-        println("${getTimestamp()} No errors found during the deployment.")
+        println("${LogHelper.getTimestamp()} No errors found during the deployment.")
+        LogHelper.outputCpuUsage();
     }
 
     public void cleanUp() {
-        println("${getTimestamp()} Disconnecting from the broker...")
+        println("${LogHelper.getTimestamp()} Disconnecting from the broker...")
+        LogHelper.outputCpuUsage();
         if (isDebugEnabled) {
             BrokerProxy.disableAdministrationAPITracing()
         }
 
         brokerProxy.disconnect()
-        println("${getTimestamp()} Successfully disconnected from broker.")
+        println("${LogHelper.getTimestamp()} Successfully disconnected from broker.")
+        LogHelper.outputCpuUsage();
     }
 
     private ExecutionGroupProxy getExecutionGroup(String groupName) {
@@ -624,12 +630,6 @@ class IIBHelper {
         else {
             throw new IllegalStateException("Execution group field specified with blank or null name.")
         }
-    }
-
-    public static String getTimestamp() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("[MM/dd/yyyy HH:mm:ss]")
-
-        return dateFormat.format(new Date())
     }
 
     private void printBrokerResponses(ConfigManagerProxyRequestFailureException ex) {
