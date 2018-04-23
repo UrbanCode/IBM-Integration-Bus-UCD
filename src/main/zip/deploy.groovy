@@ -6,7 +6,10 @@
  */
 import com.urbancode.air.AirPluginTool;
 import com.urbancode.air.plugin.wmbcmp.IIBHelper;
+import com.urbancode.air.plugin.wmbcmp.LogHelper;
 import com.ibm.broker.config.proxy.CompletionCodeType;
+
+println("${LogHelper.getTimestamp()} Executing deploy.groovy script...")
 
 File workDir = new File('.')
 
@@ -26,13 +29,13 @@ int timeout = Integer.valueOf(props['timeout']?.trim()?:-1)
 
 try {
     props['barFileNames'].split('\n|,')*.trim().each { barFileName ->
-        println "${helper.getTimestamp()} Deploying bar file ${barFileName}";
+        println "${LogHelper.getTimestamp()} Deploying bar file ${barFileName}";
 
         for (String groupName : executionGroups) {
             helper.setExecutionGroup(groupName);
 
             if (Boolean.valueOf(props['startStopMsgFlows'])) {
-                println "${helper.getTimestamp()} Stopping all Msg Flows"
+                println "${LogHelper.getTimestamp()} Stopping all Msg Flows"
                 helper.stopAllMsgFlows();
             }
 
@@ -45,7 +48,7 @@ try {
             apTool.setOutputProperty("completionCode", completionCode.toString())
 
             if (completionCode != CompletionCodeType.success) {
-                println("${helper.getTimestamp()} The broker has returned an unsuccessful deployment result.")
+                println("${LogHelper.getTimestamp()} The broker has returned an unsuccessful deployment result.")
                 String message = ""
 
                 if (completionCode == CompletionCodeType.failure) {
@@ -76,13 +79,13 @@ try {
                     + " with completion code : ${completionCode.toString()}: ${message}")
             }
             else {
-                println("${helper.getTimestamp()} ${barFileName} was successfully deployed to ${groupName}.")
+                println("${LogHelper.getTimestamp()} ${barFileName} was successfully deployed to ${groupName}.")
             }
         }
     }
 
     if (Boolean.valueOf(props['startStopMsgFlows'])) {
-        println "${helper.getTimestamp()} Starting all Msg Flows"
+        println "${LogHelper.getTimestamp()} Starting all Msg Flows"
         helper.startAllMsgFlows();
     }
 }
@@ -91,33 +94,7 @@ catch (Exception e) {
     throw e;
 }
 finally {
-    // Get current size of heap in bytes
-    long heapSize = Runtime.getRuntime().totalMemory();
-
-    // Get maximum size of heap in bytes. The heap cannot grow beyond this size.// Any attempt will result in an OutOfMemoryException.
-    long heapMaxSize = Runtime.getRuntime().maxMemory();
-
-    long heapFreeSpace = Runtime.getRuntime().freeMemory();
-
-    println("********** Java Heap Output **********")
-    println("Current heap size in bytes: ${heapSize} (${heapSize/(1024*1024)} MB)")
-    println("Max heap size in bytes: ${heapMaxSize} (${heapMaxSize/(1024*1024)} MB))")
-    println("********** End Java Heap Output **********")
-
-    println("********** Running Process Output **********")
-    try {
-        String line;
-        Process p = Runtime.getRuntime().exec("ps -ef");
-        BufferedReader input =
-                new BufferedReader(new InputStreamReader(p.getInputStream()));
-        while ((line = input.readLine()) != null) {
-            System.out.println(line); //<-- Parse data here.
-        }
-        input.close();
-    } catch (Exception err) {
-        err.printStackTrace();
-    }
-    println("********** End Running Process Output **********")
     apTool.setOutputProperties(System.getenv("UCD_SECRET_VAR"))
     helper.cleanUp();
+    println("${LogHelper.getTimestamp()} deploy.groovy script execution has completed.")
 }

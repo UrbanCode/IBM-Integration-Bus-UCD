@@ -9,6 +9,7 @@ import org.apache.commons.lang.StringUtils
 
 import com.urbancode.air.AirPluginTool
 import com.urbancode.air.CommandHelper
+import com.urbancode.air.plugin.wmbcmp.LogHelper;
 
 import java.nio.charset.Charset
 import java.util.regex.Pattern
@@ -34,7 +35,11 @@ def groovyExe = groovyHome + File.separator + "bin" + File.separator + (isWindow
 def version = props['version'] ? props['version'].trim() : ""
 def cmdArgs
 
+println("${LogHelper.getTimestamp()} Executing mqsi_profile_wrapper.groovy...")
+LogHelper.outputCpuUsage();
+
 if (env) {
+    println("${LogHelper.getTimestamp()} Configuring environment variables...")
     File envFile = new File(env)
 
     if (envFile.isFile()) {
@@ -55,6 +60,8 @@ if (env) {
             println("[Error] Missing a delimiter '=' for environment variable definition : ${envArg}")
         }
     }
+
+    println("${LogHelper.getTimestamp()} Environment variable configuration complete.")
 }
 
 // append required jar files to classpath
@@ -81,6 +88,8 @@ if (version < 10) {
 else {
     requiredJars << "IntegrationAPI"
 }
+
+println("${LogHelper.getTimestamp()} Searching for required JAR files on the Jar Path and configuring classpath...")
 
 for (def jarEntry : jarPath.split(File.pathSeparator)) {
     def jarFile = new File(jarEntry.trim())
@@ -114,6 +123,10 @@ for (def jarEntry : jarPath.split(File.pathSeparator)) {
     }
 }
 
+LogHelper.outputCpuUsage();
+
+println("${LogHelper.getTimestamp()} Completed classpath configuration.")
+
 if (requiredJars) {
     println("[Warning] the following jar files were not found on the Jar Path and are required with this version " +
             "of IIB: '${requiredJars}' Some steps may fail.")
@@ -121,6 +134,8 @@ if (requiredJars) {
 
 
 if (mqsiprofile) {
+    println("${LogHelper.getTimestamp()} Sourcing mqsiprofile script...")
+
     mqsiprofile = new File(mqsiprofile)
 
     if (!mqsiprofile.isFile()) {
@@ -171,6 +186,8 @@ if (mqsiprofile) {
             "${argScript} ${this.args[1]} ${this.args[2]}"
         ]
     }
+
+    println("${LogHelper.getTimestamp()} Completed mqsiprofile environment sourcing.")
 }
 else {
     cmdArgs = [
@@ -186,5 +203,8 @@ else {
 if (apTool.getEncKey() != null) {
     helper.addEnvironmentVariable("UCD_SECRET_VAR", apTool.getEncKey())
 }
+
+println("${LogHelper.getTimestamp()} mqsi_profile_wrapper.groovy execution has completed.")
+LogHelper.outputCpuUsage();
 
 helper.runCommand(cmdArgs.join(' '), cmdArgs)
