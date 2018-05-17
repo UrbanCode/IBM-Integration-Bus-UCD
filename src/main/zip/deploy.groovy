@@ -91,33 +91,6 @@ catch (Exception e) {
     throw e;
 }
 finally {
-    // Get current size of heap in bytes
-    long heapSize = Runtime.getRuntime().totalMemory();
-
-    // Get maximum size of heap in bytes. The heap cannot grow beyond this size.// Any attempt will result in an OutOfMemoryException.
-    long heapMaxSize = Runtime.getRuntime().maxMemory();
-
-    long heapFreeSpace = Runtime.getRuntime().freeMemory();
-
-    println("********** Java Heap Output **********")
-    println("Current heap size in bytes: ${heapSize} (${heapSize/(1024*1024)} MB)")
-    println("Max heap size in bytes: ${heapMaxSize} (${heapMaxSize/(1024*1024)} MB))")
-    println("********** End Java Heap Output **********")
-
-    println("********** Running Process Output **********")
-    try {
-        String line;
-        Process p = Runtime.getRuntime().exec("ps -ef");
-        BufferedReader input =
-                new BufferedReader(new InputStreamReader(p.getInputStream()));
-        while ((line = input.readLine()) != null) {
-            System.out.println(line); //<-- Parse data here.
-        }
-        input.close();
-    } catch (Exception err) {
-        err.printStackTrace();
-    }
-    println("********** End Running Process Output **********")
     apTool.setOutputProperties(System.getenv("UCD_SECRET_VAR"))
     helper.cleanUp();
 }

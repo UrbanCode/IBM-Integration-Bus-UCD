@@ -551,9 +551,10 @@ class IIBHelper {
         }
 
         if (fullAppNames) {
+            String[] appArray = fullAppNames.toArray(new String[0])
             println("[Action] ${getTimestamp()} Deleting application(s): ${fullAppNames.join(',')}")
             Date startTime = new Date(System.currentTimeMillis())
-            DeployResult dr = executionGroupProxy.deleteDeployedObjectsByName(fullAppNames, timeout)
+            DeployResult dr = executionGroupProxy.deleteDeployedObjectsByName(appArray, timeout)
             checkDeployResult(dr, startTime)
             println("[OK] ${getTimestamp()} Successfully removed applications.")
         }
