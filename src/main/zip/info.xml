@@ -267,5 +267,8 @@ Fixes APAR PI90752 Sourcing an environment properties file now uses the default 
     <release-note plugin-version="40">
 RFE 88341 Added a step to delete a list of applications by name.
     </release-note>
+    <release-note plugin-version="41">
+Fixes APAR PI98083 Modified 'Delete Applications' step to pass in the correct argument.
+    </release-note>
   </release-notes>
 </pluginInfo>

@@ -821,4 +821,6 @@
   </migrate>
   <migrate to-version="40">
   </migrate>
+  <migrate to-version="41">
+  </migrate>
 </plugin-upgrade>
