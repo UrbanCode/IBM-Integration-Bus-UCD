@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     (c) Copyright IBM Corporation 2013, 2017.
+    (c) Copyright HCL Technologies Ltd. 2018. All Rights Reserved.
     This is licensed under the following license.
     The Eclipse Public 1.0 License (http://www.eclipse.org/legal/epl-v10.html)
     U.S. Government Users Restricted Rights:  Use, duplication or disclosure restricted by GSA ADP Schedule Contract with IBM Corp.
@@ -822,5 +823,12 @@
   <migrate to-version="40">
   </migrate>
   <migrate to-version="41">
+  </migrate>
+  <migrate to-version="42">
+    <migrate-command name="Deploy">
+      <migrate-properties>
+        <migrate-property name="deployType" default="${p?:iib.deployType}"/>
+      </migrate-properties>
+    </migrate-command>
   </migrate>
 </plugin-upgrade>

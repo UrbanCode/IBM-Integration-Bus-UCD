@@ -1,5 +1,6 @@
 /**
  * (c) Copyright IBM Corporation 2013, 2017.
+ * (c) Copyright HCL Technologies Ltd. 2018. All Rights Reserved.
  * This is licensed under the following license.
  * The Eclipse Public 1.0 License (http://www.eclipse.org/legal/epl-v10.html)
  * U.S. Government Users Restricted Rights:  Use, duplication or disclosure restricted by GSA ADP Schedule Contract with IBM Corp.
@@ -21,7 +22,8 @@ if(executionGroup != null && !executionGroup.trim().isEmpty()) {
     executionGroups -= [null, ""] // remove empty and null entries
 }
 
-boolean isIncremental = !Boolean.valueOf(props['fullDeploy'])
+String deployType = props['deployType']
+boolean isIncremental = "incremental".equals(deployType)
 int timeout = Integer.valueOf(props['timeout']?.trim()?:-1)
 
 try {

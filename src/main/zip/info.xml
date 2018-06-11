@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     (c) Copyright IBM Corporation 2013, 2017.
+    (c) Copyright HCL Technologies Ltd. 2018. All Rights Reserved.
     This is licensed under the following license.
     The Eclipse Public 1.0 License (http://www.eclipse.org/legal/epl-v10.html)
     U.S. Government Users Restricted Rights:  Use, duplication or disclosure restricted by GSA ADP Schedule Contract with IBM Corp.
@@ -269,6 +270,10 @@ RFE 88341 Added a step to delete a list of applications by name.
     </release-note>
     <release-note plugin-version="41">
 Fixes APAR PI98083 Modified 'Delete Applications' step to pass in the correct argument.
+    </release-note>
+    <release-note plugin-version="42">
+RFE 112896 Added step to delete an execution group from the broker.
+RFE 104689 Added a parameter to the deploy step to specify a full/incremental deployment.
     </release-note>
   </release-notes>
 </pluginInfo>

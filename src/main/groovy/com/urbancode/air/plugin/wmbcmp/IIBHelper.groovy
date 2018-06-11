@@ -1,5 +1,6 @@
 /**
  * (c) Copyright IBM Corporation 2013, 2017.
+ * (c) Copyright HCL Technologies Ltd. 2018. All Rights Reserved.
  * This is licensed under the following license.
  * The Eclipse Public 1.0 License (http://www.eclipse.org/legal/epl-v10.html)
  * U.S. Government Users Restricted Rights:  Use, duplication or disclosure restricted by GSA ADP Schedule Contract with IBM Corp.
@@ -213,6 +214,14 @@ class IIBHelper {
             throw ex
         }
         System.out.println("${getTimestamp()} Successfully restarted '${executionGroup}'.")
+    }
+
+    public deleteExecutionGroup(String executionGroup, long timeout) {
+        setExecutionGroup(executionGroup)
+
+        println("${getTimestamp()} Deleting execution group '${executionGroup}'.")
+        brokerProxy.deleteExecutionGroup(executionGroup, timeout)
+        println("${getTimestamp()} Successfully deleted execution group.")
     }
 
     public void deleteConfigurableService(String servType, String servName) {
