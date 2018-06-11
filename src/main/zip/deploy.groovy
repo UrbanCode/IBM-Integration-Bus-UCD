@@ -23,7 +23,7 @@ if(executionGroup != null && !executionGroup.trim().isEmpty()) {
 }
 
 String deployType = props['deployType']
-boolean isIncremental = "incremental".equals(deployType)
+boolean isIncremental = "incremental".equalsIgnoreCase(deployType)
 int timeout = Integer.valueOf(props['timeout']?.trim()?:-1)
 
 try {
