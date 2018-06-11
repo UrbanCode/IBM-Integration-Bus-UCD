@@ -24,10 +24,6 @@ try {
     long timeout = Long.valueOf(props['timeout']?.trim()?:-1)
     helper.deleteExecutionGroup(executionGroup, timeout)
 }
-catch (Exception e) {
-    e.printStackTrace()
-    throw e
-}
 finally {
     helper.cleanUp()
 }
