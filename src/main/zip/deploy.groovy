@@ -22,7 +22,7 @@ if(executionGroup != null && !executionGroup.trim().isEmpty()) {
     executionGroups -= [null, ""] // remove empty and null entries
 }
 
-String deployType = props['deployType']
+String deployType = props['deployType']?.trim()
 boolean isIncremental = "incremental".equalsIgnoreCase(deployType)
 int timeout = Integer.valueOf(props['timeout']?.trim()?:-1)
 

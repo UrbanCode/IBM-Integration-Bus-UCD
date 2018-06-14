@@ -19,8 +19,6 @@ String executionGroup = props['executionGroup']
 
 try {
     helper.setExecutionGroup(executionGroup)
-    String regex = props['regex']
-    boolean deleteLibs = Boolean.valueOf(props['deleteLibs'])
     long timeout = Long.valueOf(props['timeout']?.trim()?:-1)
     helper.deleteExecutionGroup(executionGroup, timeout)
 }

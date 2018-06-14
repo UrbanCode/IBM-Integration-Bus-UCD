@@ -1616,11 +1616,11 @@
                      label="Deployment Type"
                      default-value="${p?:iib.deployType}"
                      description="Specify either an incremental or full deployment. You may 
-                        specify the 'Parameter' option and set the 'iib.deployType' property 
+                        specify the '${p?:iib.deployType}' option and set the 'iib.deployType' property 
                         to either 'incremental' or 'full' at any level in the property hierarchy."/>
         <value label="Full">full</value>
         <value label="Incremental">incremental</value>
-        <value label="Parameter">${p?:iib.deployType}</value>
+        <value label="${p?:iib.deployType}">${p?:iib.deployType}</value>
       </property>
       <property name="startStopMsgFlows">
         <property-ui type="checkBox"
