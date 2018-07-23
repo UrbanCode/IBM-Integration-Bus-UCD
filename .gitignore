@@ -21,3 +21,4 @@ IBM-Integration-Bus-UCD.iml
 gradlew
 gradlew.bat
 /gradle/
+/var
