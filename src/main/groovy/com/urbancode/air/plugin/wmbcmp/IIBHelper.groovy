@@ -139,6 +139,8 @@ class IIBHelper {
             throw new IllegalStateException("Broker Proxy is uninitilized!")
         }
 
+        Date startTime = new Date(System.currentTimeMillis())
+
         if (!getExecutionGroup(executionGroup)) {
             System.out.println("${getTimestamp()} Execution group ${executionGroup} does not exist."
                     + " Attempting to create...")
@@ -147,13 +149,13 @@ class IIBHelper {
                 executionGroupProxy = brokerProxy.createExecutionGroup(executionGroup)
             }
             catch (ConfigManagerProxyRequestFailureException ex) {
-                printBrokerResponses(ex)
+                printBrokerResponses(ex, startTime)
                 throw ex
             }
 
             if (executionGroupProxy == null) {
                 throw new RuntimeException("Could not create execution group with"
-                + " name ${name}")
+                + " name ${executionGroup}")
             }
             System.out.println("${getTimestamp()} Execution group ${executionGroup} created.")
         }
@@ -164,6 +166,8 @@ class IIBHelper {
     }
 
     public void restartExecutionGroup(String executionGroup, int timeout) {
+        Date startTime = new Date(System.currentTimeMillis())
+
         setExecutionGroup(executionGroup)
 
         if (executionGroupProxy == null) {
@@ -171,6 +175,7 @@ class IIBHelper {
         }
 
         System.out.println("${getTimestamp()} Restarting execution group '${executionGroup}'.")
+
         try {
             if (executionGroupProxy.isRunning()) {
                 System.out.println("${getTimestamp()} Stopping execution group '${executionGroup}'...")
@@ -210,7 +215,7 @@ class IIBHelper {
                 throw new IllegalStateException("The execution group '${executionGroup}' is not currently running.")
             }
         } catch (ConfigManagerProxyRequestFailureException ex) {
-            printBrokerResponses(ex)
+            printBrokerResponses(ex, startTime)
             throw ex
         }
         System.out.println("${getTimestamp()} Successfully restarted '${executionGroup}'.")
@@ -255,10 +260,13 @@ class IIBHelper {
 
     private void createConfigurableService(String servType, String servName, Map<String,String>propsMap) {
         println "${getTimestamp()} Creating configurable service '${servName}' of type '${servType}'"
+
+        Date startTime = new Date(System.currentTimeMillis())
+
         try {
             brokerProxy.createConfigurableService(servType, servName)
         } catch (ConfigManagerProxyRequestFailureException ex) {
-            printBrokerResponses(ex)
+            printBrokerResponses(ex, startTime)
             throw ex
         }
         // Note: https://developer.ibm.com/answers/questions/327647/examples-of-ibm-integration-api-creating-configura.html
@@ -384,6 +392,7 @@ class IIBHelper {
         }
 
         final String delimiter = AttributeConstants.OBJECT_NAME_DELIMITER
+        Date startTime = new Date(System.currentTimeMillis())
 
         try {
             if (propType.equalsIgnoreCase("cachemanager")) {
@@ -422,7 +431,7 @@ class IIBHelper {
             }
         }
         catch (ConfigManagerProxyRequestFailureException ex) {
-            printBrokerResponses(ex)
+            printBrokerResponses(ex, startTime)
             throw ex
         }
     }
@@ -431,6 +440,8 @@ class IIBHelper {
         if (brokerProxy == null) {
             throw new IllegalStateException("Broker Proxy is uninitilized!")
         }
+
+        Date startTime = new Date(System.currentTimeMillis())
 
         if (executionGroupProxy == null) {
             throw new IllegalStateException("Execution group proxy is null! Make sure it is configured correctly!")
@@ -444,7 +455,7 @@ class IIBHelper {
             executionGroupProxy.setRuntimeProperty(name, value)
         }
         catch (ConfigManagerProxyRequestFailureException ex) {
-            printBrokerResponses(ex)
+            printBrokerResponses(ex, startTime)
             throw ex
         }
         println("${getTimestamp()} Successfully set execution group property.")
@@ -642,7 +653,7 @@ class IIBHelper {
         return dateFormat.format(new Date())
     }
 
-    private void printBrokerResponses(ConfigManagerProxyRequestFailureException ex) {
+    private void printBrokerResponses(ConfigManagerProxyRequestFailureException ex, long startTime) {
         List<LogEntry> responses = ex.getResponseMessages()
 
         println("Broker rejection errors during execution:")
