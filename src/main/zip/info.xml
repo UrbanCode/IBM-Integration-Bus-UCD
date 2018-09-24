@@ -275,7 +275,7 @@ Fixes APAR PI98083 Modified 'Delete Applications' step to pass in the correct ar
 RFE 112896 Added step to delete an execution group from the broker.
 RFE 104689 Added a parameter to the deploy step to specify a full/incremental deployment.
     </release-note>
-    <release-note plugin-version="41">
+    <release-note plugin-version="43">
 Fixes APAR PI98083 Missing 'startTime' property when create execution group fails.
     </release-note>
   </release-notes>
