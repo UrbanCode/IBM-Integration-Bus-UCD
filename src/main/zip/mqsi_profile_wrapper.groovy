@@ -129,26 +129,8 @@ if (mqsiprofile) {
 
     if (isWindows) {
         // set command environment
-        def envMap = [:]
-
-        def envSet = {
-            envMap = System.getenv()
-            it.out.close() // close stdin
-            def out = new PrintStream(System.out, true)
-            try {
-                it.waitForProcessOutput(out, out) // forward stdout and stderr to autoflushing output stream
-            }
-            finally {
-                out.flush();
-            }
-        }
-
         cmdArgs = [mqsiprofile.absolutePath]
-        helper.runCommand("[Action] Setting up mqsi environment...", cmdArgs, envSet)
-
-        for (def entry : envMap) {
-            helper.addEnvironmentVariable(entry.key, entry.value)
-        }
+        String commandScript = "call " + buildCommandLine(cmdArgs)
 
         // run script regardless of whether environment was set
         cmdArgs = [
@@ -159,6 +141,12 @@ if (mqsiprofile) {
             args[1],
             args[2]
         ]
+
+        // Convert the call into a batch script
+        commandScript = commandScript + "\n" + buildCommandLine(cmdArgs)
+        String cmdFile = 'call_cmd.bat'
+        (new File(cmdFile)).text = commandScript
+        cmdArgs = [cmdFile]
     }
     else {
         def defaultShell = props['shell']
@@ -188,3 +176,19 @@ if (apTool.getEncKey() != null) {
 }
 
 helper.runCommand(cmdArgs.join(' '), cmdArgs)
+
+/* Convert a list of command line arguments into a string that is
+ * suitable to use in a batch file.
+ */
+public String buildCommandLine(def cmdArgs) {
+    String retval = ''
+    String delim = ''
+    cmdArgs.each {String cmdArg ->
+        if (cmdArg.contains(' ')) {
+            cmdArg = '"' + cmdArg + '"'
+        }
+        retval = retval + delim + cmdArg
+        delim = ' '
+    }
+    return retval
+}
