@@ -278,5 +278,8 @@ RFE 104689 Added a parameter to the deploy step to specify a full/incremental de
     <release-note plugin-version="43">
 Fixes APAR PI98083 Missing 'startTime' property when create execution group fails.
     </release-note>
+    <release-note plugin-version="44">
+Fixed APAR PH03202 - 'Mqsiprofile path' property not working in Windows.
+    </release-note>
   </release-notes>
 </pluginInfo>
