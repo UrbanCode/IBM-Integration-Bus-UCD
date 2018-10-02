@@ -36,7 +36,7 @@ class IIB9BrokerConnection {
         }
         catch(ConfigManagerProxyLoggedException ex) {
             println("Could not establish a connection with the broker host: ${host} using port: ${port}")
-            println(ex.getMessage())
+            ex.printStackTrace(System.out)
             System.exit(1)
         }
     }
