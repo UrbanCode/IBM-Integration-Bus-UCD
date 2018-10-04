@@ -14,7 +14,7 @@ class IIB9BrokerConnection {
     def connection
     BrokerProxy proxy
 
-    public IIB9BrokerConnection(def host, def port, def queueManager, def channel) {
+    public IIB9BrokerConnection(def host, def port, def queueManager, def channel, def cipherSuite) {
         def connectionClass
         try {
             connectionClass = "com.ibm.broker.config.proxy.MQBrokerConnectionParameters" as Class
@@ -25,7 +25,23 @@ class IIB9BrokerConnection {
             System.exit(1)
         }
 
-        connection = connectionClass.newInstance(host, port, queueManager)
+        if (cipherSuite) {
+            println("Connecting with Cipher Suite: ${cipherSuite}...")
+            connection = connectionClass.newInstance(
+                host,
+                port,
+                queueManager,
+                null,
+                null,
+                cipherSuite,
+                null,
+                null,
+                null,
+                null)
+        }
+        else {
+            connection = connectionClass.newInstance(host, port, queueManager)
+        }
 
         if (channel) {
             connection.setAdvancedConnectionParameters(channel, null,null, -1, -1, null)

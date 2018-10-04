@@ -10,7 +10,7 @@
            xmlns:server="http://www.urbancode.com/PluginServerXMLSchema_v1"
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <header>
-    <identifier id="com.urbancode.air.plugin.WMBCMP" name="WebSphere Message Broker - CMP" version="44"/>
+    <identifier id="com.urbancode.air.plugin.WMBCMP" name="WebSphere Message Broker - CMP" version="45"/>
     <description>Integration for WebSphere Message Broker to deploy Broker Archives and start and stop Message Flows
                  using the CMP API. This plugin is compatible with both version 9 and 10 of IBM Integration Bus, and
                  is also compatible with versions 7 and 8 of WebSphere Message Broker.</description>
@@ -135,6 +135,13 @@
                      label="Shell"
                      default-value="/bin/sh"
                      description="Path to your shell executable file."
+                     hidden="true"/>
+      </property>
+      <property name="cipherSuite">
+        <property-ui type="textBox"
+                     label="SSL Cipher Suite"
+                     description="Set a specific cipher suite for the connection from the
+                        UCD client to the MQ Queue Manager."
                      hidden="true"/>
       </property>
     </properties>
@@ -272,6 +279,13 @@
                      label="Shell"
                      default-value="/bin/sh"
                      description="Path to your shell executable file." hidden="true"/>
+      </property>
+      <property name="cipherSuite">
+        <property-ui type="textBox"
+                     label="SSL Cipher Suite"
+                     description="Set a specific cipher suite for the connection from the
+                        UCD client to the MQ Queue Manager."
+                     hidden="true"/>
       </property>
     </properties>
     <post-processing><![CDATA[
@@ -415,6 +429,13 @@
                      default-value="/bin/sh"
                      description="Path to your shell executable file." hidden="true"/>
       </property>
+      <property name="cipherSuite">
+        <property-ui type="textBox"
+                     label="SSL Cipher Suite"
+                     description="Set a specific cipher suite for the connection from the
+                        UCD client to the MQ Queue Manager."
+                     hidden="true"/>
+      </property>
     </properties>
     <post-processing><![CDATA[
  if (properties.get("exitCode") != 0) {
@@ -552,6 +573,13 @@
                      label="Shell"
                      default-value="/bin/sh"
                      description="Path to your shell executable file." hidden="true"/>
+      </property>
+      <property name="cipherSuite">
+        <property-ui type="textBox"
+                     label="SSL Cipher Suite"
+                     description="Set a specific cipher suite for the connection from the
+                        UCD client to the MQ Queue Manager."
+                     hidden="true"/>
       </property>
     </properties>
     <post-processing><![CDATA[
@@ -692,6 +720,13 @@
                      default-value="/bin/sh"
                      description="Path to your shell executable file." hidden="true"/>
       </property>
+      <property name="cipherSuite">
+        <property-ui type="textBox"
+                     label="SSL Cipher Suite"
+                     description="Set a specific cipher suite for the connection from the
+                        UCD client to the MQ Queue Manager."
+                     hidden="true"/>
+      </property>
     </properties>
     <post-processing><![CDATA[
  if (properties.get("exitCode") != 0) {
@@ -831,6 +866,13 @@
                      label="Shell"
                      default-value="/bin/sh"
                      description="Path to your shell executable file." hidden="true"/>
+      </property>
+      <property name="cipherSuite">
+        <property-ui type="textBox"
+                     label="SSL Cipher Suite"
+                     description="Set a specific cipher suite for the connection from the
+                        UCD client to the MQ Queue Manager."
+                     hidden="true"/>
       </property>
     </properties>
     <post-processing><![CDATA[
@@ -990,6 +1032,13 @@
                      default-value="/bin/sh"
                      description="Path to your shell executable file." hidden="true"/>
       </property>
+      <property name="cipherSuite">
+        <property-ui type="textBox"
+                     label="SSL Cipher Suite"
+                     description="Set a specific cipher suite for the connection from the
+                        UCD client to the MQ Queue Manager."
+                     hidden="true"/>
+      </property>
     </properties>
     <post-processing><![CDATA[
  if (properties.get("exitCode") != 0) {
@@ -1135,6 +1184,13 @@
                      label="Shell"
                      default-value="/bin/sh"
                      description="Path to your shell executable file." hidden="true"/>
+      </property>
+      <property name="cipherSuite">
+        <property-ui type="textBox"
+                     label="SSL Cipher Suite"
+                     description="Set a specific cipher suite for the connection from the
+                        UCD client to the MQ Queue Manager."
+                     hidden="true"/>
       </property>
     </properties>
     <post-processing><![CDATA[
@@ -1284,6 +1340,13 @@
                      label="Shell"
                      default-value="/bin/sh"
                      description="Path to your shell executable file." 
+                     hidden="true"/>
+      </property>
+      <property name="cipherSuite">
+        <property-ui type="textBox"
+                     label="SSL Cipher Suite"
+                     description="Set a specific cipher suite for the connection from the
+                        UCD client to the MQ Queue Manager."
                      hidden="true"/>
       </property>
     </properties>
@@ -1438,6 +1501,13 @@
                      default-value="/bin/sh"
                      description="Path to your shell executable file." hidden="true"/>
       </property>
+      <property name="cipherSuite">
+        <property-ui type="textBox"
+                     label="SSL Cipher Suite"
+                     description="Set a specific cipher suite for the connection from the
+                        UCD client to the MQ Queue Manager."
+                     hidden="true"/>
+      </property>
     </properties>
     <post-processing><![CDATA[
  if (properties.get("exitCode") != 0) {
@@ -1576,6 +1646,13 @@
                      label="Shell"
                      default-value="/bin/sh"
                      description="Path to your shell executable file." hidden="true"/>
+      </property>
+      <property name="cipherSuite">
+        <property-ui type="textBox"
+                     label="SSL Cipher Suite"
+                     description="Set a specific cipher suite for the connection from the
+                        UCD client to the MQ Queue Manager."
+                     hidden="true"/>
       </property>
     </properties>
     <post-processing><![CDATA[
@@ -1735,6 +1812,13 @@
                      default-value="/bin/sh"
                      description="Path to your shell executable file." hidden="true"/>
       </property>
+      <property name="cipherSuite">
+        <property-ui type="textBox"
+                     label="SSL Cipher Suite"
+                     description="Set a specific cipher suite for the connection from the
+                        UCD client to the MQ Queue Manager."
+                     hidden="true"/>
+      </property>
     </properties>
     <post-processing><![CDATA[
  if (properties.get("exitCode") != 0) {
@@ -1874,6 +1958,13 @@
                      default-value="/bin/sh"
                      description="Path to your shell executable file." hidden="true"/>
       </property>
+      <property name="cipherSuite">
+        <property-ui type="textBox"
+                     label="SSL Cipher Suite"
+                     description="Set a specific cipher suite for the connection from the
+                        UCD client to the MQ Queue Manager."
+                     hidden="true"/>
+      </property>
     </properties>
     <post-processing><![CDATA[
  if (properties.get("exitCode") != 0) {
@@ -2012,6 +2103,13 @@
                      label="Shell"
                      default-value="/bin/sh"
                      description="Path to your shell executable file." hidden="true"/>
+      </property>
+      <property name="cipherSuite">
+        <property-ui type="textBox"
+                     label="SSL Cipher Suite"
+                     description="Set a specific cipher suite for the connection from the
+                        UCD client to the MQ Queue Manager."
+                     hidden="true"/>
       </property>
     </properties>
     <post-processing><![CDATA[

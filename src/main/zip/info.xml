@@ -281,5 +281,8 @@ Fixes APAR PI98083 Missing 'startTime' property when create execution group fail
     <release-note plugin-version="44">
 Fixed APAR PH03202 - 'Mqsiprofile path' property not working in Windows.
     </release-note>
+    <release-note plugin-version="45">
+RFE 125599 - Added hidden SSL Cipher Suite property for steps using the Integration API.
+    </release-note>
   </release-notes>
 </pluginInfo>

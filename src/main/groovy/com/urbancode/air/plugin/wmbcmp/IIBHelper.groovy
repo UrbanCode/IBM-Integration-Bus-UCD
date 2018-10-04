@@ -80,7 +80,8 @@ class IIBHelper {
                     // user determined by queue manager
                     def channel = props['channel']
                     def queueManager = props['queueManager']
-                    brokerConnection = new IIB9BrokerConnection(host, port, queueManager, channel)
+                    def cipherSuite = props['cipherSuite']
+                    brokerConnection = new IIB9BrokerConnection(host, port, queueManager, channel, cipherSuite)
                     bcp = brokerConnection.connection
             }
             // iib10 remote connection settings
