@@ -36,9 +36,10 @@ def groovyExe = groovyHome + File.separator + "bin" + File.separator + (isWindow
 def version = props['version'] ? props['version'].trim() : ""
 def cmdArgs
 
+/* Append CLASSPATH to specified Jar Path if found */
 if (SYSTEM_CLASSPATH) {
     println("[Ok] Found CLASSPATH from system environment: ${SYSTEM_CLASSPATH}.")
-    classpath.append(File.pathSeparator + SYSTEM_CLASSPATH)
+    jarPath += jarPath ? File.pathSeparator + SYSTEM_CLASSPATH : SYSTEM_CLASSPATH
 }
 
 if (env) {
@@ -98,10 +99,11 @@ else {
     }
 }
 
-/* Add absolute paths to JARs if specified, recurse into directories if missing any required JARs */
+/* Parse Jar Path to create groovy classpath */
 for (def jarEntry : jarPath.split(File.pathSeparator)) {
     def jarFile = new File(jarEntry.trim())
 
+    /* Add absolute paths to JARs if specified, recurse into directories if missing any required JARs */
     if (jarFile.isDirectory() && requiredJars) {
         def regexPattern = ""
         def regexArr = []

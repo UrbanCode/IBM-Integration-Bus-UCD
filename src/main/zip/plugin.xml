@@ -105,8 +105,8 @@
                                   or each individual jar path split by your file 
                                   systems path separator.
                                   (e.g. /opt/ibm/server/classes:/opt/ibm/common/jetty/lib)
-                                  The CLASSPATH environment variable will also be added to 
-                                  this jar path, if set."/>
+                                  You must specify your required JAR files in either the 
+                                  Jar Path field or the CLASSPATH environment variable. "/>
       </property>
       <property name="mqsiprofile">
         <property-ui type="textBox"
@@ -245,8 +245,8 @@
                                   or each individual jar path split by your file 
                                   systems path separator.
                                   (e.g. /opt/ibm/server/classes:/opt/ibm/common/jetty/lib)
-                                  The CLASSPATH environment variable will also be added to 
-                                  this jar path, if set."/>
+                                  You must specify your required JAR files in either the 
+                                  Jar Path field or the CLASSPATH environment variable. "/>
       </property>
       <property name="mqsiprofile">
         <property-ui type="textBox"
@@ -390,8 +390,8 @@
                                   or each individual jar path split by your file 
                                   systems path separator.
                                   (e.g. /opt/ibm/server/classes:/opt/ibm/common/jetty/lib)
-                                  The CLASSPATH environment variable will also be added to 
-                                  this jar path, if set."/>
+                                  You must specify your required JAR files in either the 
+                                  Jar Path field or the CLASSPATH environment variable. "/>
       </property>
       <property name="mqsiprofile">
         <property-ui type="textBox"
@@ -528,8 +528,8 @@
                                   or each individual jar path split by your file 
                                   systems path separator.
                                   (e.g. /opt/ibm/server/classes:/opt/ibm/common/jetty/lib)
-                                  The CLASSPATH environment variable will also be added to 
-                                  this jar path, if set."/>
+                                  You must specify your required JAR files in either the 
+                                  Jar Path field or the CLASSPATH environment variable. "/>
       </property>
       <property name="mqsiprofile">
         <property-ui type="textBox"
@@ -670,8 +670,8 @@
                                   or each individual jar path split by your file 
                                   systems path separator.
                                   (e.g. /opt/ibm/server/classes:/opt/ibm/common/jetty/lib)
-                                  The CLASSPATH environment variable will also be added to 
-                                  this jar path, if set."/>
+                                  You must specify your required JAR files in either the 
+                                  Jar Path field or the CLASSPATH environment variable. "/>
       </property>
       <property name="mqsiprofile">
         <property-ui type="textBox"
@@ -816,8 +816,8 @@
                                   or each individual jar path split by your file 
                                   systems path separator.
                                   (e.g. /opt/ibm/server/classes:/opt/ibm/common/jetty/lib)
-                                  The CLASSPATH environment variable will also be added to 
-                                  this jar path, if set."/>
+                                  You must specify your required JAR files in either the 
+                                  Jar Path field or the CLASSPATH environment variable. "/>
       </property>
       <property name="mqsiprofile">
         <property-ui type="textBox"
@@ -977,8 +977,8 @@
                                   or each individual jar path split by your file 
                                   systems path separator.
                                   (e.g. /opt/ibm/server/classes:/opt/ibm/common/jetty/lib)
-                                  The CLASSPATH environment variable will also be added to 
-                                  this jar path, if set."/>
+                                  You must specify your required JAR files in either the 
+                                  Jar Path field or the CLASSPATH environment variable. "/>
       </property>
       <property name="mqsiprofile">
         <property-ui type="textBox"
@@ -1126,8 +1126,8 @@
                                   or each individual jar path split by your file 
                                   systems path separator.
                                   (e.g. /opt/ibm/server/classes:/opt/ibm/common/jetty/lib)
-                                  The CLASSPATH environment variable will also be added to 
-                                  this jar path, if set."/>
+                                  You must specify your required JAR files in either the 
+                                  Jar Path field or the CLASSPATH environment variable. "/>
       </property>
       <property name="mqsiprofile">
         <property-ui type="textBox"
@@ -1278,8 +1278,8 @@
                                   or each individual jar path split by your file 
                                   systems path separator.
                                   (e.g. /opt/ibm/server/classes:/opt/ibm/common/jetty/lib)
-                                  The CLASSPATH environment variable will also be added to 
-                                  this jar path, if set."/>
+                                  You must specify your required JAR files in either the 
+                                  Jar Path field or the CLASSPATH environment variable. "/>
       </property>
       <property name="mqsiprofile">
         <property-ui type="textBox"
@@ -1434,8 +1434,8 @@
                                   or each individual jar path split by your file 
                                   systems path separator.
                                   (e.g. /opt/ibm/server/classes:/opt/ibm/common/jetty/lib)
-                                  The CLASSPATH environment variable will also be added to 
-                                  this jar path, if set."/>
+                                  You must specify your required JAR files in either the 
+                                  Jar Path field or the CLASSPATH environment variable. "/>
       </property>
       <property name="mqsiprofile">
         <property-ui type="textBox"
@@ -1576,8 +1576,8 @@
                                   or each individual jar path split by your file 
                                   systems path separator.
                                   (e.g. /opt/ibm/server/classes:/opt/ibm/common/jetty/lib)
-                                  The CLASSPATH environment variable will also be added to 
-                                  this jar path, if set."/>
+                                  You must specify your required JAR files in either the 
+                                  Jar Path field or the CLASSPATH environment variable. "/>
       </property>
       <property name="mqsiprofile">
         <property-ui type="textBox"
@@ -1737,8 +1737,8 @@
                                   or each individual jar path split by your file 
                                   systems path separator.
                                   (e.g. /opt/ibm/server/classes:/opt/ibm/common/jetty/lib)
-                                  The CLASSPATH environment variable will also be added to 
-                                  this jar path, if set."/>
+                                  You must specify your required JAR files in either the 
+                                  Jar Path field or the CLASSPATH environment variable. "/>
       </property>
       <property name="mqsiprofile">
         <property-ui type="textBox"
@@ -1879,8 +1879,8 @@
                                   or each individual jar path split by your file 
                                   systems path separator.
                                   (e.g. /opt/ibm/server/classes:/opt/ibm/common/jetty/lib)
-                                  The CLASSPATH environment variable will also be added to 
-                                  this jar path, if set."/>
+                                  You must specify your required JAR files in either the 
+                                  Jar Path field or the CLASSPATH environment variable. "/>
       </property>
       <property name="mqsiprofile">
         <property-ui type="textBox"
@@ -2021,8 +2021,8 @@
                                   or each individual jar path split by your file 
                                   systems path separator.
                                   (e.g. /opt/ibm/server/classes:/opt/ibm/common/jetty/lib)
-                                  The CLASSPATH environment variable will also be added to 
-                                  this jar path, if set."/>
+                                  You must specify your required JAR files in either the 
+                                  Jar Path field or the CLASSPATH environment variable. "/>
       </property>
       <property name="mqsiprofile">
         <property-ui type="textBox"
@@ -2110,8 +2110,8 @@
                                   or each individual jar path split by your file 
                                   systems path separator.
                                   (e.g. /opt/ibm/server/classes:/opt/ibm/common/jetty/lib)
-                                  The CLASSPATH environment variable will also be added to 
-                                  this jar path, if set."/>
+                                  You must specify your required JAR files in either the 
+                                  Jar Path field or the CLASSPATH environment variable. "/>
       </property>
       <property name="onFail">
         <property-ui type="selectBox"
