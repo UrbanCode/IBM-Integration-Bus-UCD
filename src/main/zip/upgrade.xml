@@ -835,4 +835,6 @@
   </migrate>
   <migrate to-version="44">
   </migrate>
+  <migrate to-version="45">
+  </migrate>
 </plugin-upgrade>

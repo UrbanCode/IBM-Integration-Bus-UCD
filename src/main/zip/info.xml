@@ -281,5 +281,8 @@ Fixes APAR PI98083 Missing 'startTime' property when create execution group fail
     <release-note plugin-version="44">
 Fixed APAR PH03202 - 'Mqsiprofile path' property not working in Windows.
     </release-note>
+    <release-note plugin-version="45">
+Fixes APAR PH04149 - Add remote broker connection JARs and consider CLASSPATH environment variable.
+    </release-note>
   </release-notes>
 </pluginInfo>

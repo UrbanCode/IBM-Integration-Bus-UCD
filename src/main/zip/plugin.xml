@@ -10,7 +10,7 @@
            xmlns:server="http://www.urbancode.com/PluginServerXMLSchema_v1"
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <header>
-    <identifier id="com.urbancode.air.plugin.WMBCMP" name="WebSphere Message Broker - CMP" version="44"/>
+    <identifier id="com.urbancode.air.plugin.WMBCMP" name="WebSphere Message Broker - CMP" version="45"/>
     <description>Integration for WebSphere Message Broker to deploy Broker Archives and start and stop Message Flows
                  using the CMP API. This plugin is compatible with both version 9 and 10 of IBM Integration Bus, and
                  is also compatible with versions 7 and 8 of WebSphere Message Broker.</description>
@@ -97,13 +97,16 @@
                      description="Enter the version of the installed IBM Integration Bus. This determines which API will
                                   be required. For example: 10.0.0.1"/>
       </property>
-      <property name="jarPath" required="true">
+      <property name="jarPath">
         <property-ui type="textBox"
                      label="Jar Path"
-                     default-value="${p:resource/iib.jarPath}"
-                     description="Specify either a directory to recursively search from which contains all required
-                                  jars, or specify each individual jar path split by your file systems path separator.
-                                  For a list of required jar files please view the plugin documentation."/>
+                     default-value="${p?:resource/iib.jarPath}"
+                     description="Specify either directories to recursively search from, 
+                                  or each individual jar path split by your file 
+                                  systems path separator.
+                                  (e.g. /opt/ibm/server/classes:/opt/ibm/common/jetty/lib)
+                                  The CLASSPATH environment variable will also be added to 
+                                  this jar path, if set."/>
       </property>
       <property name="mqsiprofile">
         <property-ui type="textBox"
@@ -234,13 +237,16 @@
                      description="Enter the version of the installed IBM Integration Bus. This determines which API will
                                   be required. For example: 10.0.0.1"/>
       </property>
-      <property name="jarPath" required="true">
+      <property name="jarPath">
         <property-ui type="textBox"
                      label="Jar Path"
-                     default-value="${p:resource/iib.jarPath}"
-                     description="Specify either a directory to recursively search from which contains all required
-                                  jars, or specify each individual jar path split by your file systems path separator.
-                                  For a list of required jar files please view the plugin documentation."/>
+                     default-value="${p?:resource/iib.jarPath}"
+                     description="Specify either directories to recursively search from, 
+                                  or each individual jar path split by your file 
+                                  systems path separator.
+                                  (e.g. /opt/ibm/server/classes:/opt/ibm/common/jetty/lib)
+                                  The CLASSPATH environment variable will also be added to 
+                                  this jar path, if set."/>
       </property>
       <property name="mqsiprofile">
         <property-ui type="textBox"
@@ -376,13 +382,16 @@
                      description="Enter the version of the installed IBM Integration Bus. This determines which API will
                                   be required. For example: 10.0.0.1"/>
       </property>
-      <property name="jarPath" required="true">
+      <property name="jarPath">
         <property-ui type="textBox"
                      label="Jar Path"
-                     default-value="${p:resource/iib.jarPath}"
-                     description="Specify either a directory to recursively search from which contains all required
-                                  jars, or specify each individual jar path split by your file systems path separator.
-                                  For a list of required jar files please view the plugin documentation."/>
+                     default-value="${p?:resource/iib.jarPath}"
+                     description="Specify either directories to recursively search from, 
+                                  or each individual jar path split by your file 
+                                  systems path separator.
+                                  (e.g. /opt/ibm/server/classes:/opt/ibm/common/jetty/lib)
+                                  The CLASSPATH environment variable will also be added to 
+                                  this jar path, if set."/>
       </property>
       <property name="mqsiprofile">
         <property-ui type="textBox"
@@ -511,13 +520,16 @@
                      description="Enter the version of the installed IBM Integration Bus. This determines which API will
                                   be required. For example: 10.0.0.1"/>
       </property>
-      <property name="jarPath" required="true">
+      <property name="jarPath">
         <property-ui type="textBox"
                      label="Jar Path"
-                     default-value="${p:resource/iib.jarPath}"
-                     description="Specify either a directory to recursively search from which contains all required
-                                  jars, or specify each individual jar path split by your file systems path separator.
-                                  For a list of required jar files please view the plugin documentation."/>
+                     default-value="${p?:resource/iib.jarPath}"
+                     description="Specify either directories to recursively search from, 
+                                  or each individual jar path split by your file 
+                                  systems path separator.
+                                  (e.g. /opt/ibm/server/classes:/opt/ibm/common/jetty/lib)
+                                  The CLASSPATH environment variable will also be added to 
+                                  this jar path, if set."/>
       </property>
       <property name="mqsiprofile">
         <property-ui type="textBox"
@@ -650,13 +662,16 @@
                      description="Enter the version of the installed IBM Integration Bus. This determines which API will
                                   be required. For example: 10.0.0.1"/>
       </property>
-      <property name="jarPath" required="true">
+      <property name="jarPath">
         <property-ui type="textBox"
                      label="Jar Path"
-                     default-value="${p:resource/iib.jarPath}"
-                     description="Specify either a directory to recursively search from which contains all required
-                                  jars, or specify each individual jar path split by your file systems path separator.
-                                  For a list of required jar files please view the plugin documentation."/>
+                     default-value="${p?:resource/iib.jarPath}"
+                     description="Specify either directories to recursively search from, 
+                                  or each individual jar path split by your file 
+                                  systems path separator.
+                                  (e.g. /opt/ibm/server/classes:/opt/ibm/common/jetty/lib)
+                                  The CLASSPATH environment variable will also be added to 
+                                  this jar path, if set."/>
       </property>
       <property name="mqsiprofile">
         <property-ui type="textBox"
@@ -793,13 +808,16 @@
                      description="Enter the version of the installed IBM Integration Bus. This determines which API will
                                   be required. For example: 10.0.0.1"/>
       </property>
-      <property name="jarPath" required="true">
+      <property name="jarPath">
         <property-ui type="textBox"
                      label="Jar Path"
-                     default-value="${p:resource/iib.jarPath}"
-                     description="Specify either a directory to recursively search from which contains all required
-                                  jars, or specify each individual jar path split by your file systems path separator.
-                                  For a list of required jar files please view the plugin documentation."/>
+                     default-value="${p?:resource/iib.jarPath}"
+                     description="Specify either directories to recursively search from, 
+                                  or each individual jar path split by your file 
+                                  systems path separator.
+                                  (e.g. /opt/ibm/server/classes:/opt/ibm/common/jetty/lib)
+                                  The CLASSPATH environment variable will also be added to 
+                                  this jar path, if set."/>
       </property>
       <property name="mqsiprofile">
         <property-ui type="textBox"
@@ -951,13 +969,16 @@
                      description="Enter the version of the installed IBM Integration Bus. This determines which API will
                                   be required. For example: 10.0.0.1"/>
       </property>
-      <property name="jarPath" required="true">
+      <property name="jarPath">
         <property-ui type="textBox"
                      label="Jar Path"
-                     default-value="${p:resource/iib.jarPath}"
-                     description="Specify either a directory to recursively search from which contains all required
-                                  jars, or specify each individual jar path split by your file systems path separator.
-                                  For a list of required jar files please view the plugin documentation."/>
+                     default-value="${p?:resource/iib.jarPath}"
+                     description="Specify either directories to recursively search from, 
+                                  or each individual jar path split by your file 
+                                  systems path separator.
+                                  (e.g. /opt/ibm/server/classes:/opt/ibm/common/jetty/lib)
+                                  The CLASSPATH environment variable will also be added to 
+                                  this jar path, if set."/>
       </property>
       <property name="mqsiprofile">
         <property-ui type="textBox"
@@ -1097,13 +1118,16 @@
                      description="Enter the version of the installed IBM Integration Bus. This determines which API will
                                   be required. For example: 10.0.0.1"/>
       </property>
-      <property name="jarPath" required="true">
+      <property name="jarPath">
         <property-ui type="textBox"
                      label="Jar Path"
-                     default-value="${p:resource/iib.jarPath}"
-                     description="Specify either a directory to recursively search from which contains all required
-                                  jars, or specify each individual jar path split by your file systems path separator.
-                                  For a list of required jar files please view the plugin documentation."/>
+                     default-value="${p?:resource/iib.jarPath}"
+                     description="Specify either directories to recursively search from, 
+                                  or each individual jar path split by your file 
+                                  systems path separator.
+                                  (e.g. /opt/ibm/server/classes:/opt/ibm/common/jetty/lib)
+                                  The CLASSPATH environment variable will also be added to 
+                                  this jar path, if set."/>
       </property>
       <property name="mqsiprofile">
         <property-ui type="textBox"
@@ -1246,13 +1270,16 @@
                      description="Enter the version of the installed IBM Integration Bus. This determines which API will
                                   be required. For example: 10.0.0.1"/>
       </property>
-      <property name="jarPath" required="true">
+      <property name="jarPath">
         <property-ui type="textBox"
                      label="Jar Path"
-                     default-value="${p:resource/iib.jarPath}"
-                     description="Specify either a directory to recursively search from which contains all required
-                                  jars, or specify each individual jar path split by your file systems path separator.
-                                  For a list of required jar files please view the plugin documentation."/>
+                     default-value="${p?:resource/iib.jarPath}"
+                     description="Specify either directories to recursively search from, 
+                                  or each individual jar path split by your file 
+                                  systems path separator.
+                                  (e.g. /opt/ibm/server/classes:/opt/ibm/common/jetty/lib)
+                                  The CLASSPATH environment variable will also be added to 
+                                  this jar path, if set."/>
       </property>
       <property name="mqsiprofile">
         <property-ui type="textBox"
@@ -1399,13 +1426,16 @@
                      description="Enter the version of the installed IBM Integration Bus. This determines which API will
                                   be required. For example: 10.0.0.1"/>
       </property>
-      <property name="jarPath" required="true">
+      <property name="jarPath">
         <property-ui type="textBox"
                      label="Jar Path"
-                     default-value="${p:resource/iib.jarPath}"
-                     description="Specify either a directory to recursively search from which contains all required
-                                  jars, or specify each individual jar path split by your file systems path separator.
-                                  For a list of required jar files please view the plugin documentation."/>
+                     default-value="${p?:resource/iib.jarPath}"
+                     description="Specify either directories to recursively search from, 
+                                  or each individual jar path split by your file 
+                                  systems path separator.
+                                  (e.g. /opt/ibm/server/classes:/opt/ibm/common/jetty/lib)
+                                  The CLASSPATH environment variable will also be added to 
+                                  this jar path, if set."/>
       </property>
       <property name="mqsiprofile">
         <property-ui type="textBox"
@@ -1538,13 +1568,16 @@
                      description="Enter the version of the installed IBM Integration Bus. This determines which API will
                                   be required. For example: 10.0.0.1"/>
       </property>
-      <property name="jarPath" required="true">
+      <property name="jarPath">
         <property-ui type="textBox"
                      label="Jar Path"
-                     default-value="${p:resource/iib.jarPath}"
-                     description="Specify either a directory to recursively search from which contains all required
-                                  jars, or specify each individual jar path split by your file systems path separator.
-                                  For a list of required jar files please view the plugin documentation."/>
+                     default-value="${p?:resource/iib.jarPath}"
+                     description="Specify either directories to recursively search from, 
+                                  or each individual jar path split by your file 
+                                  systems path separator.
+                                  (e.g. /opt/ibm/server/classes:/opt/ibm/common/jetty/lib)
+                                  The CLASSPATH environment variable will also be added to 
+                                  this jar path, if set."/>
       </property>
       <property name="mqsiprofile">
         <property-ui type="textBox"
@@ -1696,13 +1729,16 @@
                      description="Enter the version of the installed IBM Integration Bus. This determines which API will
                                   be required. For example: 10.0.0.1"/>
       </property>
-      <property name="jarPath" required="true">
+      <property name="jarPath">
         <property-ui type="textBox"
                      label="Jar Path"
-                     default-value="${p:resource/iib.jarPath}"
-                     description="Specify either a directory to recursively search from which contains all required
-                                  jars, or specify each individual jar path split by your file systems path separator.
-                                  For a list of required jar files please view the plugin documentation."/>
+                     default-value="${p?:resource/iib.jarPath}"
+                     description="Specify either directories to recursively search from, 
+                                  or each individual jar path split by your file 
+                                  systems path separator.
+                                  (e.g. /opt/ibm/server/classes:/opt/ibm/common/jetty/lib)
+                                  The CLASSPATH environment variable will also be added to 
+                                  this jar path, if set."/>
       </property>
       <property name="mqsiprofile">
         <property-ui type="textBox"
@@ -1835,13 +1871,16 @@
                      description="Enter the version of the installed IBM Integration Bus. This determines which API will
                                   be required. For example: 10.0.0.1"/>
       </property>
-      <property name="jarPath" required="true">
+      <property name="jarPath">
         <property-ui type="textBox"
                      label="Jar Path"
-                     default-value="${p:resource/iib.jarPath}"
-                     description="Specify either a directory to recursively search from which contains all required
-                                  jars, or specify each individual jar path split by your file systems path separator.
-                                  For a list of required jar files please view the plugin documentation."/>
+                     default-value="${p?:resource/iib.jarPath}"
+                     description="Specify either directories to recursively search from, 
+                                  or each individual jar path split by your file 
+                                  systems path separator.
+                                  (e.g. /opt/ibm/server/classes:/opt/ibm/common/jetty/lib)
+                                  The CLASSPATH environment variable will also be added to 
+                                  this jar path, if set."/>
       </property>
       <property name="mqsiprofile">
         <property-ui type="textBox"
@@ -1974,13 +2013,16 @@
                      description="Enter the version of the installed IBM Integration Bus. This determines which API will
                                   be required. For example: 10.0.0.1"/>
       </property>
-      <property name="jarPath" required="true">
+      <property name="jarPath">
         <property-ui type="textBox"
                      label="Jar Path"
-                     default-value="${p:resource/iib.jarPath}"
-                     description="Specify either a directory to recursively search from which contains all required
-                                  jars, or specify each individual jar path split by your file systems path separator.
-                                  For a list of required jar files please view the plugin documentation."/>
+                     default-value="${p?:resource/iib.jarPath}"
+                     description="Specify either directories to recursively search from, 
+                                  or each individual jar path split by your file 
+                                  systems path separator.
+                                  (e.g. /opt/ibm/server/classes:/opt/ibm/common/jetty/lib)
+                                  The CLASSPATH environment variable will also be added to 
+                                  this jar path, if set."/>
       </property>
       <property name="mqsiprofile">
         <property-ui type="textBox"
@@ -2060,13 +2102,16 @@
                      description="Enter the version of the installed IBM Integration Bus. This determines which API will
                                   be required. For example: 10.0.0.1"/>
       </property>
-      <property name="jarPath" required="true">
+      <property name="jarPath">
         <property-ui type="textBox"
                      label="Jar Path"
-                     default-value="${p:resource/iib.jarPath}"
-                     description="Specify either a directory to recursively search from which contains all required
-                                  jars, or specify each individual jar path split by your file systems path separator.
-                                  For a list of required jar files please view the plugin documentation."/>
+                     default-value="${p?:resource/iib.jarPath}"
+                     description="Specify either directories to recursively search from, 
+                                  or each individual jar path split by your file 
+                                  systems path separator.
+                                  (e.g. /opt/ibm/server/classes:/opt/ibm/common/jetty/lib)
+                                  The CLASSPATH environment variable will also be added to 
+                                  this jar path, if set."/>
       </property>
       <property name="onFail">
         <property-ui type="selectBox"
