@@ -871,11 +871,6 @@
         <migrate-property name="jarPath" default="${p?:resource/iib.jarPath}"/>
       </migrate-properties>
     </migrate-command>
-    <migrate-command name="Delete Flows Using RegEx">
-      <migrate-properties>
-        <migrate-property name="jarPath" default="${p?:resource/iib.jarPath}"/>
-      </migrate-properties>
-    </migrate-command>
     <migrate-command name="Delete BAR File Contents">
       <migrate-properties>
         <migrate-property name="jarPath" default="${p?:resource/iib.jarPath}"/>
