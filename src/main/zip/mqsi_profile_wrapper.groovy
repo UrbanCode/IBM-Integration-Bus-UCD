@@ -135,7 +135,7 @@ for (def jarEntry : jarPath.split(File.pathSeparator)) {
 
 if (requiredJars) {
     println("[Warning] the following jar files were not found on the Jar Path and are required with this"
-            + " version of IIB: '${requiredJars}' If these JAR files are not part of your sytem's CLASSPATH"
+            + " version of IIB: '${requiredJars}' If these JAR files are not part of your system's CLASSPATH"
             + " environment variable some steps may fail.")
 }
 
