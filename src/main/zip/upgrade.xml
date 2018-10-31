@@ -835,4 +835,81 @@
   </migrate>
   <migrate to-version="44">
   </migrate>
+  <migrate to-version="45">
+    <migrate-command name="Set Integration Node Properties" old="Set Broker Properties">
+      <migrate-properties>
+        <migrate-property name="jarPath" default="${p?:resource/iib.jarPath}"/>
+      </migrate-properties>
+    </migrate-command>
+    <migrate-command name="Create Execution Group">
+      <migrate-properties>
+        <migrate-property name="jarPath" default="${p?:resource/iib.jarPath}"/>
+      </migrate-properties>
+    </migrate-command>
+    <migrate-command name="Does Execution Group Exist">
+      <migrate-properties>
+        <migrate-property name="jarPath" default="${p?:resource/iib.jarPath}"/>
+      </migrate-properties>
+    </migrate-command>
+    <migrate-command name="Restart Execution Groups">
+      <migrate-properties>
+        <migrate-property name="jarPath" default="${p?:resource/iib.jarPath}"/>
+      </migrate-properties>
+    </migrate-command>
+    <migrate-command name="Delete Execution Group">
+      <migrate-properties>
+        <migrate-property name="jarPath" default="${p?:resource/iib.jarPath}"/>
+      </migrate-properties>
+    </migrate-command>
+    <migrate-command name="Set Execution Group Properties">
+      <migrate-properties>
+        <migrate-property name="jarPath" default="${p?:resource/iib.jarPath}"/>
+      </migrate-properties>
+    </migrate-command>
+    <migrate-command name="Set Message Flows Properties">
+      <migrate-properties>
+        <migrate-property name="jarPath" default="${p?:resource/iib.jarPath}"/>
+      </migrate-properties>
+    </migrate-command>
+    <migrate-command name="Delete BAR File Contents">
+      <migrate-properties>
+        <migrate-property name="jarPath" default="${p?:resource/iib.jarPath}"/>
+      </migrate-properties>
+    </migrate-command>
+    <migrate-command name="Delete Applications">
+      <migrate-properties>
+        <migrate-property name="jarPath" default="${p?:resource/iib.jarPath}"/>
+      </migrate-properties>
+    </migrate-command>
+    <migrate-command name="Create Or Update Configurable Service">
+      <migrate-properties>
+        <migrate-property name="jarPath" default="${p?:resource/iib.jarPath}"/>
+      </migrate-properties>
+    </migrate-command>
+    <migrate-command name="Delete Configurable Service">
+      <migrate-properties>
+        <migrate-property name="jarPath" default="${p?:resource/iib.jarPath}"/>
+      </migrate-properties>
+    </migrate-command>
+    <migrate-command name="Deploy">
+      <migrate-properties>
+        <migrate-property name="jarPath" default="${p?:resource/iib.jarPath}"/>
+      </migrate-properties>
+    </migrate-command>
+    <migrate-command name="Start Message Flows">
+      <migrate-properties>
+        <migrate-property name="jarPath" default="${p?:resource/iib.jarPath}"/>
+      </migrate-properties>
+    </migrate-command>
+    <migrate-command name="Stop Message Flows">
+      <migrate-properties>
+        <migrate-property name="jarPath" default="${p?:resource/iib.jarPath}"/>
+      </migrate-properties>
+    </migrate-command>
+    <migrate-command name="Override Bar Properties">
+      <migrate-properties>
+        <migrate-property name="jarPath" default="${p?:resource/iib.jarPath}"/>
+      </migrate-properties>
+    </migrate-command>
+  </migrate>
 </plugin-upgrade>

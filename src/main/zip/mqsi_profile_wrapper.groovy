@@ -1,5 +1,6 @@
 /**
  * (c) Copyright IBM Corporation 2013, 2017.
+ * (c) Copyright HCL Technologies Ltd. 2018. All Rights Reserved.
  * This is licensed under the following license.
  * The Eclipse Public 1.0 License (http://www.eclipse.org/legal/epl-v10.html)
  * U.S. Government Users Restricted Rights:  Use, duplication or disclosure restricted by GSA ADP Schedule Contract with IBM Corp.
@@ -16,6 +17,7 @@ import java.util.regex.Pattern
 final def apTool = new AirPluginTool(this.args[1], this.args[2])
 final def PLUGIN_HOME = System.getenv("PLUGIN_HOME")
 final def PLUGIN_LIB = PLUGIN_HOME + File.separator + "lib"
+final def SYSTEM_CLASSPATH = System.getenv("CLASSPATH")
 final def isWindows = apTool.isWindows
 final def props = apTool.getStepProperties()
 
@@ -33,6 +35,12 @@ def groovyHome = System.getProperty("groovy.home")
 def groovyExe = groovyHome + File.separator + "bin" + File.separator + (isWindows ? "groovy.bat" : "groovy")
 def version = props['version'] ? props['version'].trim() : ""
 def cmdArgs
+
+/* Append CLASSPATH to specified Jar Path if found */
+if (SYSTEM_CLASSPATH) {
+    println("[Ok] Found CLASSPATH from system environment: ${SYSTEM_CLASSPATH}.")
+    jarPath += jarPath ? File.pathSeparator + SYSTEM_CLASSPATH : SYSTEM_CLASSPATH
+}
 
 if (env) {
     File envFile = new File(env)
@@ -58,7 +66,6 @@ if (env) {
 }
 
 // append required jar files to classpath
-def jarDir = new File(jarPath)
 def requiredJars = []
 
 version = Integer.parseInt(version.split("\\.")[0])
@@ -80,11 +87,23 @@ if (version < 10) {
 }
 else {
     requiredJars << "IntegrationAPI"
+
+    // Additional required JAR files for a remote broker connection
+    if (props['brokerHost']?.trim() && props['port']?.trim()) {
+        requiredJars.addAll([
+            "jetty-io",
+            "jetty-util",
+            "websocket-api",
+            "websocket-client",
+            "websocket-common"])
+    }
 }
 
+/* Parse Jar Path to create groovy classpath */
 for (def jarEntry : jarPath.split(File.pathSeparator)) {
     def jarFile = new File(jarEntry.trim())
 
+    /* Add absolute paths to JARs if specified, recurse into directories if missing any required JARs */
     if (jarFile.isDirectory() && requiredJars) {
         def regexPattern = ""
         def regexArr = []
@@ -115,8 +134,9 @@ for (def jarEntry : jarPath.split(File.pathSeparator)) {
 }
 
 if (requiredJars) {
-    println("[Warning] the following jar files were not found on the Jar Path and are required with this version " +
-            "of IIB: '${requiredJars}' Some steps may fail.")
+    println("[Warning] the following jar files were not found on the Jar Path and are required with this"
+            + " version of IIB: '${requiredJars}' If these JAR files are not part of your system's CLASSPATH"
+            + " environment variable some steps may fail.")
 }
 
 
