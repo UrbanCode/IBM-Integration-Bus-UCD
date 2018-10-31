@@ -139,7 +139,7 @@ class IIBHelper {
             throw new IllegalStateException("Broker Proxy is uninitilized!")
         }
 
-        Date startTime = new Date(System.currentTimeMillis())
+        long startTime = System.currentTimeMillis()
 
         if (!getExecutionGroup(executionGroup)) {
             System.out.println("${getTimestamp()} Execution group ${executionGroup} does not exist."
@@ -166,7 +166,7 @@ class IIBHelper {
     }
 
     public void restartExecutionGroup(String executionGroup, int timeout) {
-        Date startTime = new Date(System.currentTimeMillis())
+        long startTime = System.currentTimeMillis()
 
         setExecutionGroup(executionGroup)
 
@@ -261,7 +261,7 @@ class IIBHelper {
     private void createConfigurableService(String servType, String servName, Map<String,String>propsMap) {
         println "${getTimestamp()} Creating configurable service '${servName}' of type '${servType}'"
 
-        Date startTime = new Date(System.currentTimeMillis())
+        long startTime = System.currentTimeMillis()
 
         try {
             brokerProxy.createConfigurableService(servType, servName)
@@ -340,7 +340,7 @@ class IIBHelper {
             throw new IllegalStateException("Execution group proxy is null! Make sure it is configured correctly!")
         }
 
-        Date startTime = new Date(System.currentTimeMillis())
+        long startTime = System.currentTimeMillis()
 
         println "${getTimestamp()} Using execution group: ${executionGroup} and waiting with a timeout " +
             "of ${timeout} or until a response is received from the execution group..."
@@ -392,7 +392,7 @@ class IIBHelper {
         }
 
         final String delimiter = AttributeConstants.OBJECT_NAME_DELIMITER
-        Date startTime = new Date(System.currentTimeMillis())
+        long startTime = System.currentTimeMillis()
 
         try {
             if (propType.equalsIgnoreCase("cachemanager")) {
@@ -441,7 +441,7 @@ class IIBHelper {
             throw new IllegalStateException("Broker Proxy is uninitilized!")
         }
 
-        Date startTime = new Date(System.currentTimeMillis())
+        long startTime = System.currentTimeMillis()
 
         if (executionGroupProxy == null) {
             throw new IllegalStateException("Execution group proxy is null! Make sure it is configured correctly!")
@@ -525,7 +525,7 @@ class IIBHelper {
             println "[Action] ${getTimestamp()} Deleting "+flowsToDelete.size()+" deployed objects that are orphaned"
             println "[OK] Waiting with a timeout of ${timeout} or until a response is received from the execution group..."
 
-            Date startTime = new Date(System.currentTimeMillis())
+            long startTime = System.currentTimeMillis()
 
             // convert to DeployedObject [] to match deleteDeployedObjects method spec
             DeployedObject [] flowsToDeleteArray = new DeployedObject[flowsToDelete.size()]
@@ -573,7 +573,7 @@ class IIBHelper {
         if (fullAppNames) {
             String[] appArray = fullAppNames.toArray(new String[0])
             println("[Action] ${getTimestamp()} Deleting application(s): ${fullAppNames.join(',')}")
-            Date startTime = new Date(System.currentTimeMillis())
+            long startTime = System.currentTimeMillis()
             DeployResult dr = executionGroupProxy.deleteDeployedObjectsByName(appArray, timeout)
             checkDeployResult(dr, startTime)
             println("[OK] ${getTimestamp()} Successfully removed applications.")
@@ -589,6 +589,7 @@ class IIBHelper {
 
     public void checkDeployResult(def deployResult, def startTime) {
         Enumeration logEntries = null
+        Date startDate = new Data(startTime)
 
         if (deployResult) {
             println("${getTimestamp()} Acquiring all deployment messages associated with this deployment...")
@@ -603,7 +604,7 @@ class IIBHelper {
         println("${getTimestamp()} Checking deployment messages for errors...")
         while (logEntries.hasMoreElements()) {
             LogEntry logEntry = logEntries.nextElement()
-            if (logEntry.isErrorMessage() && logEntry.getTimestamp() > startTime) {
+            if (logEntry.isErrorMessage() && logEntry.getTimestamp() > startDate) {
                 errors << logEntry.getTimestamp().toString() + " - " + logEntry.getMessage() +
                         " : " + logEntry.getDetail()
             }

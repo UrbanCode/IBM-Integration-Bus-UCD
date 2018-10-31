@@ -276,13 +276,16 @@ RFE 112896 Added step to delete an execution group from the broker.
 RFE 104689 Added a parameter to the deploy step to specify a full/incremental deployment.
     </release-note>
     <release-note plugin-version="43">
-Fixes APAR PI98083 Missing 'startTime' property when create execution group fails.
+Fixes APAR PH03013 Missing 'startTime' property when create execution group fails.
     </release-note>
     <release-note plugin-version="44">
 Fixed APAR PH03202 - 'Mqsiprofile path' property not working in Windows.
     </release-note>
     <release-note plugin-version="45">
 Fixes APAR PH04149 - Add remote broker connection JARs and consider CLASSPATH environment variable.
+    </release-note>
+    <release-note plugin-version="46">
+Fixes APAR PH04645 - Fixed receiving broker responses when broker refuses request.
     </release-note>
   </release-notes>
 </pluginInfo>

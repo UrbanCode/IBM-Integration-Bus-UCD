@@ -912,4 +912,6 @@
       </migrate-properties>
     </migrate-command>
   </migrate>
+  <migrate to-version="46">
+  </migrate>
 </plugin-upgrade>
