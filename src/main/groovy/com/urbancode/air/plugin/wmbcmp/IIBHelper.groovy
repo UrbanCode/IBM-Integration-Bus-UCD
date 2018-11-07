@@ -589,7 +589,7 @@ class IIBHelper {
 
     public void checkDeployResult(def deployResult, def startTime) {
         Enumeration logEntries = null
-        Date startDate = new Data(startTime)
+        Date startDate = new Date(startTime)
 
         if (deployResult) {
             println("${getTimestamp()} Acquiring all deployment messages associated with this deployment...")
