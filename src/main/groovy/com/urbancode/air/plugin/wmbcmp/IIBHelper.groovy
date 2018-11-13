@@ -139,7 +139,7 @@ class IIBHelper {
             throw new IllegalStateException("Broker Proxy is uninitilized!")
         }
 
-        long startTime = System.currentTimeMillis()
+        Date startTime = new Date()
 
         if (!getExecutionGroup(executionGroup)) {
             System.out.println("${getTimestamp()} Execution group ${executionGroup} does not exist."
@@ -166,7 +166,7 @@ class IIBHelper {
     }
 
     public void restartExecutionGroup(String executionGroup, int timeout) {
-        long startTime = System.currentTimeMillis()
+        Date startTime = new Date()
 
         setExecutionGroup(executionGroup)
 
@@ -261,7 +261,7 @@ class IIBHelper {
     private void createConfigurableService(String servType, String servName, Map<String,String>propsMap) {
         println "${getTimestamp()} Creating configurable service '${servName}' of type '${servType}'"
 
-        long startTime = System.currentTimeMillis()
+        Date startTime = new Date()
 
         try {
             brokerProxy.createConfigurableService(servType, servName)
@@ -340,7 +340,7 @@ class IIBHelper {
             throw new IllegalStateException("Execution group proxy is null! Make sure it is configured correctly!")
         }
 
-        long startTime = System.currentTimeMillis()
+        Date startTime = new Date()
 
         println "${getTimestamp()} Using execution group: ${executionGroup} and waiting with a timeout " +
             "of ${timeout} or until a response is received from the execution group..."
@@ -392,7 +392,7 @@ class IIBHelper {
         }
 
         final String delimiter = AttributeConstants.OBJECT_NAME_DELIMITER
-        long startTime = System.currentTimeMillis()
+        Date startTime = new Date()
 
         try {
             if (propType.equalsIgnoreCase("cachemanager")) {
@@ -441,7 +441,7 @@ class IIBHelper {
             throw new IllegalStateException("Broker Proxy is uninitilized!")
         }
 
-        long startTime = System.currentTimeMillis()
+        Date startTime = new Date()
 
         if (executionGroupProxy == null) {
             throw new IllegalStateException("Execution group proxy is null! Make sure it is configured correctly!")
@@ -525,7 +525,7 @@ class IIBHelper {
             println "[Action] ${getTimestamp()} Deleting "+flowsToDelete.size()+" deployed objects that are orphaned"
             println "[OK] Waiting with a timeout of ${timeout} or until a response is received from the execution group..."
 
-            long startTime = System.currentTimeMillis()
+            Date startTime = new Date()
 
             // convert to DeployedObject [] to match deleteDeployedObjects method spec
             DeployedObject [] flowsToDeleteArray = new DeployedObject[flowsToDelete.size()]
@@ -573,7 +573,7 @@ class IIBHelper {
         if (fullAppNames) {
             String[] appArray = fullAppNames.toArray(new String[0])
             println("[Action] ${getTimestamp()} Deleting application(s): ${fullAppNames.join(',')}")
-            long startTime = System.currentTimeMillis()
+            Date startTime = new Date()
             DeployResult dr = executionGroupProxy.deleteDeployedObjectsByName(appArray, timeout)
             checkDeployResult(dr, startTime)
             println("[OK] ${getTimestamp()} Successfully removed applications.")
@@ -583,13 +583,12 @@ class IIBHelper {
         }
     }
 
-    public void checkDeployResult(def startTime) {
+    public void checkDeployResult(Date startTime) {
         checkDeployResult(null, startTime)
     }
 
-    public void checkDeployResult(def deployResult, def startTime) {
+    public void checkDeployResult(def deployResult, Date startTime) {
         Enumeration logEntries = null
-        Date startDate = new Date(startTime)
 
         if (deployResult) {
             println("${getTimestamp()} Acquiring all deployment messages associated with this deployment...")
@@ -604,7 +603,7 @@ class IIBHelper {
         println("${getTimestamp()} Checking deployment messages for errors...")
         while (logEntries.hasMoreElements()) {
             LogEntry logEntry = logEntries.nextElement()
-            if (logEntry.isErrorMessage() && logEntry.getTimestamp() > startDate) {
+            if (logEntry.isErrorMessage() && logEntry.getTimestamp() > startTime) {
                 errors << logEntry.getTimestamp().toString() + " - " + logEntry.getMessage() +
                         " : " + logEntry.getDetail()
             }
@@ -654,7 +653,7 @@ class IIBHelper {
         return dateFormat.format(new Date())
     }
 
-    private void printBrokerResponses(ConfigManagerProxyRequestFailureException ex, long startTime) {
+    private void printBrokerResponses(ConfigManagerProxyRequestFailureException ex, Date startTime) {
         List<LogEntry> responses = ex.getResponseMessages()
 
         println("Broker rejection errors during execution:")
