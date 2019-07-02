@@ -10,7 +10,7 @@
            xmlns:server="http://www.urbancode.com/PluginServerXMLSchema_v1"
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <header>
-    <identifier id="com.urbancode.air.plugin.WMBCMP" name="WebSphere Message Broker - CMP" version="46"/>
+    <identifier id="com.urbancode.air.plugin.WMBCMP" name="WebSphere Message Broker - CMP" version="47"/>
     <description>Integration for WebSphere Message Broker to deploy Broker Archives and start and stop Message Flows
                  using the CMP API. This plugin is compatible with both version 9 and 10 of IBM Integration Bus, and
                  is also compatible with versions 7 and 8 of WebSphere Message Broker.</description>
@@ -2215,6 +2215,40 @@
                      description="Any additional arguments to pass to the 'mqsicreatebroker' script when running this
                                   step. Multiple arguments are split by new line. (e.g. '-i generalDefaultUserId')"/>
       </property>
+      <property name="jarPath">
+        <property-ui type="textBox"
+                     label="Jar Path"
+                     default-value="${p?:resource/iib.jarPath}"
+                     description="Specify either directories to recursively search from, 
+                                  or each individual jar path split by your file 
+                                  systems path separator.
+                                  (e.g. /opt/ibm/server/classes:/opt/ibm/common/jetty/lib)
+                                  You must specify your required JAR files in either the 
+                                  Jar Path field or the CLASSPATH environment variable. "/>
+      </property>
+      <property name="mqsiprofile">
+        <property-ui type="textBox"
+                     label="MQSIPROFILE Executable"
+                     default-value="${p?:resource/iib.mqsiprofile}"
+                     description="The absolute path to the mqsiprofile executable on your IIB server.
+                                  Specifying this value will initialize your command environment. This
+                                  value is required if your command environment is not initialized on
+                                  startup through a script such as `.bashrc`."/>
+      </property>
+      <property name="env">
+        <property-ui type="textAreaBox"
+                     label="Environment Variables"
+                     default-value="${p?:resource/iib.environment}"
+                     description="A file or list containing property entries, with each entry delimited by newlines.
+                                  Entries must be in the form 'VAR=VALUE' (i.e. java.library.path=/opt/mqm/java/lib64:
+                                  /opt/mqm/java/lib). Implemented to support z/OS using an ENVFILE."/>
+      </property>
+      <property name="shell">
+        <property-ui type="textBox"
+                     label="Shell"
+                     default-value="/bin/sh"
+                     description="Path to your shell executable file." hidden="true"/>
+      </property>      
     </properties>
     <post-processing><![CDATA[
         if (properties.get("exitCode") != 0) {
@@ -2227,7 +2261,8 @@
     <command program="${GROOVY_HOME}/bin/groovy">
       <arg value="-cp"/>
       <arg path="classes:lib/securedata.jar:lib/jettison-1.1.jar:lib/commons-codec.jar:lib/CommonsUtil.jar"/>
-      <arg file="create_broker.groovy"/>
+      <arg file="mqsi_profile_wrapper.groovy"/>     
+      <arg value="create_broker.groovy"/>
       <arg file="${PLUGIN_INPUT_PROPS}"/>
       <arg file="${PLUGIN_OUTPUT_PROPS}"/>
     </command>
@@ -2257,6 +2292,40 @@
                      label="Delete Trace Files"
                      description="Check this box to delete the node's trace files from its work directory."/>
       </property>
+      <property name="jarPath">
+        <property-ui type="textBox"
+                     label="Jar Path"
+                     default-value="${p?:resource/iib.jarPath}"
+                     description="Specify either directories to recursively search from, 
+                                  or each individual jar path split by your file 
+                                  systems path separator.
+                                  (e.g. /opt/ibm/server/classes:/opt/ibm/common/jetty/lib)
+                                  You must specify your required JAR files in either the 
+                                  Jar Path field or the CLASSPATH environment variable. "/>
+      </property>
+      <property name="mqsiprofile">
+        <property-ui type="textBox"
+                     label="MQSIPROFILE Executable"
+                     default-value="${p?:resource/iib.mqsiprofile}"
+                     description="The absolute path to the mqsiprofile executable on your IIB server.
+                                  Specifying this value will initialize your command environment. This
+                                  value is required if your command environment is not initialized on
+                                  startup through a script such as `.bashrc`."/>
+      </property>
+      <property name="env">
+        <property-ui type="textAreaBox"
+                     label="Environment Variables"
+                     default-value="${p?:resource/iib.environment}"
+                     description="A file or list containing property entries, with each entry delimited by newlines.
+                                  Entries must be in the form 'VAR=VALUE' (i.e. java.library.path=/opt/mqm/java/lib64:
+                                  /opt/mqm/java/lib). Implemented to support z/OS using an ENVFILE."/>
+      </property>
+      <property name="shell">
+        <property-ui type="textBox"
+                     label="Shell"
+                     default-value="/bin/sh"
+                     description="Path to your shell executable file." hidden="true"/>
+      </property>      
     </properties>
     <post-processing><![CDATA[
         if (properties.get("exitCode") != 0) {
@@ -2269,7 +2338,8 @@
     <command program="${GROOVY_HOME}/bin/groovy">
       <arg value="-cp"/>
       <arg path="classes:lib/securedata.jar:lib/jettison-1.1.jar:lib/commons-codec.jar:lib/CommonsUtil.jar"/>
-      <arg file="delete_broker.groovy"/>
+      <arg file="mqsi_profile_wrapper.groovy"/>      
+      <arg value="delete_broker.groovy"/>
       <arg file="${PLUGIN_INPUT_PROPS}"/>
       <arg file="${PLUGIN_OUTPUT_PROPS}"/>
     </command>
@@ -2288,6 +2358,40 @@
                      label="Integration Node (Broker)"
                      description="The name of the integration node to create."/>
       </property>
+      <property name="jarPath">
+        <property-ui type="textBox"
+                     label="Jar Path"
+                     default-value="${p?:resource/iib.jarPath}"
+                     description="Specify either directories to recursively search from, 
+                                  or each individual jar path split by your file 
+                                  systems path separator.
+                                  (e.g. /opt/ibm/server/classes:/opt/ibm/common/jetty/lib)
+                                  You must specify your required JAR files in either the 
+                                  Jar Path field or the CLASSPATH environment variable. "/>
+      </property>
+      <property name="mqsiprofile">
+        <property-ui type="textBox"
+                     label="MQSIPROFILE Executable"
+                     default-value="${p?:resource/iib.mqsiprofile}"
+                     description="The absolute path to the mqsiprofile executable on your IIB server.
+                                  Specifying this value will initialize your command environment. This
+                                  value is required if your command environment is not initialized on
+                                  startup through a script such as `.bashrc`."/>
+      </property>
+      <property name="env">
+        <property-ui type="textAreaBox"
+                     label="Environment Variables"
+                     default-value="${p?:resource/iib.environment}"
+                     description="A file or list containing property entries, with each entry delimited by newlines.
+                                  Entries must be in the form 'VAR=VALUE' (i.e. java.library.path=/opt/mqm/java/lib64:
+                                  /opt/mqm/java/lib). Implemented to support z/OS using an ENVFILE."/>
+      </property>
+      <property name="shell">
+        <property-ui type="textBox"
+                     label="Shell"
+                     default-value="/bin/sh"
+                     description="Path to your shell executable file." hidden="true"/>
+      </property>      
     </properties>
     <post-processing><![CDATA[
         if (properties.get("exitCode") != 0) {
@@ -2300,7 +2404,8 @@
     <command program="${GROOVY_HOME}/bin/groovy">
       <arg value="-cp"/>
       <arg path="classes:lib/securedata.jar:lib/jettison-1.1.jar:lib/commons-codec.jar:lib/CommonsUtil.jar"/>
-      <arg file="start_broker.groovy"/>
+      <arg file="mqsi_profile_wrapper.groovy"/>      
+      <arg value="start_broker.groovy"/>
       <arg file="${PLUGIN_INPUT_PROPS}"/>
       <arg file="${PLUGIN_OUTPUT_PROPS}"/>
     </command>
@@ -2319,6 +2424,40 @@
                      label="Integration Node (Broker)"
                      description="The name of the integration node to create."/>
       </property>
+      <property name="jarPath">
+        <property-ui type="textBox"
+                     label="Jar Path"
+                     default-value="${p?:resource/iib.jarPath}"
+                     description="Specify either directories to recursively search from, 
+                                  or each individual jar path split by your file 
+                                  systems path separator.
+                                  (e.g. /opt/ibm/server/classes:/opt/ibm/common/jetty/lib)
+                                  You must specify your required JAR files in either the 
+                                  Jar Path field or the CLASSPATH environment variable. "/>
+      </property>
+      <property name="mqsiprofile">
+        <property-ui type="textBox"
+                     label="MQSIPROFILE Executable"
+                     default-value="${p?:resource/iib.mqsiprofile}"
+                     description="The absolute path to the mqsiprofile executable on your IIB server.
+                                  Specifying this value will initialize your command environment. This
+                                  value is required if your command environment is not initialized on
+                                  startup through a script such as `.bashrc`."/>
+      </property>
+      <property name="env">
+        <property-ui type="textAreaBox"
+                     label="Environment Variables"
+                     default-value="${p?:resource/iib.environment}"
+                     description="A file or list containing property entries, with each entry delimited by newlines.
+                                  Entries must be in the form 'VAR=VALUE' (i.e. java.library.path=/opt/mqm/java/lib64:
+                                  /opt/mqm/java/lib). Implemented to support z/OS using an ENVFILE."/>
+      </property>
+      <property name="shell">
+        <property-ui type="textBox"
+                     label="Shell"
+                     default-value="/bin/sh"
+                     description="Path to your shell executable file." hidden="true"/>
+      </property>      
     </properties>
     <post-processing><![CDATA[
         if (properties.get("exitCode") != 0) {
@@ -2331,7 +2470,8 @@
     <command program="${GROOVY_HOME}/bin/groovy">
       <arg value="-cp"/>
       <arg path="classes:lib/securedata.jar:lib/jettison-1.1.jar:lib/commons-codec.jar:lib/CommonsUtil.jar"/>
-      <arg file="stop_broker.groovy"/>
+      <arg file="mqsi_profile_wrapper.groovy"/>      
+      <arg value="stop_broker.groovy"/>
       <arg file="${PLUGIN_INPUT_PROPS}"/>
       <arg file="${PLUGIN_OUTPUT_PROPS}"/>
     </command>
