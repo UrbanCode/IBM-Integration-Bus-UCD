@@ -100,6 +100,7 @@ else {
 }
 
 /* Parse Jar Path to create groovy classpath */
+if(jarPath) {
 for (def jarEntry : jarPath.split(File.pathSeparator)) {
     def jarFile = new File(jarEntry.trim())
 
@@ -131,6 +132,7 @@ for (def jarEntry : jarPath.split(File.pathSeparator)) {
     else {
         println("[Warning] ${jarFile} is not a file or directory on the file system, and it will be ignored.")
     }
+}
 }
 
 if (requiredJars) {

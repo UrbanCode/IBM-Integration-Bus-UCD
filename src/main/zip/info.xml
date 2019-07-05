@@ -287,5 +287,9 @@ Fixes APAR PH04149 - Add remote broker connection JARs and consider CLASSPATH en
     <release-note plugin-version="46">
 Fixes APAR PH04645 - Fixed receiving broker responses when broker refuses request.
     </release-note>
+    <release-note plugin-version="47">
+Added mqsiprofile script field to broker steps : create, delete, start, stop. 
+    </release-note>
+    
   </release-notes>
 </pluginInfo>

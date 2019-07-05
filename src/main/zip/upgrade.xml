@@ -914,5 +914,39 @@
   </migrate>
   <migrate to-version="46">
   </migrate>
+  <migrate to-version="47">
+    <migrate-command name="Create Integration Node">
+      <migrate-properties>
+        <migrate-property name="jarPath" default="${p?:resource/iib.jarPath}"/>
+        <migrate-property name="mqsiprofile" default="${p?:resource/iib.mqsiprofile}"/>
+        <migrate-property name="env" default="${p?:resource/iib.environment}"/>
+        <migrate-property name="shell" default="/bin/sh"/>                     
+      </migrate-properties>
+    </migrate-command>
+    <migrate-command name="Stop Integration Node">
+      <migrate-properties>
+        <migrate-property name="jarPath" default="${p?:resource/iib.jarPath}"/>
+        <migrate-property name="mqsiprofile" default="${p?:resource/iib.mqsiprofile}"/>
+        <migrate-property name="env" default="${p?:resource/iib.environment}"/>
+        <migrate-property name="shell" default="/bin/sh"/>      
+      </migrate-properties>
+    </migrate-command>
+    <migrate-command name="Start Integration Node">
+      <migrate-properties>
+        <migrate-property name="jarPath" default="${p?:resource/iib.jarPath}"/>
+        <migrate-property name="mqsiprofile" default="${p?:resource/iib.mqsiprofile}"/>
+        <migrate-property name="env" default="${p?:resource/iib.environment}"/>
+        <migrate-property name="shell" default="/bin/sh"/>      
+      </migrate-properties>
+    </migrate-command>
+    <migrate-command name="Delete Integration Node">
+      <migrate-properties>
+        <migrate-property name="jarPath" default="${p?:resource/iib.jarPath}"/>
+        <migrate-property name="mqsiprofile" default="${p?:resource/iib.mqsiprofile}"/>
+        <migrate-property name="env" default="${p?:resource/iib.environment}"/>
+        <migrate-property name="shell" default="/bin/sh"/>      
+      </migrate-properties>
+    </migrate-command>              
+  </migrate>  
 </plugin-upgrade>
 
