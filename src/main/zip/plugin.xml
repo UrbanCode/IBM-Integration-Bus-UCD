@@ -2215,17 +2215,6 @@
                      description="Any additional arguments to pass to the 'mqsicreatebroker' script when running this
                                   step. Multiple arguments are split by new line. (e.g. '-i generalDefaultUserId')"/>
       </property>
-      <property name="jarPath">
-        <property-ui type="textBox"
-                     label="Jar Path"
-                     default-value="${p?:resource/iib.jarPath}"
-                     description="Specify either directories to recursively search from, 
-                                  or each individual jar path split by your file 
-                                  systems path separator.
-                                  (e.g. /opt/ibm/server/classes:/opt/ibm/common/jetty/lib)
-                                  You must specify your required JAR files in either the 
-                                  Jar Path field or the CLASSPATH environment variable. "/>
-      </property>
       <property name="mqsiprofile">
         <property-ui type="textBox"
                      label="MQSIPROFILE Executable"
@@ -2292,17 +2281,6 @@
                      label="Delete Trace Files"
                      description="Check this box to delete the node's trace files from its work directory."/>
       </property>
-      <property name="jarPath">
-        <property-ui type="textBox"
-                     label="Jar Path"
-                     default-value="${p?:resource/iib.jarPath}"
-                     description="Specify either directories to recursively search from, 
-                                  or each individual jar path split by your file 
-                                  systems path separator.
-                                  (e.g. /opt/ibm/server/classes:/opt/ibm/common/jetty/lib)
-                                  You must specify your required JAR files in either the 
-                                  Jar Path field or the CLASSPATH environment variable. "/>
-      </property>
       <property name="mqsiprofile">
         <property-ui type="textBox"
                      label="MQSIPROFILE Executable"
@@ -2358,17 +2336,6 @@
                      label="Integration Node (Broker)"
                      description="The name of the integration node to create."/>
       </property>
-      <property name="jarPath">
-        <property-ui type="textBox"
-                     label="Jar Path"
-                     default-value="${p?:resource/iib.jarPath}"
-                     description="Specify either directories to recursively search from, 
-                                  or each individual jar path split by your file 
-                                  systems path separator.
-                                  (e.g. /opt/ibm/server/classes:/opt/ibm/common/jetty/lib)
-                                  You must specify your required JAR files in either the 
-                                  Jar Path field or the CLASSPATH environment variable. "/>
-      </property>
       <property name="mqsiprofile">
         <property-ui type="textBox"
                      label="MQSIPROFILE Executable"
@@ -2423,17 +2390,6 @@
         <property-ui type="textBox"
                      label="Integration Node (Broker)"
                      description="The name of the integration node to create."/>
-      </property>
-      <property name="jarPath">
-        <property-ui type="textBox"
-                     label="Jar Path"
-                     default-value="${p?:resource/iib.jarPath}"
-                     description="Specify either directories to recursively search from, 
-                                  or each individual jar path split by your file 
-                                  systems path separator.
-                                  (e.g. /opt/ibm/server/classes:/opt/ibm/common/jetty/lib)
-                                  You must specify your required JAR files in either the 
-                                  Jar Path field or the CLASSPATH environment variable. "/>
       </property>
       <property name="mqsiprofile">
         <property-ui type="textBox"
