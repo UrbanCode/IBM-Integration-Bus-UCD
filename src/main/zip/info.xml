@@ -287,5 +287,7 @@ Fixes APAR PH04149 - Add remote broker connection JARs and consider CLASSPATH en
     <release-note plugin-version="46">
 Fixes APAR PH04645 - Fixed receiving broker responses when broker refuses request.
     </release-note>
+    <release-note>
+Made Override Bar Properties step warn instead of fail on invalid line in property file.
   </release-notes>
 </pluginInfo>
