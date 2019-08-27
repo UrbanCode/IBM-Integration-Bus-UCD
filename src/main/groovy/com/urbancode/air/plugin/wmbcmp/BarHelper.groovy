@@ -63,7 +63,7 @@ class BarHelper {
                 propCount++
             }
             else if (line) {
-                throw new Exception("${line} is not a valid property definition. Property definitions must include '=' as a delimiter.")
+                println("${line} is not a valid property definition, skipping line. Property definitions must include '=' as a delimiter.")
             }
         }
     }

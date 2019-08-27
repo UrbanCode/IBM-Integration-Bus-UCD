@@ -914,5 +914,7 @@
   </migrate>
   <migrate to-version="46">
   </migrate>
+  <migrate to-version="47">
+  </migrate>
 </plugin-upgrade>
 
