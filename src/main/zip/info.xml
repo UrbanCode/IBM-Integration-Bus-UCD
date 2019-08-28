@@ -289,5 +289,6 @@ Fixes APAR PH04645 - Fixed receiving broker responses when broker refuses reques
     </release-note>
     <release-note plugin-version="47">
 Made Override Bar Properties step warn instead of fail on invalid line in property file.
+    </release-note>
   </release-notes>
 </pluginInfo>
